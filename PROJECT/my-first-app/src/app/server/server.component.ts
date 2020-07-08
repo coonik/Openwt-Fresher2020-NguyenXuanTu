@@ -6,9 +6,13 @@ import { Component } from '@angular/core';
 })
 export class ServerComponent {
   serverId: number = 1998;
-  serverStatus: string = 'offline';
+  serverStatus: string = 'online';
 
   getServerStatus() {
     return this.serverStatus;
+  }
+
+  getColor() {
+    return this.serverStatus === 'online' ? 'green' : 'red';
   }
 }
