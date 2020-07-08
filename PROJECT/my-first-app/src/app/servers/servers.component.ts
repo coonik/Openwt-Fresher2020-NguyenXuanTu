@@ -11,6 +11,8 @@ export class ServersComponent implements OnInit {
   allowNewServer = false;
   serverCreate = false;
   serverName = "";
+  showSecret = false;
+  count = 0;
   // public svName = "tu";
   servers = ['123', '456'];
   createServerStatus = "No server was created!"
@@ -35,4 +37,8 @@ export class ServersComponent implements OnInit {
     this.serverName = (<HTMLInputElement>event.target).value;
   }
 
+  onToggleSecret() {
+    this.showSecret = !this.showSecret;
+    this.count++;
+  }
 }

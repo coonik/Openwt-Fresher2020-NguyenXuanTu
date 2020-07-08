@@ -14,3 +14,8 @@
 
 <app-server *ngFor="let sv of servers" [svName]="sv"></app-server>
 
+<button class="btn btn-primary" (click)="onToggleSecret()"> show secret </button>
+<p *ngIf="showSecret">Tu nguyen</p>
+
+<p [ngStyle]="{color: count<2 ? 'black' : 'yellow'}">{{ count }}</p>
+
