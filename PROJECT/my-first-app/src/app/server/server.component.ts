@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-server',
@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
 })
 export class ServerComponent {
   serverId: number = 1998;
+  @Input() svName: string;
   serverStatus: string = 'online';
 
   getServerStatus() {
