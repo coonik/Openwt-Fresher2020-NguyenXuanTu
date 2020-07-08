@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-server',
   templateUrl: './server.component.html',
   styles: [`
-    {
+    .online{
       color: white
     }
   `]
