@@ -11,3 +11,5 @@
 <button class="btn btn-primary" [disabled]="!allowNewServer" (click)="onCreateServer()"> Add server </button>
 <p>{{ createServerStatus }}</p>
 <p>servers works!</p>
+
+<app-server *ngFor="let sv of servers"></app-server>
