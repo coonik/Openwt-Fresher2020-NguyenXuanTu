@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-servers',
+  selector: '.app-servers',
   template: '<p>Test</p>',
   // styleUrls: ['./servers.component.css']
   styles: [
