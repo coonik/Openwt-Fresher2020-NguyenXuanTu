@@ -12,6 +12,7 @@ import { Component, Input } from '@angular/core';
 export class ServerComponent {
   serverId: number = 1998;
   @Input() svName: string;
+  @Input() indexOfServer: number;
   serverStatus: string = 'online';
 
   getServerStatus() {
