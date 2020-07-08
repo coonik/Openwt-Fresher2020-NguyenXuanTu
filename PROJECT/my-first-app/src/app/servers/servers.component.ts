@@ -4,17 +4,13 @@ import { Component, OnInit } from '@angular/core';
   selector: '.app-servers',
   templateUrl: './servers.component.html',
   // styleUrls: ['./servers.component.css']
-  styles: [
-    `
-    p {
-      color: yellow;
-    }
-    `
-  ]
+  styleUrls: ['./servers.component.css']
 })
 export class ServersComponent implements OnInit {
 
   allowNewServer = false;
+  createServerStatus = "No server was created!"
+
 
   constructor() {
     setTimeout(() => {
@@ -23,6 +19,10 @@ export class ServersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  onCreateServer() {
+    this.createServerStatus = "Server was created!"
   }
 
 }
