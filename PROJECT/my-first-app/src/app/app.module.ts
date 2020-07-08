@@ -4,13 +4,16 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { ServersComponent } from './servers/servers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
 
     //noneed import
-    ServerComponent
+    ServerComponent,
+
+    ServersComponent
   ],
   imports: [
     BrowserModule
