@@ -10,8 +10,8 @@ export class CockpitComponent implements OnInit {
   newServerName = '';
   newServerContent = '';
   @Input() serverElements;
-  @Input()
-  public myCallback: Function;
+  // @Input()
+  // public myCallback: Function;
 
   constructor() { }
 
@@ -25,7 +25,7 @@ export class CockpitComponent implements OnInit {
       name: this.newServerName,
       content: this.newServerContent
     });
-    this.myCallback(this.serverElements);
+    // this.myCallback(this.serverElements);
   }
 
   onAddBlueprint() {
