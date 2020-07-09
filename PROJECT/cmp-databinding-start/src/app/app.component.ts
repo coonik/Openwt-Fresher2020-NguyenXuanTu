@@ -1,12 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ContentChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  serverElements = [];
+export class AppComponent{
+  serverElements = [
+    {
+      type: 'server',
+      name: 'tu',
+      content: 'nguyen'
+    }
+  ];
+
 
   // public theBoundCallback: Function;
 
