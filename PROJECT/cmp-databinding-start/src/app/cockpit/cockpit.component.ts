@@ -10,9 +10,9 @@ export class CockpitComponent implements OnInit {
   newServerName = '';
   newServerContent = '';
 
-  @Output()
+  @Output('svCreated')
   serverCreated = new EventEmitter<{serverName: string, serverContent: string}>();
-  @Output()
+  @Output('bpCreated')
   blueprintCreated = new EventEmitter<{serverName: string, serverContent: string}>();
   @Input() serverElements;
   // @Input()
