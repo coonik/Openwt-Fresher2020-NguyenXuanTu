@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { CockpitComponent } from './cockpit/cockpit.component';
-import { ServerElementsComponent } from './server-elements/server-elements.component';
+import { ServerElementsComponent } from './server-element/server-element.component';
 
 @NgModule({
   declarations: [
