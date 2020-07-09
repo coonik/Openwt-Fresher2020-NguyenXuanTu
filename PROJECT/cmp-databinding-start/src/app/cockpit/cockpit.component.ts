@@ -15,7 +15,7 @@ export class CockpitComponent implements OnInit {
   @Output('bpCreated')
   blueprintCreated = new EventEmitter<{serverName: string, serverContent: string}>();
   @Input() serverElements;
-  @ViewChild('serverContentInput') serverContentInput;
+  @ViewChild('serverContentInput',{static: true}) serverContentInput;
   // @Input()
   // public myCallback: Function;
 
@@ -43,11 +43,13 @@ export class CockpitComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("ngOnInit called!");
+
   }
 
 
   ngDoCheck() {
       console.log("ngDoCheck called!");
+      console.log(this.serverContentInput.nativeElement.value);
   }
 
   ngAfterContentInit() {
