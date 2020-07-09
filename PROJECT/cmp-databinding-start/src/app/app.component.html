@@ -2,6 +2,7 @@
   <app-cockpit [serverElements]="serverElements"
   (svCreated)="onServerAdded($event)"
   (bpCreated)="onBlueprintAdded($event)"
+  *ngIf="serverElements.length < 5"
   ></app-cockpit>
   <hr>
   <div class="row">

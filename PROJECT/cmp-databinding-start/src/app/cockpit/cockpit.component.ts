@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-cockpit',
@@ -19,12 +19,6 @@ export class CockpitComponent implements OnInit {
   // @Input()
   // public myCallback: Function;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-
   onAddServer(svName: string, ) {
     this.serverCreated.emit({
       serverName: svName,
@@ -37,5 +31,46 @@ export class CockpitComponent implements OnInit {
       serverName: svName,
       serverContent: this.serverContentInput.nativeElement.value
     });
+  }
+
+  constructor() {
+    console.log("constructor called!");
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("ngOnChanges called!");
+  }
+
+  ngOnInit(): void {
+    console.log("ngOnInit called!");
+  }
+
+
+  ngDoCheck() {
+      console.log("ngDoCheck called!");
+  }
+
+  ngAfterContentInit() {
+    console.log("ngAfterContentInit called!");
+
+  }
+
+  ngAfterContentChecked() {
+    console.log("ngAfterContentChecked called!");
+
+  }
+
+  ngAfterViewInit() {
+    console.log("ngAfterViewInit called!");
+  }
+
+  ngAfterViewChecked() {
+    console.log("ngAfterViewChecked called!");
+
+  }
+
+  ngOnDestroy() {
+    console.log("ngOnDestroy called!");
+
   }
 }
