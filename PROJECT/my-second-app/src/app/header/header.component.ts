@@ -9,10 +9,9 @@ import { Component } from '@angular/core';
 // ]
 })
 export class HeaderComponent {
-  collapsed = true;
+  collapsed = [true, true, true];
 
-  setCollapse() {
-    this.collapsed = !this.collapsed;
-    console.log(this.collapsed);
+  setCollapse(i: number) {
+    this.collapsed[i] = !this.collapsed[i];
   }
 }
