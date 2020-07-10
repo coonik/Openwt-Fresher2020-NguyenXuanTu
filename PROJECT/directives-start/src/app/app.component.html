@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-12" [ngStyle]="{backgroundColor: !onlyOdd ? 'yellow' : 'transparent'}">
       <button
         class="btn btn-primary"
         (click)="onlyOdd = !onlyOdd">Only show odd numbers</button>
       <br><br>
       <ng-container>
         <div *ngIf="!onlyOdd; else onlyOddElement">
-          <ul class="list-group" *ngFor="let item of numbers">
+          <ul class="list-group" *ngFor="let item of numbers" [ngClass]="{odd: false}">
             <li
               class="list-group-item">
               {{ item }}
