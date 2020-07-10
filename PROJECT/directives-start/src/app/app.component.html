@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row" appBasicHighLight appBetterHighlight>
+  <div class="row" appBasicHighLight appBetterHighlight="center">
     <div class="col-xs-12" [ngStyle]="{backgroundColor: !onlyOdd ? 'yellow' : 'transparent'}">
       <button
         class="btn btn-primary"
@@ -24,7 +24,7 @@
           </ul>
         </ng-template>
       </ng-container>
-      <ng-template [ngIf]="onlyOdd" appBetterHighlight>
+      <ng-template [ngIf]="onlyOdd">
         <p>Only odd</p>
       </ng-template>
     </div>
