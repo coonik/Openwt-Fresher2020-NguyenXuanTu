@@ -1,24 +1,28 @@
 <div class="container">
   <div class="row" appBasicHighLight appBetterHighlight="center">
-    <div class="col-xs-12" [ngStyle]="{backgroundColor: !onlyOdd ? 'yellow' : 'transparent'}">
-      <button
-        class="btn btn-primary"
-        (click)="onlyOdd = !onlyOdd">Only show odd numbers</button>
-      <br><br>
-      <!-- <div>
+    <div
+      class="col-xs-12"
+      [ngStyle]="{ backgroundColor: !onlyOdd ? 'yellow' : 'transparent' }"
+    >
+      <button class="btn btn-primary" (click)="onlyOdd = !onlyOdd">
+        Only show odd numbers
+      </button>
+      <br /><br />
+      <div>
         <div *ngIf="!onlyOdd; else onlyOddElement">
-          <ul class="list-group" *ngFor="let item of numbers" [ngClass]="{odd: false}">
-            <li
-              class="list-group-item">
+          <ul
+            class="list-group"
+            *ngFor="let item of numbers"
+            [ngClass]="{ odd: false }"
+          >
+            <li class="list-group-item">
               {{ item }}
             </li>
           </ul>
         </div>
         <ng-template #onlyOddElement>
           <ul class="list-group" *ngFor="let item of numbers">
-            <li
-              *ngIf="(item%2!==0 === onlyOdd)"
-              class="list-group-item">
+            <li *ngIf="(item % 2 !== 0) === onlyOdd" class="list-group-item">
               {{ item }}
             </li>
           </ul>
@@ -26,8 +30,8 @@
       </div>
       <ng-template [appUnlessDirective]="onlyOdd">
         <p>Only odd</p>
-      </ng-template> -->
-
+      </ng-template>
+      <!--
       <div *appUnlessDirective="!onlyOdd">
         <ul class="list-group" *ngFor="let item of numbers" [ngClass]="{odd: false}">
           <li
@@ -35,7 +39,7 @@
             {{ item }}
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
