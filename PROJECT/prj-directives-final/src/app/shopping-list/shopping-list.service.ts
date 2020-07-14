@@ -24,10 +24,7 @@ export class ShoppingListService implements OnInit {
   }
 
   addIngredients(ingredientsTemp: Ingredient[]) {
-    // this.ingredients.push(...ingredientsTemp);
-    // this.ingredientsChanged.emit(this.ingredients.slice());
-    this.ingredients.push(ingredientsTemp[0]);
+    this.ingredients.push(...ingredientsTemp);
     this.ingredientsChanged.emit(this.ingredients.slice());
-    console.log(this.ingredients);
   }
 }
