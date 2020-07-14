@@ -9,7 +9,7 @@ export class AuthServivce {
       (resolve, rejects) => {
         setTimeout(() => {
           resolve(this.loggedIn)
-        }, 1500);
+        }, 500);
       }
     )
     return promise;
