@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { resolve } from 'dns';
+import { rejects } from 'assert';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +18,7 @@ export class AppComponent implements OnInit {
     this.signupForm = new FormGroup({
       userData: new FormGroup({
         'username': new FormControl(null, Validators.required),
-        'email': new FormControl(null, [Validators.required, Validators.email, this.forbiddenMails.bind(this)])
+        'email': new FormControl(null, [Validators.required, Validators.email, this.forbiddenMails])
       }),
       'gender': new FormControl('male'),
       'hobbies': new FormArray([])
@@ -31,10 +34,19 @@ export class AppComponent implements OnInit {
     (<FormArray>this.signupForm.get('hobbies')).push(hobby);
   }
 
-  forbiddenMails(control: FormControl): {[s: string]: boolean} {
-    if (this.forbiddenMailAddress.indexOf(control.value)===0)
-      return {"mailIsForbidden": true};
-    return {"mailIsForbidden": false};
-
+  forbiddenMails(control: FormControl): Promise<any> | Observable<any> {
+      const promise = new Promise<any>(
+        (resolve, rejects) => {
+          setTimeout(() => {
+            if (control.value === "12312@tsy.vn") {
+              resolve({
+                'emailIsForbidden': true
+              });
+            } else {
+              resolve(null)
+            }
+          }, 100);
+        })
+        return promise
   }
 }
