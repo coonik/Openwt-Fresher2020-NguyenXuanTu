@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { resolve } from 'dns';
 import { rejects } from 'assert';
+import { CustomValidators } from './custom-validators';
 
 @Component({
   selector: 'app-root',
@@ -10,64 +11,18 @@ import { rejects } from 'assert';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  genders = ['male', 'female'];
-  signupForm: FormGroup;
-  forbiddenMailAddress = ['12312@tsy.vn'];
+  projectForm: FormGroup;
 
   ngOnInit() {
-    this.signupForm = new FormGroup({
-      userData: new FormGroup({
-        'username': new FormControl(null, Validators.required),
-        'email': new FormControl(null, [Validators.required, Validators.email], this.forbiddenMails)
-      }),
-      'gender': new FormControl('male'),
-      'hobbies': new FormArray([])
+    this.projectForm = new FormGroup({
+      'projectName': new FormControl(null, [Validators.required, CustomValidators.invalidProjectName], CustomValidators.asyncInvalidProjectName),
+      'email': new FormControl(null, [Validators.required, Validators.email]),
+      'projectStatus': new FormControl('critical')
     })
-
-    this.signupForm.statusChanges.subscribe(
-      (status) => {
-        console.log(status);
-
-      }
-    )
-
-    this.signupForm.setValue({
-      'userData': {
-          'username': 'tu',
-          'email': 'tunguyen@novahub.vn'
-      },
-      'gender': 'female',
-      'hobbies': []
-    });
-
-    this.signupForm.patchValue({
-      'gender': 'male'
-    });
   }
 
-  onSubmit() {
-    console.log(this.signupForm.value);
-  }
+  onSaveProject() {
+    console.log(this.projectForm.value);
 
-  onAddHobby() {
-    const hobby = new FormControl(null, Validators.required);
-    (<FormArray>this.signupForm.get('hobbies')).push(hobby);
-  }
-
-  forbiddenMails(control: FormControl): Promise<any> | Observable<any> {
-
-      const promise = new Promise<any>(
-        (resolve, rejects) => {
-          setTimeout(() => {
-            if (control.value === "12312@tsy.vn") {
-              console.log("ngu");
-
-              resolve({'emailIsForbidden': true});
-            } else {
-              resolve(null)
-            }
-          }, 100);
-        })
-        return promise
   }
 }
