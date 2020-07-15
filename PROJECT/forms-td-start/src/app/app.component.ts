@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   signupForm: NgForm
   defaultQuestion = 'pet';
   answer = '';
+  genders = ['male', 'female'];
 
   emailValid: boolean;
 
