@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -6,9 +6,11 @@ import { NgForm } from '@angular/forms';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  @ViewChild('f')
+export class AppComponent implements OnInit {
+  @ViewChild('f', {static: true})
   signupForm: NgForm
+
+  emailValid: boolean;
 
   suggestUserName() {
     const suggestedName = 'Superuser';
@@ -22,5 +24,24 @@ export class AppComponent {
   onSubmit() {
     console.log(this.signupForm.value);
     console.log(this.signupForm.valid);
+    console.log(this.signupForm.value.subscribe());
+  }
+
+  ngOnInit() {
+    console.log(this.signupForm.value.subscribe);
+
+    // (
+    //   (adsas) => {
+    //     console.log();
+
+    //   }
+    // )
+  }
+
+  onChange() {
+    const email: string = this.signupForm.value.email;
+    this.emailValid = email.split('@').length === 2 && email.split('@')[1].split('.').length>1;
+    console.log(this.emailValid);
+
   }
 }
