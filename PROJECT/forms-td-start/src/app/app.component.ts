@@ -10,6 +10,7 @@ export class AppComponent implements OnInit {
   @ViewChild('f', {static: true})
   signupForm: NgForm
   defaultQuestion = 'pet';
+  answer = '';
 
   emailValid: boolean;
 
@@ -25,11 +26,9 @@ export class AppComponent implements OnInit {
   onSubmit() {
     console.log(this.signupForm.value);
     console.log(this.signupForm.valid);
-    console.log(this.signupForm.value.subscribe());
   }
 
   ngOnInit() {
-    console.log(this.signupForm.value.subscribe);
 
     // (
     //   (adsas) => {
