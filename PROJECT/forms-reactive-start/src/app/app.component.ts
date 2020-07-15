@@ -18,11 +18,18 @@ export class AppComponent implements OnInit {
     this.signupForm = new FormGroup({
       userData: new FormGroup({
         'username': new FormControl(null, Validators.required),
-        'email': new FormControl(null, [Validators.required, Validators.email, this.forbiddenMails])
+        'email': new FormControl(null, [Validators.required, Validators.email], this.forbiddenMails)
       }),
       'gender': new FormControl('male'),
       'hobbies': new FormArray([])
     })
+
+    this.signupForm.statusChanges.subscribe(
+      (status) => {
+        console.log(status);
+
+      }
+    )
   }
 
   onSubmit() {
@@ -35,13 +42,14 @@ export class AppComponent implements OnInit {
   }
 
   forbiddenMails(control: FormControl): Promise<any> | Observable<any> {
+
       const promise = new Promise<any>(
         (resolve, rejects) => {
           setTimeout(() => {
             if (control.value === "12312@tsy.vn") {
-              resolve({
-                'emailIsForbidden': true
-              });
+              console.log("ngu");
+
+              resolve({'emailIsForbidden': true});
             } else {
               resolve(null)
             }
