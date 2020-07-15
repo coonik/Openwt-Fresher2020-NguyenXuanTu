@@ -12,6 +12,13 @@ export class AppComponent implements OnInit {
   defaultQuestion = 'pet';
   answer = '';
   genders = ['male', 'female'];
+  user = {
+    username: '',
+    email: '',
+    secretQuestion: '',
+    answer: '',
+    gender: ''
+  };
 
   emailValid: boolean;
 
@@ -61,7 +68,13 @@ export class AppComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.signupForm);
-
+    console.log(this.signupForm.value);
+    this.user = {
+      username: this.signupForm.value.userData.username,
+      email: this.signupForm.value.userData.email,
+      secretQuestion: this.signupForm.value.secret,
+      answer: this.signupForm.value.questionAnswer,
+      gender: this.signupForm.value.gender
+    }
   }
 }
