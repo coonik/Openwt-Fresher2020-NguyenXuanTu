@@ -30,6 +30,19 @@ export class AppComponent implements OnInit {
 
       }
     )
+
+    this.signupForm.setValue({
+      'userData': {
+          'username': 'tu',
+          'email': 'tunguyen@novahub.vn'
+      },
+      'gender': 'female',
+      'hobbies': []
+    });
+
+    this.signupForm.patchValue({
+      'gender': 'male'
+    });
   }
 
   onSubmit() {
