@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, NgModelGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -23,10 +23,10 @@ export class AppComponent implements OnInit {
 
   // }
 
-  onSubmit() {
-    console.log(this.signupForm.value);
-    console.log(this.signupForm.valid);
-  }
+  // onSubmit() {
+  //   console.log(this.signupForm.value);
+  //   console.log(this.signupForm.valid);
+  // }
 
   ngOnInit() {
 
@@ -39,9 +39,14 @@ export class AppComponent implements OnInit {
   }
 
   onChange() {
-    const email: string = this.signupForm.value.email;
+
+    const email: string = this.signupForm.value.userData.email;
     this.emailValid = email.split('@').length === 2 && email.split('@')[1].split('.').length>1;
-    console.log(this.emailValid);
+
+  }
+
+  onSubmit() {
+    console.log(this.signupForm);
 
   }
 }
