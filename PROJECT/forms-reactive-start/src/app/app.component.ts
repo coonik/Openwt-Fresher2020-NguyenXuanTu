@@ -9,7 +9,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 export class AppComponent implements OnInit {
   genders = ['male', 'female'];
   signupForm: FormGroup;
-  forbiddenMailAddress = ['@fb.com'];
+  forbiddenMailAddress = ['12312@tsy.vn'];
 
   ngOnInit() {
     this.signupForm = new FormGroup({
@@ -24,7 +24,6 @@ export class AppComponent implements OnInit {
 
   onSubmit() {
     console.log(this.signupForm.value);
-
   }
 
   onAddHobby() {
@@ -33,8 +32,9 @@ export class AppComponent implements OnInit {
   }
 
   forbiddenMails(control: FormControl): {[s: string]: boolean} {
-    if (this.forbiddenMailAddress.indexOf(control.value))
-      return {"This mail address is Forbidden" : true};
-    return null;
+    if (this.forbiddenMailAddress.indexOf(control.value)===0)
+      return {"mailIsForbidden": true};
+    return {"mailIsForbidden": false};
+
   }
 }
