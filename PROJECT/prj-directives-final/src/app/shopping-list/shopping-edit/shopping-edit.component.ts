@@ -19,10 +19,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
+  @ViewChild('f')
+  form: NgForm;
   @Output() ingredientAdded = new EventEmitter<Ingredient>();
   sub: Subscription;
   editMode = false;
   editedItemIndex: number;
+  editedItem: Ingredient;
 
 
   constructor(private shoppingListService: ShoppingListService) { }
@@ -32,6 +35,11 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       (index) => {
         this.editMode = true;
         this.editedItemIndex = index;
+        this.editedItem = this.shoppingListService.getIngredient(index);
+        this.form.setValue({
+          'name': this.editedItem.name,
+          'amount': this.editedItem.amount
+        })
       }
     )
   }
