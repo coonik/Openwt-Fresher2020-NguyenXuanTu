@@ -1,3 +1,4 @@
+import { OnDestroy } from '@angular/core';
 import {
   Component,
   OnInit,
@@ -9,18 +10,34 @@ import {
 
 import { Ingredient } from '../../shared/ingredient.model';
 import { NgForm } from '@angular/forms';
+import { ShoppingListService } from '../shopping-list.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-edit',
   templateUrl: './shopping-edit.component.html',
   styleUrls: ['./shopping-edit.component.css']
 })
-export class ShoppingEditComponent implements OnInit {
+export class ShoppingEditComponent implements OnInit, OnDestroy {
   @Output() ingredientAdded = new EventEmitter<Ingredient>();
+  sub: Subscription;
+  editMode = false;
+  editedItemIndex: number;
 
-  constructor() { }
+
+  constructor(private shoppingListService: ShoppingListService) { }
 
   ngOnInit() {
+    this.sub = this.shoppingListService.startedEditting.subscribe(
+      (index) => {
+        this.editMode = true;
+        this.editedItemIndex = index;
+      }
+    )
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   onAddItem(form: NgForm) {
