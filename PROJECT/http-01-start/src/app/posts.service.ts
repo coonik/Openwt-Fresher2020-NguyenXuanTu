@@ -29,11 +29,12 @@ export class PostsService {
     searchParams = searchParams.append('print', 'pretty');
     searchParams = searchParams.append('custom', 'key');
     return this.http
-      .get<{[key: string]: Post}>('https://ng-complete-guide-73476.firebaseio.com/posts.json', {
+      .get('https://ng-complete-guide-73476.firebaseio.com/posts.json', {
         headers: new HttpHeaders({
           'Custom-Header': 'Hello'
         }),
-        params: searchParams
+        params: searchParams,
+        responseType: 'json'
       })
       .pipe(map(responsiveData => {
         const postsArray: Post[] = [];
