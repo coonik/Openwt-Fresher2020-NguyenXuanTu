@@ -1,3 +1,4 @@
+import { Recipe } from './../recipe.model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
@@ -62,6 +63,11 @@ export class RecipeEditComponent implements OnInit {
         'amount': new FormControl(null, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)])
       })
     )
+  }
+
+  onSubmit(recipeForm: FormGroup) {
+    let data = recipeForm.value;
+    this.recipeService.addRecipe(new Recipe(data.name, data.description, data.imagePath, data.ingredients));
   }
 
   get ingredientArray(): FormArray { // a getter!
