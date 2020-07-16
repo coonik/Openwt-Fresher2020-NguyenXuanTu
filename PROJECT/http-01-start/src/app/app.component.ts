@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +40,14 @@ export class AppComponent implements OnInit {
   private fetchPosts() {
     this.http
       .get('https://ng-complete-guide-73476.firebaseio.com/posts.json')
+      .pipe(map(responsiveData => {
+        const postsArray = [];
+        for (const key in responsiveData) {
+          if (responsiveData.hasOwnProperty(key))
+          postsArray.push({...responsiveData[key], id: key});
+        }
+        return postsArray;
+      }))
       .subscribe( posts => {
         console.log(posts);
 
