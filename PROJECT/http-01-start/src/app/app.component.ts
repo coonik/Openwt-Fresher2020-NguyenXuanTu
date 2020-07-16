@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Post } from './post.model';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,6 +9,7 @@ import { Post } from './post.model';
 })
 export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
+  postIsLoading = false;
 
   constructor(private http: HttpClient) {}
 
@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
 
   onFetchPosts() {
     // Send Http request
+
     this.fetchPosts();
   }
 
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit {
   }
 
   private fetchPosts() {
+    this.postIsLoading = true;
     this.http
       .get<{[key: string]: Post}>('https://ng-complete-guide-73476.firebaseio.com/posts.json')
       .pipe(map(responsiveData => {
@@ -50,6 +52,7 @@ export class AppComponent implements OnInit {
         return postsArray;
       }))
       .subscribe( posts => {
+        this.postIsLoading = false;
         this.loadedPosts = posts
       })
   }
