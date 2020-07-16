@@ -11,6 +11,7 @@ import { Post } from './post.model';
 export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   postIsLoading = false;
+  error = null;
 
   constructor(private http: HttpClient, private postsService: PostsService) {}
 
@@ -21,6 +22,8 @@ export class AppComponent implements OnInit {
         posts => {
           this.postIsLoading = false;
           this.loadedPosts = posts;
+        }, error => {
+          this.error = error.message;
         }
       );
   }
@@ -39,6 +42,8 @@ export class AppComponent implements OnInit {
         posts => {
           this.postIsLoading = false;
           this.loadedPosts = posts;
+        }, error => {
+          this.error = error.message;
         }
       );
   }
