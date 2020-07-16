@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { promise } from 'protractor';
+import { resolve } from 'dns';
+import { rejects } from 'assert';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +9,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  appStatus = new Promise((resolve, rejects) => {
+    setTimeout(() => {
+      resolve('stable');
+    }, 2000);
+  })
+
   servers = [
     {
       instanceType: 'medium',
@@ -41,5 +50,14 @@ export class AppComponent {
       'list-group-item-warning': server.status === 'offline',
       'list-group-item-danger': server.status === 'critical'
     };
+  }
+
+  onAddServer() {
+    this.servers.push({
+      instanceType: 'small',
+      name: 'Oke oke',
+      status: 'stable',
+      started: new Date(15, 1, 2017)
+    });
   }
 }
