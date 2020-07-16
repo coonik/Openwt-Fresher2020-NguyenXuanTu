@@ -1,21 +1,28 @@
 import { PostsService } from './posts.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Post } from './post.model';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   loadedPosts: Post[] = [];
   postIsLoading = false;
   error = null;
+  errorSub: Subscription;
 
   constructor(private http: HttpClient, private postsService: PostsService) {}
 
   ngOnInit() {
+    this.errorSub = this.postsService.error.subscribe(
+      (errorMessage) => {
+        this.error = errorMessage
+      }
+    )
     this.postIsLoading = true;
     this.postsService.fetchPosts()
       .subscribe(
@@ -26,6 +33,10 @@ export class AppComponent implements OnInit {
           this.error = error.message;
         }
       );
+  }
+
+  OnDestroy() {
+    this.errorSub.unsubscribe();
   }
 
   onCreatePost(postData: Post) {
