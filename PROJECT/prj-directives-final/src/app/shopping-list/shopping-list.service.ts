@@ -37,6 +37,10 @@ export class ShoppingListService implements OnInit {
   updateIngredient(index: number, ing: Ingredient) {
     this.ingredients[index] = ing;
     this.ingredientsChanged.next(this.ingredients.slice());
+  }
 
+  deleteIngredient(index: number) {
+    this.ingredients.splice(index, 1);
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 }
