@@ -1,3 +1,4 @@
+import { PostsService } from './posts.service';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -11,49 +12,24 @@ export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   postIsLoading = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private postsService: PostsService) {}
 
   ngOnInit() {
-    this.fetchPosts();
+    this.postsService.fetchPosts();
   }
 
   onCreatePost(postData: Post) {
     // Send Http request
-    this.http
-      .post<{name: string}>(
-        'https://ng-complete-guide-73476.firebaseio.com/posts.json',
-        postData
-      )
-      .subscribe(responseData => {
-        console.log(responseData);
-      });
+    this.postsService.createAndStorePost(postData.title, postData.content);
   }
 
   onFetchPosts() {
     // Send Http request
 
-    this.fetchPosts();
+    this.postsService.fetchPosts();
   }
 
   onClearPosts() {
     // Send Http request
-  }
-
-  private fetchPosts() {
-    this.postIsLoading = true;
-    this.http
-      .get<{[key: string]: Post}>('https://ng-complete-guide-73476.firebaseio.com/posts.json')
-      .pipe(map(responsiveData => {
-        const postsArray: Post[] = [];
-        for (const key in responsiveData) {
-          if (responsiveData.hasOwnProperty(key))
-          postsArray.push({...responsiveData[key], id: key});
-        }
-        return postsArray;
-      }))
-      .subscribe( posts => {
-        this.postIsLoading = false;
-        this.loadedPosts = posts
-      })
   }
 }
