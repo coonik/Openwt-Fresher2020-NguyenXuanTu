@@ -1,6 +1,6 @@
 import { Recipe } from './../recipe.model';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipeService } from '../recipes.service';
 
@@ -14,7 +14,7 @@ export class RecipeEditComponent implements OnInit {
   editMode: boolean;
   recipeForm: FormGroup;
 
-  constructor(private route: ActivatedRoute, private recipeService: RecipeService) { }
+  constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params
@@ -67,7 +67,14 @@ export class RecipeEditComponent implements OnInit {
 
   onSubmit(recipeForm: FormGroup) {
     let data = recipeForm.value;
-    this.recipeService.addRecipe(new Recipe(data.name, data.description, data.imagePath, data.ingredients));
+    let recipeTemp: Recipe = new Recipe(data.name, data.description, data.imagePath, data.ingredients);
+    if (this.editMode) {
+      this.recipeService.updataRecipe(this.id, recipeTemp);
+    } else {
+      this.recipeService.addRecipe(recipeTemp);
+    }
+    this.editMode = false;
+    this.router.navigate(["../"], {relativeTo: this.route});
   }
 
   get ingredientArray(): FormArray { // a getter!

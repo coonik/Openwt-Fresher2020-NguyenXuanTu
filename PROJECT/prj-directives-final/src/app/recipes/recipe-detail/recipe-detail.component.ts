@@ -22,7 +22,7 @@ export class RecipeDetailComponent implements OnInit {
       .subscribe(
         (params: Params) => {
           this.recipe = this.recipeService.getRecipe(+params['id']);
-
+          this.recipeService.currentRecipeIndex = +params['id'];
           console.log(+params['id']);
 
         }
@@ -35,5 +35,9 @@ export class RecipeDetailComponent implements OnInit {
 
   onEditRecipe() {
     this.router.navigate(['edit'], {relativeTo: this.route})
+  }
+
+  onDeleteRecipe() {
+    this.recipeService.deleteRecipe();
   }
 }
