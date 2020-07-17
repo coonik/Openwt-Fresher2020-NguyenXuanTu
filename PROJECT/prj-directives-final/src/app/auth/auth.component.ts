@@ -37,6 +37,8 @@ export class AuthComponent {
         this.isLoading = false;
       },
       tusn => {
+        console.log(tusn);
+
         this.error = tusn;
         this.isLoading = false;
       }
