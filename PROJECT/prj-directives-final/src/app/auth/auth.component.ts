@@ -28,10 +28,9 @@ export class AuthComponent {
           console.log(req);
           this.isLoading = false;
         },
-        error => {
+        tusn => {
+          this.error = tusn;
           this.isLoading = false;
-          console.log(error);
-          this.error = error.message;
         }
       );
     }
