@@ -28,12 +28,8 @@ export class AuthService {
         returnSecureToke: true
       }
     )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
-        })
-      )
+    .pipe(catchError(this.handleError))
+
   }
 
   login(email: string, password: string) {
@@ -44,7 +40,12 @@ export class AuthService {
         returnSecureToke: true
       }
     )
-      .pipe(catchError(this.handleError))
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
+        })
+      )
   }
 
   private handleError(errorRes: HttpErrorResponse) {
