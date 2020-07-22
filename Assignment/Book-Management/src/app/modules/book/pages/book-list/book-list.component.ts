@@ -1,6 +1,7 @@
 import { BookService } from './../../../../core/services/book.service';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, Input} from '@angular/core';
 import { Observable } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 export interface PeriodicElement {
 
   id: number,
@@ -29,23 +30,31 @@ export class BookListComponent implements OnInit {
   // dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   dataSource = [];
   bookObs: Observable<any>;
-
+  totalPages: number;
+  totalItems: number;
   constructor(private bookService: BookService) {};
-
 
   displayedColumns: string[] = ['position', 'name', 'author', 'categories', 'cover', 'price', 'publisher', 'year'];
 
 
   ngOnInit() {
     // this.dataSource.paginator = this.paginator;
-    this.bookObs = this.bookService.getAllBook();
-    console.log(this.bookObs);
+    this.bookObs = this.bookService.getAllBook(1,5);
     this.bookObs.subscribe(
       val => {
-        console.log(val.totalPages);
-
         this.dataSource = val;
-        console.log(val);
+        this.totalPages = this.bookService.totalPages;
+        this.totalItems = this.bookService.totalItems;
+      }
+    )
+  }
+
+  pageChange(event: PageEvent) {
+
+    this.bookObs = this.bookService.getAllBook(event.pageIndex+1, event.pageSize);
+    this.bookObs.subscribe(
+      val => {
+        this.dataSource = val;
       }
     )
   }
