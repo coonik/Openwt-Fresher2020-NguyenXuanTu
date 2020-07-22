@@ -38,10 +38,12 @@ export class BookListComponent implements OnInit {
 
   ngOnInit() {
     // this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource);
     this.bookObs = this.bookService.getAllBook();
+    console.log(this.bookObs);
     this.bookObs.subscribe(
       val => {
+        console.log(val.totalPages);
+
         this.dataSource = val;
         console.log(val);
       }
