@@ -1,4 +1,5 @@
 import { BookListComponent } from './modules/book/pages/book-list/book-list.component';
+import { BookEditComponent } from './modules/book/components/book-edit/book-edit.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FooterComponent } from './shared/components/footer/footer.component';
@@ -17,6 +18,10 @@ import { MatTableModule, MatHeaderRowDef } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DataSource } from '@angular/cdk/table';
 import { HttpClientModule } from '@angular/common/http';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,7 +32,8 @@ import { HttpClientModule } from '@angular/common/http';
     AuthorManagementComponent,
     HeaderComponent,
     FooterComponent,
-    BookListComponent
+    BookListComponent,
+    BookEditComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +43,12 @@ import { HttpClientModule } from '@angular/common/http';
     MatPaginatorModule,
     MatToolbarModule,
     MatIconModule,
-    HttpClientModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -20,6 +20,7 @@ export class BookService {
   getObs: Observable<any>;
   totalPages: number;
   totalItems: number;
+  searchResult: [];
 
   getAllBook(pageIndex: number, pageSize: number) {
 
@@ -33,17 +34,24 @@ export class BookService {
         let objTemp = JSON.parse(resp.headers.get('pagination'));
         this.totalPages = objTemp.totalPages;
         this.totalItems = objTemp.totalItems;
-        console.log(this.totalItems);
-
-
       })).subscribe()
 
     return this.http.get<any>('https://nga-book-api.herokuapp.com/api/books?pageNumber='+pageIndex+'&pageSize='+pageSize, {
       headers: new HttpHeaders({
         Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
       })
-    })
+    }).pipe( tap(
+      res => {
+        this.searchResult = res;
+      }
+    ))
   }
 
-
+  searchBook(bookName: string) {
+    return this.http.get<any>('https://nga-book-api.herokuapp.com/api/books?bookName='+bookName, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
+      })
+  })
+  }
 }

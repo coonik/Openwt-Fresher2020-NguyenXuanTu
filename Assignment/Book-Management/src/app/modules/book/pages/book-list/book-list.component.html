@@ -1,5 +1,19 @@
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+  <div class="example-button-row">
+    <button mat-button [routerLink]="['../book-create']" color="accent">Book Creation</button>
+  </div>
+  <mat-form-field class="example-full-width">
+    <mat-label>Name Search</mat-label>
+    <input matInput (keyup)="onChangeSearchValue()" [formControl]="searchFormControl"
+           placeholder=" City of Bones ">
+  </mat-form-field>
+  <!-- <mat-form-field class="example-full-width">
+    <mat-label>Email</mat-label>
+    <input matInput [formControl]="emailFormControl"
+           placeholder="Ex. pat@example.com">
+  </mat-form-field> -->
+
+  <table mat-table [dataSource]="dataSource" [routerLink]="['../book-edit']" >
 
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef> No. </th>

@@ -2,6 +2,7 @@ import { BookService } from './../../../../core/services/book.service';
 import {Component, OnInit, ViewChild, Input} from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
+import { FormControl, Validators } from '@angular/forms';
 export interface PeriodicElement {
 
   id: number,
@@ -30,8 +31,10 @@ export class BookListComponent implements OnInit {
   // dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   dataSource = [];
   bookObs: Observable<any>;
+  searchObs: Observable<any>;
   totalPages: number;
   totalItems: number;
+  searchFormControl = new FormControl('',[Validators.required]);
   constructor(private bookService: BookService) {};
 
   displayedColumns: string[] = ['position', 'name', 'author', 'categories', 'cover', 'price', 'publisher', 'year'];
@@ -39,6 +42,8 @@ export class BookListComponent implements OnInit {
 
   ngOnInit() {
     // this.dataSource.paginator = this.paginator;
+
+
     this.bookObs = this.bookService.getAllBook(1,5);
     this.bookObs.subscribe(
       val => {
@@ -47,6 +52,7 @@ export class BookListComponent implements OnInit {
         this.totalItems = this.bookService.totalItems;
       }
     )
+
   }
 
   pageChange(event: PageEvent) {
@@ -57,5 +63,13 @@ export class BookListComponent implements OnInit {
         this.dataSource = val;
       }
     )
+  }
+
+  onChangeSearchValue() {
+    this.bookService.searchBook(this.searchFormControl.value).subscribe(value => {
+      console.log(value);
+
+      this.dataSource = value;
+    });
   }
 }
