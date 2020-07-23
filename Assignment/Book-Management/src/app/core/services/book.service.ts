@@ -4,16 +4,6 @@ import { Injectable, ElementRef } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { tap } from'rxjs/operators';
 
-// export interface BookResponseData {
-//   idToken:	string,
-//   email: string,
-//   refreshToken: string,
-//   expiresIn: string,
-//   localId: string,
-//   register?: boolean
-// }
-
-
 @Injectable({ providedIn: 'root'})
 export class BookService {
   constructor(private http: HttpClient, private route: Router) {}
