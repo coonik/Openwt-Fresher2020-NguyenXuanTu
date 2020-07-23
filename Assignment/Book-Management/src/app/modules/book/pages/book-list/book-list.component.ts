@@ -30,8 +30,7 @@ export class BookListComponent implements OnInit {
   // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   // dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   dataSource = [];
-  bookObs: Observable<any>;
-  searchObs: Observable<any>;
+  bookObs$: Observable<any>;
   totalPages: number;
   totalItems: number;
   searchFormControl = new FormControl('',[Validators.required]);
@@ -44,8 +43,8 @@ export class BookListComponent implements OnInit {
     // this.dataSource.paginator = this.paginator;
 
 
-    this.bookObs = this.bookService.getAllBook(1,5);
-    this.bookObs.subscribe(
+    this.bookObs$ = this.bookService.getAllBook(1,5);
+    this.bookObs$.subscribe(
       val => {
         this.dataSource = val;
         this.totalPages = this.bookService.totalPages;
@@ -57,8 +56,8 @@ export class BookListComponent implements OnInit {
 
   pageChange(event: PageEvent) {
 
-    this.bookObs = this.bookService.getAllBook(event.pageIndex+1, event.pageSize);
-    this.bookObs.subscribe(
+    this.bookObs$ = this.bookService.getAllBook(event.pageIndex+1, event.pageSize);
+    this.bookObs$.subscribe(
       val => {
         this.dataSource = val;
       }
