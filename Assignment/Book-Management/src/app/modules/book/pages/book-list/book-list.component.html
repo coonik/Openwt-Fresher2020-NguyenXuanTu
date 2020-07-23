@@ -13,7 +13,7 @@
            placeholder="Ex. pat@example.com">
   </mat-form-field> -->
 
-  <table mat-table [dataSource]="dataSource" [routerLink]="['../book-edit']" >
+  <table mat-table [dataSource]="dataSource ? dataSource : bookObs$ | async" *ngIf="bookObs$ | async" [routerLink]="['../book-edit']" >
 
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef> No. </th>

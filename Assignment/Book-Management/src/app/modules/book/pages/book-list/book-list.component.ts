@@ -3,33 +3,32 @@ import {Component, OnInit, ViewChild, Input} from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl, Validators } from '@angular/forms';
-export interface PeriodicElement {
+export interface BookInterface {
 
-  id: number,
-  title: string,
-  author_id: number,
-  category_id: number,
-  publish_year: number
-  price: number
-  description: string,
-  cover: string,
-  createdAt: Date
-  updatedAt: Date
+  author: {id: number, name: string, website: string, birthday: Date, cover: string}
+  categories: {
+    id: number, name: string, description: string
+  }[]
+  cover: string
+  description: string
+  id: number
+  name: string
+  price: Float32Array
+  publisher: string
+  year: number
 
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [];
 
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.css']
 })
+
+
 export class BookListComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  // dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  dataSource = [];
+  dataSource: Promise<[]> | null=null;
   bookObs$: Observable<any>;
   totalPages: number;
   totalItems: number;
@@ -40,13 +39,9 @@ export class BookListComponent implements OnInit {
 
 
   ngOnInit() {
-    // this.dataSource.paginator = this.paginator;
-
-
     this.bookObs$ = this.bookService.getAllBook(1,5);
     this.bookObs$.subscribe(
       val => {
-        this.dataSource = val;
         this.totalPages = this.bookService.totalPages;
         this.totalItems = this.bookService.totalItems;
       }
@@ -55,19 +50,11 @@ export class BookListComponent implements OnInit {
   }
 
   pageChange(event: PageEvent) {
-
     this.bookObs$ = this.bookService.getAllBook(event.pageIndex+1, event.pageSize);
-    this.bookObs$.subscribe(
-      val => {
-        this.dataSource = val;
-      }
-    )
   }
 
   onChangeSearchValue() {
     this.bookService.searchBook(this.searchFormControl.value).subscribe(value => {
-      console.log(value);
-
       this.dataSource = value;
     });
   }
