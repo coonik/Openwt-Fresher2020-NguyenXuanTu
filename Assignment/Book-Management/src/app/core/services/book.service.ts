@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http
 import { Injectable, ElementRef } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { tap } from'rxjs/operators';
+import { environment } from './../../../environments/environment';
 
 @Injectable({ providedIn: 'root'})
 export class BookService {
@@ -14,7 +15,7 @@ export class BookService {
 
   getAllBook(pageIndex: number, pageSize: number) {
 
-    this.http.get<any>('https://nga-book-api.herokuapp.com/api/books?pageNumber='+pageIndex+'&pageSize='+pageSize, {
+    this.http.get<any>(environment.apiLink+'/books?pageNumber='+pageIndex+'&pageSize='+pageSize, {
       headers: new HttpHeaders({
         Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
       }),
@@ -26,7 +27,7 @@ export class BookService {
         this.totalItems = objTemp.totalItems;
       })).subscribe()
 
-    return this.http.get<any>('https://nga-book-api.herokuapp.com/api/books?pageNumber='+pageIndex+'&pageSize='+pageSize, {
+    return this.http.get<any>(environment.apiLink+`/books?pageNumber=${pageIndex}&pageSize=${pageSize}`, {
       headers: new HttpHeaders({
         Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
       })
@@ -38,7 +39,7 @@ export class BookService {
   }
 
   searchBook(bookName: string) {
-    return this.http.get<any>('https://nga-book-api.herokuapp.com/api/books?bookName='+bookName, {
+    return this.http.get<any>(environment.apiLink+`/books?bookName=${bookName}`, {
       headers: new HttpHeaders({
         Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
       })
