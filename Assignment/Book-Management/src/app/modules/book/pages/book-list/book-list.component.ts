@@ -3,6 +3,9 @@ import {Component, OnInit, ViewChild, Input} from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl, Validators } from '@angular/forms';
+import { AuthorService } from '../../../../core/services/author.service';
+import { CategoryService } from '../../../../core/services/category.service';
+import { MatSelectChange } from '@angular/material/select';
 export interface BookInterface {
 
   author: {id: number, name: string, website: string, birthday: Date, cover: string}
@@ -30,16 +33,25 @@ export class BookListComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource: Promise<[]> | null=null;
   bookObs$: Observable<any>;
+  authorObs$: Observable<any>;
+  categoryObs$: Observable<any>;
   totalPages: number;
   totalItems: number;
+
+  authorId: string = '';
+  categoriesId: string[] = [];
   searchFormControl = new FormControl('',[Validators.required]);
-  constructor(private bookService: BookService) {};
+  constructor(private bookService: BookService, private authorService: AuthorService, private categoryService: CategoryService) {};
 
   displayedColumns: string[] = ['position', 'name', 'author', 'categories', 'cover', 'price', 'publisher', 'year'];
 
+  selectFormControl = new FormControl('');
 
   ngOnInit() {
     this.bookObs$ = this.bookService.getAllBook(1,5);
+    this.authorObs$ = this.authorService.getAllAuthor();
+    this.categoryObs$ = this.categoryService.getAllCategories();
+
     this.bookObs$.subscribe(
       val => {
         this.totalPages = this.bookService.totalPages;
@@ -54,7 +66,19 @@ export class BookListComponent implements OnInit {
   }
 
   onChangeSearchValue() {
-    this.bookService.searchBook(this.searchFormControl.value).subscribe(value => {
+    this.bookService.searchBookByName(this.searchFormControl.value).subscribe(value => {
+      this.dataSource = value;
+    });
+  }
+
+  onSelected(event: MatSelectChange) {
+    if (typeof(event.value)==='string') {
+      this.authorId = event.value;
+    } else {
+      this.categoriesId = event.value;
+    }
+
+    this.bookService.searchBookByAuthorAndCategories(this.authorId, this.categoriesId).subscribe(value => {
       this.dataSource = value;
     });
   }

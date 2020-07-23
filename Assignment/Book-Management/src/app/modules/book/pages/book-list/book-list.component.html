@@ -7,11 +7,22 @@
     <input matInput (keyup)="onChangeSearchValue()" [formControl]="searchFormControl"
            placeholder=" City of Bones ">
   </mat-form-field>
-  <!-- <mat-form-field class="example-full-width">
-    <mat-label>Email</mat-label>
-    <input matInput [formControl]="emailFormControl"
-           placeholder="Ex. pat@example.com">
-  </mat-form-field> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>Select Author</mat-label>
+    <mat-select disableRipple (selectionChange)="onSelected($event)">
+      <mat-option *ngFor="let item of authorObs$ | async" value="{{item.id}}"> {{ item.name }} </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Select Categories</mat-label>
+    <mat-select multiple (selectionChange)="onSelected($event)">
+      <mat-option *ngFor="let item of categoryObs$ | async" value="{{item.id}}">{{ item.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
 
   <table mat-table [dataSource]="dataSource ? dataSource : bookObs$ | async" *ngIf="bookObs$ | async" [routerLink]="['../book-edit']" >
 
