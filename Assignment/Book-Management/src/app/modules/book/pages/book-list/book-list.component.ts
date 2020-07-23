@@ -38,6 +38,7 @@ export class BookListComponent implements OnInit {
   totalPages: number;
   totalItems: number;
 
+  bookName: string = '';
   authorId: string = '';
   categoriesId: string[] = [];
   searchFormControl = new FormControl('',[Validators.required]);
@@ -66,7 +67,8 @@ export class BookListComponent implements OnInit {
   }
 
   onChangeSearchValue() {
-    this.bookService.searchBookByName(this.searchFormControl.value).subscribe(value => {
+    this.bookName = this.searchFormControl.value;
+    this.bookService.searchBookByNameAndAuthorAndCategories(this.bookName ,this.authorId, this.categoriesId).subscribe(value => {
       this.dataSource = value;
     });
   }
@@ -78,7 +80,7 @@ export class BookListComponent implements OnInit {
       this.categoriesId = event.value;
     }
 
-    this.bookService.searchBookByAuthorAndCategories(this.authorId, this.categoriesId).subscribe(value => {
+    this.bookService.searchBookByNameAndAuthorAndCategories(this.bookName ,this.authorId, this.categoriesId).subscribe(value => {
       this.dataSource = value;
     });
   }

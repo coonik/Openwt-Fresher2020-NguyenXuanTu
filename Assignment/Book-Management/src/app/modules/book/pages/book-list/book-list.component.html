@@ -11,11 +11,10 @@
   <mat-form-field appearance="fill">
     <mat-label>Select Author</mat-label>
     <mat-select disableRipple (selectionChange)="onSelected($event)">
+      <mat-option [value]="">No Select</mat-option>
       <mat-option *ngFor="let item of authorObs$ | async" value="{{item.id}}"> {{ item.name }} </mat-option>
     </mat-select>
   </mat-form-field>
-
-  <br>
 
   <mat-form-field appearance="fill">
     <mat-label>Select Categories</mat-label>
