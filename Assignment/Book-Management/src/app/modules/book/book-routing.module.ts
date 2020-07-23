@@ -9,6 +9,7 @@ const routes: Routes = [
     component: BookListComponent
   },
   {path: "create", component: BookEditComponent},
+  {path: "edit", component: BookEditComponent},
   {path: "list", component: BookListComponent},
 ];
 

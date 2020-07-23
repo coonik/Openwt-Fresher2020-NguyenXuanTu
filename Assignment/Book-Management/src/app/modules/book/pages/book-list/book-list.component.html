@@ -23,7 +23,7 @@
     </mat-select>
   </mat-form-field>
 
-  <table mat-table [dataSource]="dataSource ? dataSource : bookObs$ | async" *ngIf="bookObs$ | async" [routerLink]="['../book-edit']" >
+  <table mat-table [dataSource]="dataSource ? dataSource : bookObs$ | async" *ngIf="bookObs$ | async" [routerLink]="['./edit']" >
 
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef> No. </th>
