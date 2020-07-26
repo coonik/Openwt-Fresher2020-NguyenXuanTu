@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from 'src/app/core/services/book.service';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-detail',
@@ -13,11 +13,19 @@ export class BookDetailComponent implements OnInit {
   onEditMode: boolean = false;
   bookId: number;
 
-  constructor(private bookService: BookService, private activatedRoute: ActivatedRoute) {}
+  constructor(private bookService: BookService, private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     this.bookId = Number.parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
     this.bookObs$ = this.bookService.getBook(1); 
+    this.bookService.getBook(1).subscribe(
+      val => {
+      },
+      err => {
+        this.router.navigate(['../404']);       
+      }
+    );
+    
   }
 
   onClickEdit() {
