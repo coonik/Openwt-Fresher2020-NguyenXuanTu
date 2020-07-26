@@ -1,3 +1,11 @@
+img {
+  max-width: 200px;
+}
+
+textarea {
+  height: 84px;
+}
+
 .example-form {
     min-width: 150px;
     width: 100%;
@@ -13,8 +21,4 @@ width: 100%;
 
 .detail {
   display: flex;
-}
-
-img {
-  max-width: 200px;
 }

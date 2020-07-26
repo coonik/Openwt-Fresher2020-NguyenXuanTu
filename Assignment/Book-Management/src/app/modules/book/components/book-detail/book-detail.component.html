@@ -5,26 +5,31 @@
         <img mat-card-image src="" alt="Photo of a Shiba Inu">
       </picture>
     </div>
-    <div class="detail">
+    <div class="detail" *ngIf="bookObs$ | async">
       <div>
         <mat-form-field class="example-full-width">
             <mat-label>Title</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi">
+            <input matInput placeholder="Ex. Pizza" [disabled]="!onEditMode" value="tu">
           </mat-form-field>
       
           <mat-form-field class="example-full-width">
             <mat-label>Author</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi">
+            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
           </mat-form-field>
           
           <mat-form-field class="example-full-width">
-            <mat-label>Pulic Year</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi">
+            <mat-label>Publisher</mat-label>
+            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
           </mat-form-field>
           
           <mat-form-field class="example-full-width">
-            <mat-label>Category</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi">
+            <mat-label>Year</mat-label>
+            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
+          </mat-form-field>
+          
+          <mat-form-field class="example-full-width">
+            <mat-label>Categories</mat-label>
+            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
           </mat-form-field>
           
     </div>
@@ -32,23 +37,26 @@
     <div>
         <mat-form-field class="example-full-width">
             <mat-label>Price</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi">
+            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
           </mat-form-field>
           
           <mat-form-field class="example-full-width">
             <mat-label>Creat At</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi">
+            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
           </mat-form-field>
           
           <mat-form-field class="example-full-width">
             <mat-label>Update At</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi">
+            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
           </mat-form-field>
         
           <mat-form-field class="example-full-width">
             <mat-label>Description</mat-label>
-            <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+            <textarea matInput placeholder="Ex. It makes me feel..." [disabled]="!onEditMode"></textarea>
           </mat-form-field>
     </div>
     </div>
+    <button mat-flat-button color="primary" (click)="onClickEdit()">{{ onEditMode ? "Cancel" : "Edit" }}</button>
+    <button mat-button color="accent" *ngIf="onEditMode">Save</button>    
+    <button mat-raised-button color="warn">Delete</button>
   </form>

@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: "create", component: BookEditComponent},
   {path: "edit", component: BookEditComponent},
   {path: "list", component: BookListComponent},
-  {path: "detail", component: BookDetailComponent},
+  {path: ":id/detail", component: BookDetailComponent},
 ];
 
 @NgModule({

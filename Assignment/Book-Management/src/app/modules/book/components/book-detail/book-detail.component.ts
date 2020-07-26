@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BookService } from 'src/app/core/services/book.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-book-detail',
@@ -6,10 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./book-detail.component.css']
 })
 export class BookDetailComponent implements OnInit {
+  bookObs$: Observable<any>;
+  onEditMode: boolean = false;
 
-  constructor() { }
+  constructor(private bookService: BookService) { }
 
   ngOnInit(): void {
+    this.bookObs$ = this.bookService.getBook(1);
+        
+  }
+
+  onClickEdit() {
+    this.onEditMode = !this.onEditMode;
   }
 
 }
