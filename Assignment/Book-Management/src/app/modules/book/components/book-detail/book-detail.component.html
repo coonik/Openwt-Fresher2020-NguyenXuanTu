@@ -1,15 +1,16 @@
-<form class="example-form">
+<div [book]="bookObs$ | async">
+  <form class="example-form">
     <div class="cover">
       <picture>
         <source media='(min-width:0px)' srcset="https://material.angular.io/assets/img/examples/shiba2.jpg">
         <img mat-card-image src="" alt="Photo of a Shiba Inu">
       </picture>
     </div>
-    <div class="detail" *ngIf="bookObs$ | async">
+    <div class="detail">
       <div>
         <mat-form-field class="example-full-width">
             <mat-label>Title</mat-label>
-            <input matInput placeholder="Ex. Pizza" [disabled]="!onEditMode" value="tu">
+            <input matInput placeholder="Ex. Pizza" value="{{ book }}" [disabled]="!onEditMode">
           </mat-form-field>
       
           <mat-form-field class="example-full-width">
@@ -60,3 +61,4 @@
     <button mat-button color="accent" *ngIf="onEditMode">Save</button>    
     <button mat-raised-button color="warn">Delete</button>
   </form>
+</div>

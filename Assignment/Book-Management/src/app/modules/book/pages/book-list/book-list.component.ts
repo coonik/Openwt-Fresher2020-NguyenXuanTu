@@ -1,5 +1,5 @@
 import { BookService } from './../../../../core/services/book.service';
-import {Component, OnInit, ViewChild, Input} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl, Validators } from '@angular/forms';
@@ -52,7 +52,7 @@ export class BookListComponent implements OnInit {
     this.bookObs$ = this.bookService.getAllBook(1,5);
     this.authorObs$ = this.authorService.getAllAuthor();
     this.categoryObs$ = this.categoryService.getAllCategories();
-
+    
     this.bookObs$.subscribe(
       val => {
         this.totalPages = this.bookService.totalPages;

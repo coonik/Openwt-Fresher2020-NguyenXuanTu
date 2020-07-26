@@ -13,9 +13,8 @@ export class BookDetailComponent implements OnInit {
 
   constructor(private bookService: BookService) { }
 
-  ngOnInit(): void {
-    this.bookObs$ = this.bookService.getBook(1);
-        
+  ngOnInit() {
+    this.bookObs$ = this.bookService.getBook(1); 
   }
 
   onClickEdit() {
