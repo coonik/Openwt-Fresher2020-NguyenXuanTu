@@ -17,7 +17,7 @@ export class BookService {
 
     this.http.get<any>(environment.apiLink+'/books?pageNumber='+pageIndex+'&pageSize='+pageSize, {
       headers: new HttpHeaders({
-        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
+        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1NzY5MTE5LCJleHAiOjE1OTYyMDExMTksImlhdCI6MTU5NTc2OTExOX0.aWBcr50nY3kw02Z47hlIYUGE9B0gMt9O37EP1GqwsuuCx5WDbP0585zEnyzI6iAGdmHlPvU-6OrwglGZugYBKQ'
       }),
       observe: 'response'
     }).pipe(
@@ -29,7 +29,7 @@ export class BookService {
 
     return this.http.get<any>(environment.apiLink+`/books?pageNumber=${pageIndex}&pageSize=${pageSize}`, {
       headers: new HttpHeaders({
-        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
+        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1NzY5MTE5LCJleHAiOjE1OTYyMDExMTksImlhdCI6MTU5NTc2OTExOX0.aWBcr50nY3kw02Z47hlIYUGE9B0gMt9O37EP1GqwsuuCx5WDbP0585zEnyzI6iAGdmHlPvU-6OrwglGZugYBKQ'
       })
     })
   }
@@ -37,7 +37,15 @@ export class BookService {
   getBook(id: number) {
     return this.http.get<any>(environment.apiLink+`/books/${id}`, {
       headers: new HttpHeaders({
-        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
+        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1NzY5MTE5LCJleHAiOjE1OTYyMDExMTksImlhdCI6MTU5NTc2OTExOX0.aWBcr50nY3kw02Z47hlIYUGE9B0gMt9O37EP1GqwsuuCx5WDbP0585zEnyzI6iAGdmHlPvU-6OrwglGZugYBKQ'
+      })
+    })
+  }
+
+  deleteBook(id: number) {
+    return this.http.delete(environment.apiLink+`/books/${id}`, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1NzY5MTE5LCJleHAiOjE1OTYyMDExMTksImlhdCI6MTU5NTc2OTExOX0.aWBcr50nY3kw02Z47hlIYUGE9B0gMt9O37EP1GqwsuuCx5WDbP0585zEnyzI6iAGdmHlPvU-6OrwglGZugYBKQ'
       })
     })
   }
@@ -52,7 +60,7 @@ export class BookService {
     }
     return this.http.get<any>(environment.apiLink+`/books?bookName=${bookName}&authorId=${authorId}&categoryIds=${category}&pageSize=${pageSize}&pageNumber=${pageNumber}`, {
       headers: new HttpHeaders({
-        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
+        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1NzY5MTE5LCJleHAiOjE1OTYyMDExMTksImlhdCI6MTU5NTc2OTExOX0.aWBcr50nY3kw02Z47hlIYUGE9B0gMt9O37EP1GqwsuuCx5WDbP0585zEnyzI6iAGdmHlPvU-6OrwglGZugYBKQ'
       })
   })
   }

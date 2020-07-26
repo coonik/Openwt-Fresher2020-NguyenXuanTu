@@ -1,4 +1,4 @@
-<div [book]="bookObs$ | async">
+<ng-container [book]="bookObs$ | async">
   <form class="example-form">
     <div class="cover">
       <picture>
@@ -10,7 +10,7 @@
       <div>
         <mat-form-field class="example-full-width">
             <mat-label>Title</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="{{ book }}" [disabled]="!onEditMode">
+            <input matInput placeholder="Ex. Pizza" value="{{ book + 'tu' }}" [disabled]="!onEditMode">
           </mat-form-field>
       
           <mat-form-field class="example-full-width">
@@ -58,7 +58,7 @@
     </div>
     </div>
     <button mat-flat-button color="primary" (click)="onClickEdit()">{{ onEditMode ? "Cancel" : "Edit" }}</button>
-    <button mat-button color="accent" *ngIf="onEditMode">Save</button>    
-    <button mat-raised-button color="warn">Delete</button>
+    <button mat-button color="accent" *ngIf="onEditMode" (click)="onClickSave()">Save</button>    
+    <button mat-raised-button color="warn" (click)="onClickDelete()">Delete</button>
   </form>
-</div>
+</ng-container>
