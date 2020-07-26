@@ -37,7 +37,9 @@ export class BookDetailComponent implements OnInit {
   }
 
   onClickDelete() {
-    this.bookService.deleteBook(this.bookId);
+    let kt = confirm("Delete this book ?");
+      if (kt)
+        this.bookService.deleteBook(this.bookId);
   }
 
 }
