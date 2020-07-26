@@ -24,6 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { BookDetailComponent } from './modules/book/components/book-detail/book-detail.component';
 
 @NgModule({
   declarations: [
@@ -36,8 +37,8 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
     FooterComponent,
     BookListComponent,
     BookEditComponent,
-    NotFoundComponent
-
+    NotFoundComponent,
+    BookDetailComponent,
   ],
   imports: [
     BrowserModule,

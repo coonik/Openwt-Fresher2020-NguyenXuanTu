@@ -1,0 +1,20 @@
+.example-form {
+    min-width: 150px;
+    width: 100%;
+  }
+  
+.example-full-width {
+width: 100%;
+}
+
+.cover {
+  text-align: center;
+}
+
+.detail {
+  display: flex;
+}
+
+img {
+  max-width: 200px;
+}
