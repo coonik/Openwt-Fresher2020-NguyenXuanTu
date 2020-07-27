@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthorService } from '../../../../core/services/author.service';
 import { CategoryService } from '../../../../core/services/category.service';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-book-detail',
@@ -34,7 +35,8 @@ export class BookDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private authorService: AuthorService,
-    private categoryService: CategoryService) {}
+    private categoryService: CategoryService,
+    public dialog: MatDialog) {}
 
   ngOnInit() {
     this.bookId = Number.parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
@@ -94,11 +96,30 @@ export class BookDetailComponent implements OnInit {
   }
 
   onClickDelete() {
-    let kt = confirm("Delete this book ?");
-      if (kt) {
-        this.bookService.deleteBook(this.bookId).subscribe();
-        this.router.navigate(['./book']);
-      }
+
+    const dialogRef = this.dialog.open(DeleteDialog);
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.bookService.deleteBook(this.bookId).subscribe();
+          this.router.navigate(['./book']);
+        }
+      })
   }
 
 }
+
+@Component({
+  selector: './delete-dialog',
+  template: `<h2 mat-dialog-title>Delete this book ?</h2>
+  <mat-dialog-content class="mat-typography">
+    <h3>Are you sure ?</h3>
+    <p>This step cannot be undone</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
+  </mat-dialog-actions>
+  `,
+})
+export class DeleteDialog {}
