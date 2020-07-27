@@ -13,7 +13,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   templateUrl: './book-detail.component.html',
   styleUrls: ['./book-detail.component.css']
 })
-export class BookDetailComponent implements OnInit, bookDb {
+export class BookDetailComponent implements OnInit {
   bookObs$: Observable<any>;
   authorObs$: Observable<any>;
   categoryObs$: Observable<any>;
@@ -97,11 +97,11 @@ export class BookDetailComponent implements OnInit, bookDb {
   }
 
   onClickSave() {
-    let data = this.bookDetailForm.value;
-    let bookDb: bookDb = {
-      bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
-    }
-    this.bookService.updateBook(this.bookId,bookDb).subscribe();
+    // let data = this.bookDetailForm.value;
+    // let bookDb: bookDb = {
+    //   bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
+    // }
+    // this.bookService.updateBook(this.bookId,bookDb).subscribe();
   }
 
   onClickDelete() {
