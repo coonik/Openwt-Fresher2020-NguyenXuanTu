@@ -15,4 +15,12 @@ export class CategoryService {
       }),
     });
   }
+
+  getCategoryById(id: number) {
+    return this.http.get<any>(environment.apiLink+`/categories/${id}`, {
+      headers: new HttpHeaders({
+        Authorization: this.token
+      }),
+    });
+  }
 }

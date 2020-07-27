@@ -15,4 +15,12 @@ export class AuthorService {
       }),
     });
   }
+
+  getAuthorById(id: number) {
+    return this.http.get<any>(environment.apiLink+`/authors/${id}`, {
+      headers: new HttpHeaders({
+        Authorization: this.token
+      }),
+    });
+  }
 }

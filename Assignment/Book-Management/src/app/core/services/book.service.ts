@@ -4,14 +4,16 @@ import { Injectable, ElementRef } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { tap } from'rxjs/operators';
 import { environment } from './../../../environments/environment';
+import { CategoryService } from './category.service';
+import { AuthorService } from './author.service';
 
 export interface bookDb {
-  bookName: string, price: Float32Array, year: number, authorId: number, publisher: string, cover: string, categoriesId: number[]
+  bookName: string, price: Float32Array, year: number, authorId: number, publisher: string, cover: string, categoriesId: number[], description: string
 }
 
 @Injectable({ providedIn: 'root'})
 export class BookService {
-  constructor(private http: HttpClient, private route: Router) {}
+  constructor(private http: HttpClient, private route: Router, private authorService: AuthorService, private categoryService: CategoryService) {}
   getObs: Observable<any>;
   totalPages: number;
   totalItems: number;
@@ -49,39 +51,49 @@ export class BookService {
   }
 
   updateBook(id: number, book: bookDb ) {
-    return this.http.put(environment.apiLink+`/books/${id}`, book , {
-      headers: new HttpHeaders({
-          Authorization: this.token
-      })
-    })
 
-  //   {
-  //     "name": ,
-  //     "description": "C1",
-  //     "price": 10.2,
-  //     "year": 1827,
-  //     "author": {
-  //         "id": 4,
-  //         "name": "B",
-  //         "website": "B",
-  //         "birthday": "1969-01-23T00:00:00",
-  //         "cover": null
-  //     },
-  //     "publisher": "a",
-  //     "cover": null,
-  //     "categories": [
-  //         {
-  //             "id": 6,
-  //             "name": "Thriller",
-  //             "description": "Thriller"
-  //         },
-  //         {
-  //             "id": 1,
-  //             "name": "Cartoon",
-  //             "description": "Cartoon"
-  //         }
-  //     ]
-  // }
+    // let data = {
+    //   "name": book.bookName,
+    //   "description": book.description,
+    //   "price": book.price,
+    //   "year": book.year,
+    //   "author": {
+    //       "id": book.authorId,
+    //       "name": author.name,
+    //       "website": author.website,
+    //       "birthday": author.birthday,
+    //       "cover": null
+    //   },
+    //   "publisher": "a",
+    //   "cover": null,
+    //   "categories": categories
+    // }
+
+    // let author;
+    // this.authorService.getAuthorById(book.authorId).subscribe(val => {
+    //   data.author.id = val.id;
+    //   data.author.id = val.id;
+    //   data.author.id = val.id;
+    // });
+    // let categories = [];
+    // book.categoriesId.forEach(id => {
+    //   this.categoryService.getCategoryById(id).subscribe(val => {
+    //     categories.push({
+    //       "id": val.id,
+    //       "name": val.name,
+    //       "description": val.description
+    //     })
+    //   });
+    // })
+
+    // data ? console.log(data) : null;
+
+
+    // return this.http.put(environment.apiLink+`/books/${id}`, data , {
+    //   headers: new HttpHeaders({
+    //       Authorization: this.token
+    //   })
+    // })
   }
 
   deleteBook(id: number) {
