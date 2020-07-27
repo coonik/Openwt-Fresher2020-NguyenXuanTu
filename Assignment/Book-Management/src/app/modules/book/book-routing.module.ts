@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     component: BookListComponent
   },
-  {path: "create", component: BookEditComponent},
+  {path: "create", component: BookDetailComponent},
   {path: "edit", component: BookEditComponent},
   {path: "list", component: BookListComponent},
   {path: ":id/detail", component: BookDetailComponent},

@@ -49,7 +49,7 @@ export class BookService {
   }
 
   updateBook(id: number, book: bookDb ) {
-    return this.http.put(environment.apiLink+`/books/${id}`, {
+    return this.http.put(environment.apiLink+`/books/${id}`, book , {
       headers: new HttpHeaders({
           Authorization: this.token
       })
