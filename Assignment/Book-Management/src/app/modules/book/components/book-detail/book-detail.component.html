@@ -1,64 +1,63 @@
-<ng-container [book]="bookObs$ | async">
-  <form class="example-form">
-    <div class="cover">
-      <picture>
-        <source media='(min-width:0px)' srcset="https://material.angular.io/assets/img/examples/shiba2.jpg">
-        <img mat-card-image src="" alt="Photo of a Shiba Inu">
-      </picture>
-    </div>
-    <div class="detail">
-      <div>
-        <mat-form-field class="example-full-width">
-            <mat-label>Title</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="{{ book + 'tu' }}" [disabled]="!onEditMode">
-          </mat-form-field>
-      
-          <mat-form-field class="example-full-width">
-            <mat-label>Author</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
-          </mat-form-field>
-          
-          <mat-form-field class="example-full-width">
-            <mat-label>Publisher</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
-          </mat-form-field>
-          
-          <mat-form-field class="example-full-width">
-            <mat-label>Year</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
-          </mat-form-field>
-          
-          <mat-form-field class="example-full-width">
-            <mat-label>Categories</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
-          </mat-form-field>
-          
-    </div>
-    
+
+<form class="example-form" [formGroup]="bookDetailForm">
+  <div class="cover">
+    <picture>
+      <source media='(min-width:0px)' srcset="https://material.angular.io/assets/img/examples/shiba2.jpg">
+      <img mat-card-image src="" alt="Photo of a Shiba Inu">
+    </picture>
+  </div>
+  <div class="detail">
     <div>
+      <mat-form-field class="example-full-width">
+          <mat-label>Title</mat-label>
+          <input matInput placeholder="Ex. Pizza" formControlName="name">
+        </mat-form-field>
+
         <mat-form-field class="example-full-width">
-            <mat-label>Price</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
-          </mat-form-field>
-          
-          <mat-form-field class="example-full-width">
-            <mat-label>Creat At</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
-          </mat-form-field>
-          
-          <mat-form-field class="example-full-width">
-            <mat-label>Update At</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi" [disabled]="!onEditMode">
-          </mat-form-field>
-        
-          <mat-form-field class="example-full-width">
-            <mat-label>Description</mat-label>
-            <textarea matInput placeholder="Ex. It makes me feel..." [disabled]="!onEditMode"></textarea>
-          </mat-form-field>
-    </div>
-    </div>
-    <button mat-flat-button color="primary" (click)="onClickEdit()">{{ onEditMode ? "Cancel" : "Edit" }}</button>
-    <button mat-button color="accent" *ngIf="onEditMode" (click)="onClickSave()">Save</button>    
-    <button mat-raised-button color="warn" (click)="onClickDelete()">Delete</button>
-  </form>
-</ng-container>
+          <mat-label>Author</mat-label>
+          <input matInput placeholder="Ex. Pizza" formControlName="author">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Publisher</mat-label>
+          <input matInput placeholder="Ex. Pizza" formControlName="publisher">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Year</mat-label>
+          <input matInput placeholder="Ex. Pizza" formControlName="year">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Categories</mat-label>
+          <input matInput placeholder="Ex. Pizza" formControlName="categories">
+        </mat-form-field>
+
+  </div>
+
+  <div>
+      <mat-form-field class="example-full-width">
+          <mat-label>Price</mat-label>
+          <input matInput placeholder="Ex. Pizza" formControlName="price">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Creat At</mat-label>
+          <input matInput placeholder="Ex. Pizza" formControlName="createAt">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Update At</mat-label>
+          <input matInput placeholder="Ex. Pizza" formControlName="updateAt">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder="Ex. It makes me feel..." formControlName="description"></textarea>
+        </mat-form-field>
+  </div>
+  </div>
+  <button mat-flat-button color="primary" (click)="onClickEdit()">{{ onEditMode ? "Cancel" : "Edit" }}</button>
+  <button mat-button color="accent" *ngIf="onEditMode" (click)="onClickSave()">Save</button>
+  <button mat-raised-button color="warn" (click)="onClickDelete()">Delete</button>
+</form>

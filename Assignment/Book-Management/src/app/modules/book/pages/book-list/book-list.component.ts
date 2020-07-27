@@ -27,8 +27,6 @@ export interface BookInterface {
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.css']
 })
-
-
 export class BookListComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource: Promise<[]> | null=null;
@@ -52,7 +50,7 @@ export class BookListComponent implements OnInit {
     this.bookObs$ = this.bookService.getAllBook(1,5);
     this.authorObs$ = this.authorService.getAllAuthor();
     this.categoryObs$ = this.categoryService.getAllCategories();
-    
+
     this.bookObs$.subscribe(
       val => {
         this.totalPages = this.bookService.totalPages;
