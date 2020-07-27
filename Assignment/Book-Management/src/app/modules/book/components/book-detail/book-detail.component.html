@@ -13,9 +13,11 @@
           <input matInput placeholder="Ex. Pizza" formControlName="name">
         </mat-form-field>
 
-        <mat-form-field class="example-full-width">
+        <mat-form-field appearance="fill">
           <mat-label>Author</mat-label>
-          <input matInput placeholder="Ex. Pizza" formControlName="author">
+          <mat-select disableRipple [disabled]="!onEditMode" formControlName="author">
+            <mat-option *ngFor="let item of authorObs$ | async" [value]="item.id"> {{ item.name }} </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
@@ -28,9 +30,11 @@
           <input matInput placeholder="Ex. Pizza" formControlName="year">
         </mat-form-field>
 
-        <mat-form-field class="example-full-width">
+        <mat-form-field appearance="fill">
           <mat-label>Categories</mat-label>
-          <input matInput placeholder="Ex. Pizza" formControlName="categories">
+          <mat-select multiple [disabled]="!onEditMode" formControlName="categories">
+            <mat-option *ngFor="let item of categoryObs$ | async" [value]="item.id">{{ item.name }}</mat-option>
+          </mat-select>
         </mat-form-field>
 
   </div>

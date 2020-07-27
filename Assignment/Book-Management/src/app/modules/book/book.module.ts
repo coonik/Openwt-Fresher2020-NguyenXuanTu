@@ -19,7 +19,7 @@ import { BookDetailComponent } from './components/book-detail/book-detail.compon
 @NgModule({
   imports: [
     CommonModule,
-    BookRoutingModule
+    BookRoutingModule,
   ],
   declarations: [
     // BookListComponent,

@@ -3,6 +3,8 @@ import { BookService } from '../../../../core/services/book.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
+import { AuthorService } from '../../../../core/services/author.service';
+import { CategoryService } from '../../../../core/services/category.service';
 
 @Component({
   selector: 'app-book-detail',
@@ -11,6 +13,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class BookDetailComponent implements OnInit {
   bookObs$: Observable<any>;
+  authorObs$: Observable<any>;
+  categoryObs$: Observable<any>;
   onEditMode: boolean = false;
   bookId: number;
   bookData: any;
@@ -26,26 +30,32 @@ export class BookDetailComponent implements OnInit {
     description: new FormControl(),
   });
 
-  constructor(private bookService: BookService, private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(private bookService: BookService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private authorService: AuthorService,
+    private categoryService: CategoryService) {}
 
   ngOnInit() {
-    // khai bao form group
     this.bookId = Number.parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-    this.bookObs$ = this.bookService.getBook(1);
-    this.bookService.getBook(1).subscribe(
+    this.bookObs$ = this.bookService.getBook(this.bookId);
+    this.authorObs$ = this.authorService.getAllAuthor();
+    this.categoryObs$ = this.categoryService.getAllCategories();
+    this.bookService.getBook(this.bookId).subscribe(
       val => {
           this.bookData = val;
-          let categoryTemp = '';
+          let categoryId = [];
           val.categories.forEach(category => {
-            categoryTemp += categoryTemp === '' ? category.name : ', ' + category.name;
+            categoryId.push(Number.parseInt(category.id));
           });
+
 
           this.bookDetailForm = new FormGroup({
           name: new FormControl({value: val.name, disabled: !this.onEditMode}),
-          author: new FormControl({value: val.author.name, disabled: !this.onEditMode}),
+          author: new FormControl({value: val.author.id, disabled: !this.onEditMode}),
           publisher: new FormControl({value: val.publisher, disabled: !this.onEditMode}),
           year: new FormControl({value: val.year, disabled: !this.onEditMode}),
-          categories: new FormControl({value: categoryTemp, disabled: !this.onEditMode}),
+          categories: new FormControl({value: categoryId, disabled: !this.onEditMode}),
           price: new FormControl({value: val.price, disabled: !this.onEditMode}),
           createAt: new FormControl({value: val.createAt ? val.createAt : "None", disabled: !this.onEditMode}),
           updateAt: new FormControl({value: val.updateAt ? val.updateAt : "None", disabled: !this.onEditMode}),
@@ -61,16 +71,16 @@ export class BookDetailComponent implements OnInit {
 
   onClickEdit() {
     this.onEditMode = !this.onEditMode;
-    let categoryTemp = '';
-    this.bookData.categories.forEach(category => {
-      categoryTemp += categoryTemp === '' ? category.name : ', ' + category.name;
+    let categoryId = [];
+    this.bookData.categories?.forEach(category => {
+      categoryId.push(category.id);
     });
     this.bookDetailForm = new FormGroup({
       name: new FormControl({value: this.bookData.name, disabled: !this.onEditMode}),
-      author: new FormControl({value: this.bookData.author.name, disabled: !this.onEditMode}),
+      author: new FormControl({value: this.bookData.author.id, disabled: !this.onEditMode}),
       publisher: new FormControl({value: this.bookData.publisher, disabled: !this.onEditMode}),
       year: new FormControl({value: this.bookData.year, disabled: !this.onEditMode}),
-      categories: new FormControl({value: categoryTemp, disabled: !this.onEditMode}),
+      categories: new FormControl({value: categoryId, disabled: !this.onEditMode}),
       price: new FormControl({value: this.bookData.price, disabled: !this.onEditMode}),
       createAt: new FormControl({value: this.bookData.createAt ? this.bookData.createAt : "None", disabled: !this.onEditMode}),
       updateAt: new FormControl({value: this.bookData.updateAt ? this.bookData.updateAt : "None", disabled: !this.onEditMode}),
@@ -79,6 +89,7 @@ export class BookDetailComponent implements OnInit {
   }
 
   onClickSave() {
+    console.log(this.bookDetailForm);
 
   }
 
