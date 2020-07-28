@@ -13,9 +13,9 @@
           <input matInput placeholder="Ex. Pizza" formControlName="name">
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="filter">
           <mat-label>Author</mat-label>
-          <mat-select disableRipple [disabled]="!(onEditMode || onCreateMode)" formControlName="author">
+          <mat-select disableRipple [disabled]="!(onEditMode || onCreateMode)" formControlName="author" (selectionChange)="onSelected($event)">
             <mat-option *ngFor="let item of authorObs$ | async" [value]="item.id"> {{ item.name }} </mat-option>
           </mat-select>
         </mat-form-field>
@@ -30,35 +30,25 @@
           <input matInput placeholder="Ex. Pizza" formControlName="year">
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Categories</mat-label>
-          <mat-select multiple [disabled]="!(onEditMode || onCreateMode)" formControlName="categories">
-            <mat-option *ngFor="let item of categoryObs$ | async" [value]="item.id">{{ item.name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
   </div>
 
   <div>
       <mat-form-field class="example-full-width">
-          <mat-label>Price</mat-label>
-          <input matInput placeholder="Ex. Pizza" formControlName="price">
-        </mat-form-field>
+        <mat-label>Price</mat-label>
+        <input matInput placeholder="Ex. Pizza" formControlName="price">
+      </mat-form-field>
 
-        <mat-form-field class="example-full-width">
-          <mat-label>Creat At</mat-label>
-          <input matInput placeholder="Ex. Pizza" formControlName="createAt">
-        </mat-form-field>
+      <mat-form-field appearance="fill" class="filter">
+        <mat-label>Categories</mat-label>
+        <mat-select multiple [disabled]="!(onEditMode || onCreateMode)" formControlName="categories" (selectionChange)="onSelected($event)">
+          <mat-option *ngFor="let item of categoryObs$ | async" [value]="item.id">{{ item.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        <mat-form-field class="example-full-width">
-          <mat-label>Update At</mat-label>
-          <input matInput placeholder="Ex. Pizza" formControlName="updateAt">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-          <mat-label>Description</mat-label>
-          <textarea matInput placeholder="Ex. It makes me feel..." formControlName="description"></textarea>
-        </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput placeholder="Ex. It makes me feel..." formControlName="description"></textarea>
+      </mat-form-field>
   </div>
   </div>
   <button mat-flat-button color="primary" *ngIf="!onCreateMode" (click)="onClickEdit()">{{ onEditMode ? "Cancel" : "Edit" }}</button>

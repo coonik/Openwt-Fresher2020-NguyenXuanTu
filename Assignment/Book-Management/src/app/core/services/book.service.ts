@@ -18,6 +18,8 @@ export class BookService {
   totalPages: number;
   totalItems: number;
   searchResult: [];
+  author: object = {};
+  categories: object[] = [];
 
   token = "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1ODEyMjY2LCJleHAiOjE1OTYyNDQyNjYsImlhdCI6MTU5NTgxMjI2Nn0.7CiOI-95Vxr6PsrK3-Qo0CaZONrHefist8u8Jf4Wk-rdl68wpabj-qJN7OgdLXRbdIGlU8D3Rg8Cx4hYZuXDGw"
 
@@ -50,50 +52,49 @@ export class BookService {
     })
   }
 
-  updateBook(id: number, book: bookDb ) {
-    let authorJSON = null
+  getAuthor(id: number) {
+      this.author = {};
+      this.authorService.getAuthorById(id).subscribe(val => {
+        this.author = {
+          "id": val.id,
+          "name": val.name,
+          "website": val.website,
+          "birthday": `${val.birthday}`,
+          "cover": null
+        }
+      });
+  }
 
-    let categoriesJSON = [];
+  getCategories(ids: number[]) {
+    this.categories = [];
+    for (const id of ids) {
+        this.categoryService.getCategoryById(id).subscribe(val => {
+          this.categories.push({
+            "id": val.id,
+            "name": val.name,
+            "description": val.description
+          })
+        });
+      }
+  }
+
+  updateBook(id: number, book: bookDb ) {
 
     let data = {
       "name": book.bookName,
       "description": book.description === "None" ? null : book.description,
-      "price": book.price,
-      "year": book.year,
-      "author": null,
+      "price": +book.price,
+      "year": +book.year,
+      "author": this.author,
       "publisher": book.publisher,
       "cover": null,
-      "categories": null
+      "categories": this.categories
     }
-
-    for (const id of book.categoriesId) {
-      this.categoryService.getCategoryById(id).subscribe(val => {
-        categoriesJSON.push({
-          "id": val.id,
-          "name": val.name,
-          "description": val.description
-        })
-      }, err => {}, () => {
-        data.categories = JSON.stringify(categoriesJSON);
-      });
-    }
-
-    this.authorService.getAuthorById(book.authorId).subscribe(val => {
-      authorJSON = {
-        "id": val.id,
-        "name": val.name,
-        "website": val.website,
-        "birthday": `${val.birthday}`,
-        "cover": null
-      }
-    }, err => {}, () => {
-      data.author = JSON.stringify(authorJSON);
-    });
-    console.log(JSON.stringify(data));
 
     return this.http.put(environment.apiLink+`/books/${id}`, JSON.stringify(data) , {
       headers: new HttpHeaders({
-          Authorization: this.token
+          Authorization: this.token,
+          'Content-Type': 'application/json'
       })
     })
   }

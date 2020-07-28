@@ -21,6 +21,7 @@ export class BookDetailComponent implements OnInit {
   onCreateMode: boolean = false;
   bookId: number;
   bookData: any;
+  // canSave: boolean = false;
   bookDetailForm: FormGroup = new FormGroup({
     name: new FormControl(),
     author: new FormControl(),
@@ -51,6 +52,14 @@ export class BookDetailComponent implements OnInit {
     this.bookService.getBook(this.bookId).subscribe(
       val => {
           this.bookData = val;
+          let categoriesId: number[] = [];
+          this.bookData.categories.forEach(val => {
+            categoriesId.push(val.id)
+          })
+
+          this.bookService.getAuthor(this.bookData.author.id);
+          this.bookService.getCategories(categoriesId)
+
           let categoryId = [];
           val.categories.forEach(category => {
             categoryId.push(Number.parseInt(category.id));
@@ -101,7 +110,7 @@ export class BookDetailComponent implements OnInit {
     let bookDb: bookDb = {
       bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
     }
-    this.bookService.updateBook(this.bookId, bookDb);
+    this.bookService.updateBook(this.bookId, bookDb ).subscribe();
   }
 
   onClickDelete() {
@@ -117,6 +126,15 @@ export class BookDetailComponent implements OnInit {
           this.router.navigate(['./book']);
         }
       })
+  }
+
+  onSelected(event: object) {
+    let temp = event.value;
+    if (Number.isInteger(temp)) {
+      this.bookService.getAuthor(temp);
+    } else {
+      this.bookService.getCategories(temp);
+    }
   }
 
 }

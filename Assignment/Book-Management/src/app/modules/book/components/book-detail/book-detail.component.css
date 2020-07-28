@@ -10,7 +10,7 @@ textarea {
     min-width: 150px;
     width: 100%;
   }
-  
+
 .example-full-width {
 width: 100%;
 }
@@ -21,4 +21,8 @@ width: 100%;
 
 .detail {
   display: flex;
+}
+
+.filter{
+  width: 500px !important;
 }
