@@ -54,5 +54,5 @@
   <button mat-flat-button color="primary" *ngIf="!onCreateMode" (click)="onClickEdit()">{{ onEditMode ? "Cancel" : "Edit" }}</button>
   <button mat-button color="accent" *ngIf="onEditMode" (click)="onClickSave()">Save</button>
   <button mat-raised-button color="warn" *ngIf="!onCreateMode" (click)="onClickDelete()">Delete</button>
-  <button mat-raised-button color="warn" *ngIf="onCreateMode">Create</button>
+  <button mat-raised-button color="warn" *ngIf="onCreateMode" (click)="onClickCreate()">Create</button>
 </form>

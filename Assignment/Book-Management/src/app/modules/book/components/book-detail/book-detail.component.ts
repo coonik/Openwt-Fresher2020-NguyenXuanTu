@@ -44,46 +44,62 @@ export class BookDetailComponent implements OnInit {
 
   ngOnInit() {
     this.bookId = Number.parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-    if (!this.bookId)
-      this.onCreateMode = true;
-    this.bookObs$ = this.bookService.getBook(this.bookId);
     this.authorObs$ = this.authorService.getAllAuthor();
     this.categoryObs$ = this.categoryService.getAllCategories();
-    this.bookService.getBook(this.bookId).subscribe(
-      val => {
-          this.bookData = val;
-          let categoriesId: number[] = [];
-          this.bookData.categories.forEach(val => {
-            categoriesId.push(val.id)
-          })
+    if (!this.bookId)
+      this.onCreateMode = true;
+    else {
+      this.bookObs$ = this.bookService.getBook(this.bookId);
+      this.bookService.getBook(this.bookId).subscribe(
+        val => {
+            this.bookData = val;
+            let categoriesId: number[] = [];
+            this.bookData.categories.forEach(val => {
+              categoriesId.push(val.id)
+            })
 
-          this.bookService.getAuthor(this.bookData.author.id);
-          this.bookService.getCategories(categoriesId)
+            this.bookService.getAuthor(this.bookData.author.id);
+            this.bookService.getCategories(categoriesId)
 
-          let categoryId = [];
-          val.categories.forEach(category => {
-            categoryId.push(Number.parseInt(category.id));
+            let categoryId = [];
+            val.categories.forEach(category => {
+              categoryId.push(Number.parseInt(category.id));
+            });
+
+
+            this.bookDetailForm = new FormGroup({
+            name: new FormControl({value: val.name, disabled: !(this.onEditMode || this.onCreateMode)}),
+            author: new FormControl({value: val.author.id, disabled: !(this.onEditMode || this.onCreateMode)}),
+            publisher: new FormControl({value: val.publisher, disabled: !(this.onEditMode || this.onCreateMode)}),
+            year: new FormControl({value: val.year, disabled: !(this.onEditMode || this.onCreateMode)}),
+            categories: new FormControl({value: categoryId, disabled: !(this.onEditMode || this.onCreateMode)}),
+            price: new FormControl({value: val.price, disabled: !(this.onEditMode || this.onCreateMode)}),
+            createAt: new FormControl({value: val.createAt ? val.createAt : "None", disabled: !(this.onEditMode || this.onCreateMode)}),
+            updateAt: new FormControl({value: val.updateAt ? val.updateAt : "None", disabled: !(this.onEditMode || this.onCreateMode)}),
+            description: new FormControl({value: val.description ? val.description : "None", disabled: !(this.onEditMode || this.onCreateMode)}),
           });
+        },
+        err => {
+          if (!this.onCreateMode)
+            this.router.navigate(['../404']);
+        }
+      );
+    }
 
+  }
 
-          this.bookDetailForm = new FormGroup({
-          name: new FormControl({value: val.name, disabled: !(this.onEditMode || this.onCreateMode)}),
-          author: new FormControl({value: val.author.id, disabled: !(this.onEditMode || this.onCreateMode)}),
-          publisher: new FormControl({value: val.publisher, disabled: !(this.onEditMode || this.onCreateMode)}),
-          year: new FormControl({value: val.year, disabled: !(this.onEditMode || this.onCreateMode)}),
-          categories: new FormControl({value: categoryId, disabled: !(this.onEditMode || this.onCreateMode)}),
-          price: new FormControl({value: val.price, disabled: !(this.onEditMode || this.onCreateMode)}),
-          createAt: new FormControl({value: val.createAt ? val.createAt : "None", disabled: !(this.onEditMode || this.onCreateMode)}),
-          updateAt: new FormControl({value: val.updateAt ? val.updateAt : "None", disabled: !(this.onEditMode || this.onCreateMode)}),
-          description: new FormControl({value: val.description ? val.description : "None", disabled: !(this.onEditMode || this.onCreateMode)}),
-        });
-      },
-      err => {
-        if (!this.onCreateMode)
-          this.router.navigate(['../404']);
-      }
-    );
+  setEditModeForm() {
+    let value = this.bookDetailForm.value;
 
+    this.bookDetailForm = new FormGroup({
+      name: new FormControl({value: value.name, disabled: !this.onEditMode}),
+      author: new FormControl({value: value.author, disabled: !this.onEditMode}),
+      publisher: new FormControl({value: value.publisher, disabled: !this.onEditMode}),
+      year: new FormControl({value: value.year, disabled: !this.onEditMode}),
+      categories: new FormControl({value: value.categoryId, disabled: !this.onEditMode}),
+      price: new FormControl({value: value.price, disabled: !this.onEditMode}),
+      description: new FormControl({value: value.description ? value.description : "None", disabled: !this.onEditMode}),
+    });
   }
 
   onClickEdit() {
@@ -92,16 +108,19 @@ export class BookDetailComponent implements OnInit {
     this.bookData.categories?.forEach(category => {
       categoryId.push(category.id);
     });
-    this.bookDetailForm = new FormGroup({
-      name: new FormControl({value: this.bookData.name, disabled: !this.onEditMode}),
-      author: new FormControl({value: this.bookData.author.id, disabled: !this.onEditMode}),
-      publisher: new FormControl({value: this.bookData.publisher, disabled: !this.onEditMode}),
-      year: new FormControl({value: this.bookData.year, disabled: !this.onEditMode}),
-      categories: new FormControl({value: categoryId, disabled: !this.onEditMode}),
-      price: new FormControl({value: this.bookData.price, disabled: !this.onEditMode}),
-      createAt: new FormControl({value: this.bookData.createAt ? this.bookData.createAt : "None", disabled: !this.onEditMode}),
-      updateAt: new FormControl({value: this.bookData.updateAt ? this.bookData.updateAt : "None", disabled: !this.onEditMode}),
-      description: new FormControl({value: this.bookData.description ? this.bookData.description : "None", disabled: !this.onEditMode}),
+
+    this.setEditModeForm();
+  }
+
+  onClickCreate() {
+    let id: number;
+    let data = this.bookDetailForm.value;
+    let bookDb: bookDb = {
+      bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
+    }
+    this.bookService.createBook( bookDb ).subscribe();
+    this._snackBar.open("This book has been Created!", "Ok", {
+      duration: 5000,
     });
   }
 
@@ -111,17 +130,21 @@ export class BookDetailComponent implements OnInit {
       bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
     }
     this.bookService.updateBook(this.bookId, bookDb ).subscribe();
+    this._snackBar.open("This book has been Edited!", "Ok", {
+      duration: 5000,
+    });
+    this.onEditMode = false;
+    this.setEditModeForm();
   }
 
   onClickDelete() {
-
     const dialogRef = this.dialog.open(DeleteDialog);
     dialogRef.afterClosed()
       .subscribe(result => {
         if (result) {
           this.bookService.deleteBook(this.bookId).subscribe();
-          this._snackBar.open("Deleted", "Ok", {
-            duration: 2000,
+          this._snackBar.open("This book has been Deleted", "Ok", {
+            duration: 5000,
           });
           this.router.navigate(['./book']);
         }

@@ -78,6 +78,25 @@ export class BookService {
       }
   }
 
+  createBook(book: bookDb) {
+    let data = {
+      "name": book.bookName,
+      "description": book.description === "None" ? null : book.description,
+      "price": +book.price,
+      "year": +book.year,
+      "author": this.author,
+      "publisher": book.publisher,
+      "cover": null,
+      "categories": this.categories
+    }
+    return this.http.post(environment.apiLink+`/books/`, JSON.stringify(data) , {
+      headers: new HttpHeaders({
+          Authorization: this.token,
+          'Content-Type': 'application/json'
+      })
+    })
+  }
+
   updateBook(id: number, book: bookDb ) {
 
     let data = {
