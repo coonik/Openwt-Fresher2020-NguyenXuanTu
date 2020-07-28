@@ -43,6 +43,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     BookDetailComponent,
     DeleteDialog
   ],
+  entryComponents: [
+    DeleteDialog
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

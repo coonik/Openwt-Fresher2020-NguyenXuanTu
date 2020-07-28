@@ -97,11 +97,11 @@ export class BookDetailComponent implements OnInit {
   }
 
   onClickSave() {
-    // let data = this.bookDetailForm.value;
-    // let bookDb: bookDb = {
-    //   bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
-    // }
-    // this.bookService.updateBook(this.bookId,bookDb).subscribe();
+    let data = this.bookDetailForm.value;
+    let bookDb: bookDb = {
+      bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
+    }
+    this.bookService.updateBook(this.bookId, bookDb);
   }
 
   onClickDelete() {

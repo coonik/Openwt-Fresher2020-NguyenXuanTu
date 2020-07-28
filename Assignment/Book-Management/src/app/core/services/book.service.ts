@@ -51,49 +51,51 @@ export class BookService {
   }
 
   updateBook(id: number, book: bookDb ) {
+    let authorJSON = null
 
-    // let data = {
-    //   "name": book.bookName,
-    //   "description": book.description,
-    //   "price": book.price,
-    //   "year": book.year,
-    //   "author": {
-    //       "id": book.authorId,
-    //       "name": author.name,
-    //       "website": author.website,
-    //       "birthday": author.birthday,
-    //       "cover": null
-    //   },
-    //   "publisher": "a",
-    //   "cover": null,
-    //   "categories": categories
-    // }
+    let categoriesJSON = [];
 
-    // let author;
-    // this.authorService.getAuthorById(book.authorId).subscribe(val => {
-    //   data.author.id = val.id;
-    //   data.author.id = val.id;
-    //   data.author.id = val.id;
-    // });
-    // let categories = [];
-    // book.categoriesId.forEach(id => {
-    //   this.categoryService.getCategoryById(id).subscribe(val => {
-    //     categories.push({
-    //       "id": val.id,
-    //       "name": val.name,
-    //       "description": val.description
-    //     })
-    //   });
-    // })
+    let data = {
+      "name": book.bookName,
+      "description": book.description === "None" ? null : book.description,
+      "price": book.price,
+      "year": book.year,
+      "author": null,
+      "publisher": book.publisher,
+      "cover": null,
+      "categories": null
+    }
 
-    // data ? console.log(data) : null;
+    for (const id of book.categoriesId) {
+      this.categoryService.getCategoryById(id).subscribe(val => {
+        categoriesJSON.push({
+          "id": val.id,
+          "name": val.name,
+          "description": val.description
+        })
+      }, err => {}, () => {
+        data.categories = JSON.stringify(categoriesJSON);
+      });
+    }
 
+    this.authorService.getAuthorById(book.authorId).subscribe(val => {
+      authorJSON = {
+        "id": val.id,
+        "name": val.name,
+        "website": val.website,
+        "birthday": `${val.birthday}`,
+        "cover": null
+      }
+    }, err => {}, () => {
+      data.author = JSON.stringify(authorJSON);
+    });
+    console.log(JSON.stringify(data));
 
-    // return this.http.put(environment.apiLink+`/books/${id}`, data , {
-    //   headers: new HttpHeaders({
-    //       Authorization: this.token
-    //   })
-    // })
+    return this.http.put(environment.apiLink+`/books/${id}`, JSON.stringify(data) , {
+      headers: new HttpHeaders({
+          Authorization: this.token
+      })
+    })
   }
 
   deleteBook(id: number) {
