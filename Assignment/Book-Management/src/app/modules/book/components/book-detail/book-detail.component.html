@@ -9,33 +9,33 @@
   <div class="detail">
     <div>
       <mat-form-field class="example-full-width">
-          <mat-label>Title</mat-label>
-          <input matInput placeholder="Ex. Pizza" formControlName="name">
+          <mat-label>Title <span class="required">*</span></mat-label>
+          <input matInput placeholder="Nghin le mot dem" formControlName="name">
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="filter">
-          <mat-label>Author</mat-label>
+          <mat-label>Author <span class="required">*</span></mat-label>
           <mat-select disableRipple [disabled]="!(onEditMode || onCreateMode)" formControlName="author" (selectionChange)="onSelected($event)">
             <mat-option *ngFor="let item of authorObs$ | async" [value]="item.id"> {{ item.name }} </mat-option>
           </mat-select>
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
-          <mat-label>Publisher</mat-label>
-          <input matInput placeholder="Ex. Pizza" formControlName="publisher">
+          <mat-label>Publisher <span class="required">*</span></mat-label>
+          <input matInput placeholder="NXB Tien Phong" formControlName="publisher">
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
           <mat-label>Year</mat-label>
-          <input matInput placeholder="Ex. Pizza" formControlName="year">
+          <input matInput placeholder="2020" formControlName="year">
         </mat-form-field>
 
   </div>
 
   <div>
       <mat-form-field class="example-full-width">
-        <mat-label>Price</mat-label>
-        <input matInput placeholder="Ex. Pizza" formControlName="price">
+        <mat-label>Price<span class="required">*</span></mat-label>
+        <input type="number" matInput placeholder="19.98" formControlName="price">
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="filter">
@@ -47,12 +47,12 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Description</mat-label>
-        <textarea matInput placeholder="Ex. It makes me feel..." formControlName="description"></textarea>
+        <textarea matInput placeholder="It makes me feel..." formControlName="description"></textarea>
       </mat-form-field>
   </div>
   </div>
   <button mat-flat-button color="primary" *ngIf="!onCreateMode" (click)="onClickEdit()">{{ onEditMode ? "Cancel" : "Edit" }}</button>
-  <button mat-button color="accent" *ngIf="onEditMode" (click)="onClickSave()">Save</button>
+  <button mat-button color="accent" *ngIf="onEditMode" [disabled]="!bookDetailForm.valid" (click)="onClickSave()">Save</button>
   <button mat-raised-button color="warn" *ngIf="!onCreateMode" (click)="onClickDelete()">Delete</button>
   <button mat-raised-button color="warn" *ngIf="onCreateMode" (click)="onClickCreate()">Create</button>
 </form>

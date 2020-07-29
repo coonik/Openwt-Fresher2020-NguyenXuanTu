@@ -26,3 +26,7 @@ width: 100%;
 .filter{
   width: 500px !important;
 }
+
+.required {
+  color: red;
+}
