@@ -7,6 +7,7 @@ import { AuthorService } from '../../../../core/services/author.service';
 import { CategoryService } from '../../../../core/services/category.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { invalid } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-book-detail',
@@ -26,11 +27,9 @@ export class BookDetailComponent implements OnInit {
     name: new FormControl(),
     author: new FormControl(),
     publisher: new FormControl(),
-    year: new FormControl(),
+    year: new FormControl("", {updateOn: 'blur'}),
     categories: new FormControl(),
-    price: new FormControl(),
-    createAt: new FormControl(),
-    updateAt: new FormControl(),
+    price: new FormControl("", {updateOn: 'blur'}),
     description: new FormControl(),
   });
 
@@ -47,33 +46,18 @@ export class BookDetailComponent implements OnInit {
     this.authorObs$ = this.authorService.getAllAuthor();
     this.categoryObs$ = this.categoryService.getAllCategories();
 
-    if (!this.bookId)
+    this.checkValidForm();
+    if (!this.bookId) {
       this.onCreateMode = true;
-    else {
+      this.setEditModeForm();
+    } else {
       this.bookObs$ = this.bookService.getBook(this.bookId);
-      this.bookService.getBook(this.bookId).subscribe(
+      this.bookObs$.subscribe(
         val => {
-            this.bookData = val;
+          this.bookData = val;
+          this.setFormValue(val);
+          this.bookDetailForm.disable();
 
-            let categoriesId: number[] = [];
-            this.bookData.categories.forEach(val => {
-              categoriesId.push(val.id)
-            })
-
-            this.bookService.getAuthor(this.bookData.author.id);
-            this.bookService.getCategories(categoriesId)
-
-            this.bookDetailForm = new FormGroup({
-              name: new FormControl({value: val.name, disabled: !(this.onEditMode || this.onCreateMode)}),
-              author: new FormControl({value: val.author.id, disabled: !(this.onEditMode || this.onCreateMode)}),
-              publisher: new FormControl({value: val.publisher, disabled: !(this.onEditMode || this.onCreateMode)}),
-              year: new FormControl({value: val.year, disabled: !(this.onEditMode || this.onCreateMode)}),
-              categories: new FormControl({value: categoriesId, disabled: !(this.onEditMode || this.onCreateMode)}),
-              price: new FormControl({value: val.price, disabled: !(this.onEditMode || this.onCreateMode)}),
-              createAt: new FormControl({value: val.createAt ? val.createAt : "None", disabled: !(this.onEditMode || this.onCreateMode)}),
-              updateAt: new FormControl({value: val.updateAt ? val.updateAt : "None", disabled: !(this.onEditMode || this.onCreateMode)}),
-              description: new FormControl({value: val.description ? val.description : "None", disabled: !(this.onEditMode || this.onCreateMode)}),
-            });
         },
         err => {
           if (!this.onCreateMode)
@@ -82,20 +66,73 @@ export class BookDetailComponent implements OnInit {
       );
     }
 
+    this.bookDetailForm.get("name").setValidators([Validators.required]);
+    this.bookDetailForm.get("author").setValidators([Validators.required]);
+    this.bookDetailForm.get("publisher").setValidators([Validators.required]);
+    this.bookDetailForm.get("price").setValidators([Validators.min(0), Validators.required]);
+    this.bookDetailForm.get("year").setValidators([Validators.min(1000), Validators.max(new Date().getFullYear())]);
+  }
+
+  setFormValue(val: any) {
+    let categoriesId: number[] = [];
+    val.categories.forEach(val => {
+      categoriesId.push(val.id)
+    })
+
+    this.bookService.getAuthor(val.author.id);
+    this.bookService.getCategories(categoriesId);
+
+    console.log(val);
+
+
+    this.bookDetailForm.setValue({
+      name: val.name,
+      author: val.author.id,
+      publisher: val.publisher,
+      year: val.year,
+      categories: categoriesId,
+      price: val.price,
+      description: val.description ? val.description : "None",
+    });
   }
 
   setEditModeForm() {
-    let value = this.bookDetailForm.value;
     this.onEditMode = !this.onEditMode;
 
-    this.bookDetailForm = new FormGroup({
-      name: new FormControl({value: value.name, disabled: !this.onEditMode}, [Validators.required]),
-      author: new FormControl({value: value.author, disabled: !this.onEditMode}, [Validators.required]),
-      publisher: new FormControl({value: value.publisher, disabled: !this.onEditMode}, [Validators.required]),
-      year: new FormControl({value: value.year, disabled: !this.onEditMode}, [Validators.min(1500), Validators.max(new Date().getFullYear())]),
-      categories: new FormControl({value: value.categories, disabled: !this.onEditMode}),
-      price: new FormControl({value: value.price, disabled: !this.onEditMode}, [Validators.min(0), Validators.required]),
-      description: new FormControl({value: value.description ? value.description : "None", disabled: !this.onEditMode}),
+    if (!(this.onEditMode || this.onCreateMode)) {
+      this.bookDetailForm.disable();
+      this.setFormValue(this.bookData);
+    } else {
+      this.bookDetailForm.enable();
+    }
+
+    this._snackBar.dismiss();
+  }
+
+  checkValidForm() {
+    this.bookDetailForm.get('price').statusChanges.subscribe(val => {
+      if (val === 'INVALID')
+        this._snackBar.open("PRICE: Please enter a positive value and it is required!", "Ok", {
+          duration: 5000,
+        });
+    });
+    this.bookDetailForm.get('name').statusChanges.subscribe(val => {
+      if (val === 'INVALID')
+        this._snackBar.open("TITLE is required!", "Ok", {
+          duration: 5000,
+        });
+    });
+    this.bookDetailForm.get('author').statusChanges.subscribe(val => {
+      if (val === 'INVALID')
+        this._snackBar.open("AUTHOR is required!", "Ok", {
+          duration: 5000,
+        });
+    });
+    this.bookDetailForm.get('publisher').statusChanges.subscribe(val => {
+      if (val === 'INVALID')
+        this._snackBar.open("PUBLISHER is required!", "Ok", {
+          duration: 5000,
+        });
     });
   }
 
@@ -104,12 +141,13 @@ export class BookDetailComponent implements OnInit {
   }
 
   onClickCreate() {
-    let id: number;
     let data = this.bookDetailForm.value;
     let bookDb: bookDb = {
       bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
     }
-    this.bookService.createBook( bookDb ).subscribe();
+    this.bookService.createBook( bookDb ).subscribe( res => {
+      this.router.navigate([`./book/${res["id"]}/detail`]);
+    });
     this._snackBar.open("This book has been Created!", "Ok", {
       duration: 5000,
     });
@@ -120,7 +158,9 @@ export class BookDetailComponent implements OnInit {
     let bookDb: bookDb = {
       bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
     }
-    this.bookService.updateBook(this.bookId, bookDb ).subscribe();
+    this.bookService.updateBook(this.bookId, bookDb ).subscribe(val => {
+      this.setFormValue(val);
+    });
     this._snackBar.open("This book has been Edited!", "Ok", {
       duration: 5000,
     });
@@ -147,6 +187,34 @@ export class BookDetailComponent implements OnInit {
       this.bookService.getAuthor(temp);
     } else {
       this.bookService.getCategories(temp);
+    }
+  }
+
+  onFocusYearInput() {
+    this.bookDetailForm.get("year").markAsUntouched();
+  }
+
+  onFocusOutYearInput() {
+    let temp = this.bookDetailForm.controls["year"];
+    if (temp.value === null || (temp.invalid && temp.touched &&temp.dirty)) {
+      temp.setErrors(Validators.required);
+      this._snackBar.open(`YEAR Valid in the range of 1000-${new Date().getFullYear()}!`, "Ok", {
+        duration: 5000,
+      });
+    }
+  }
+
+  onFocusPriceInput() {
+    this.bookDetailForm.get("price").markAsUntouched();
+  }
+
+  onFocusOutPriceInput() {
+    let temp = this.bookDetailForm.controls["price"];
+    if (temp.value === null || (temp.invalid && temp.touched &&temp.dirty)) {
+      temp.setErrors(Validators.required);
+      this._snackBar.open(`PRICE: Please enter a positive value and it is required!`, "Ok", {
+        duration: 5000,
+      });
     }
   }
 
