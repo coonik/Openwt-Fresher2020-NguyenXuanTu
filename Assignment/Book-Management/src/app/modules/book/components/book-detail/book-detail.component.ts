@@ -86,6 +86,7 @@ export class BookDetailComponent implements OnInit {
 
   setEditModeForm() {
     let value = this.bookDetailForm.value;
+    this.onEditMode = !this.onEditMode;
 
     this.bookDetailForm = new FormGroup({
       name: new FormControl({value: value.name, disabled: !this.onEditMode}, [Validators.required]),
@@ -99,8 +100,6 @@ export class BookDetailComponent implements OnInit {
   }
 
   onClickEdit() {
-    this.onEditMode = !this.onEditMode;
-
     this.setEditModeForm();
   }
 
@@ -125,7 +124,6 @@ export class BookDetailComponent implements OnInit {
     this._snackBar.open("This book has been Edited!", "Ok", {
       duration: 5000,
     });
-    this.onEditMode = false;
     this.setEditModeForm();
   }
 
