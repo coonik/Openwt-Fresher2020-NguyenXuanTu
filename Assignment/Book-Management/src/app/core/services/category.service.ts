@@ -51,4 +51,12 @@ export class CategoryService {
       }),
     });
   }
+
+  deleteCategory(id: number) {
+    return this.http.delete(environment.apiLink+`/categories/${id}`, {
+      headers: new HttpHeaders({
+        Authorization: this.token
+      }),
+    });
+  }
 }

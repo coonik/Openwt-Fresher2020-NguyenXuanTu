@@ -3,6 +3,9 @@ import { Observable } from 'rxjs';
 import { CategoryService } from 'src/app/core/services/category.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { MessageDialogService } from 'src/app/shared/services/message-dialog.service';
+import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-dialog/delete-confim-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 export interface DialogData {
   id?: number;
   name: string;
@@ -17,7 +20,10 @@ export interface DialogData {
 export class CategoryManagementComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'description', 'book', 'CRUD'];
   categoriesObs$: Observable<any>;
-  constructor(private categoryService: CategoryService, private dialog: MatDialog) { }
+  constructor(private categoryService: CategoryService,
+    private dialog: MatDialog,
+    private messageDialogService: MessageDialogService,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.categoriesObs$ = this.categoryService.getAllCategories();
@@ -34,6 +40,21 @@ export class CategoryManagementComponent implements OnInit {
       if (kt)
         this.categoriesObs$ = this.categoryService.getAllCategories();
     });
+  }
+
+  onDelete(id: number) {
+    this.messageDialogService.changeMessage("category");
+    const dialogRef = this.dialog.open(DeleteConfirmDialog);
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.categoryService.deleteCategory(id).subscribe();
+          this._snackBar.open("This category has been Deleted", "Ok", {
+            duration: 5000,
+          });
+          this.categoriesObs$ = this.categoryService.getAllCategories();
+        }
+      })
   }
 }
 @Component({

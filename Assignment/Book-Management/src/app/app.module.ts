@@ -24,9 +24,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
-import { BookDetailComponent, DeleteDialog } from './modules/book/components/book-detail/book-detail.component';
+import { BookDetailComponent } from './modules/book/components/book-detail/book-detail.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DeleteConfirmDialog } from './shared/components/delete-confirm-dialog/delete-confim-dialog.component'
 
 @NgModule({
   declarations: [
@@ -41,11 +42,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     BookEditComponent,
     NotFoundComponent,
     BookDetailComponent,
-    DeleteDialog,
+    DeleteConfirmDialog,
     CategoryDialog
   ],
   entryComponents: [
-    DeleteDialog,
+    DeleteConfirmDialog,
     CategoryDialog
   ],
   imports: [
