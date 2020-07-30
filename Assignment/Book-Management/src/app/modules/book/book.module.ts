@@ -14,14 +14,16 @@ import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BookDetailComponent } from './components/book-detail/book-detail.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    BookRoutingModule
+    BookRoutingModule,
   ],
   declarations: [
-    // BookListComponent
+    // BookListComponent,
+    // BookDetailComponent
   ]
 })
 

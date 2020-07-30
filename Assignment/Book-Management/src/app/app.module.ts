@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/user/pages/login/login.component';
 import { ProfileComponent } from './modules/user/pages/profile/profile.component';
-import { CategoryManagementComponent } from './modules/category/pages/category-management/category-management.component';
+import { CategoryManagementComponent, CategoryDialog } from './modules/category/pages/category-management/category-management.component';
 import { AuthorManagementComponent } from './modules/author/pages/author-management/author-management.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule, MatHeaderRowDef } from '@angular/material/table';
@@ -24,6 +24,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { BookDetailComponent, DeleteDialog } from './modules/book/components/book-detail/book-detail.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -36,8 +39,14 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
     FooterComponent,
     BookListComponent,
     BookEditComponent,
-    NotFoundComponent
-
+    NotFoundComponent,
+    BookDetailComponent,
+    DeleteDialog,
+    CategoryDialog
+  ],
+  entryComponents: [
+    DeleteDialog,
+    CategoryDialog
   ],
   imports: [
     BrowserModule,
@@ -51,9 +60,11 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
+    MatDialogModule,
+    MatSnackBarModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

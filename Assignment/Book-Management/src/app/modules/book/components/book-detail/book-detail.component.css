@@ -1,0 +1,32 @@
+img {
+  max-width: 200px;
+}
+
+textarea {
+  height: 83px;
+}
+
+.example-form {
+    min-width: 150px;
+    width: 100%;
+  }
+
+.example-full-width {
+width: 100%;
+}
+
+.cover {
+  text-align: center;
+}
+
+.detail {
+  display: flex;
+}
+
+.filter{
+  width: 500px !important;
+}
+
+.required {
+  color: red;
+}
