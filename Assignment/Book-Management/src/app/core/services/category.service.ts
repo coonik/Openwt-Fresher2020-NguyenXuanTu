@@ -23,4 +23,32 @@ export class CategoryService {
       }),
     });
   }
+
+  createCategory(name: string, description: string) {
+    let data = {
+      "name": name,
+      "description": description
+    }
+    console.log(JSON.stringify(data));
+
+    return this.http.post(environment.apiLink+`/categories/`, JSON.stringify(data), {
+      headers: new HttpHeaders({
+        Authorization: this.token,
+        'Content-Type': 'application/json'
+      }),
+    });
+  }
+
+  updateCategory(id: number, name: string, description: string) {
+    let data = {
+      "name": name,
+      "description": description
+    }
+
+    return this.http.put<any>(environment.apiLink+`/categories/${id}`, JSON.stringify(data), {
+      headers: new HttpHeaders({
+        Authorization: this.token
+      }),
+    });
+  }
 }

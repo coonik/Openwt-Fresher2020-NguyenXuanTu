@@ -1,6 +1,6 @@
 <div class="mat-elevation-z8">
   <div class="example-button-row">
-    <button mat-button [routerLink]="['./create']" color="accent">Category Creation</button>
+    <button mat-button (click)="openDialog(_, '', '')" color="accent">Category Creation</button>
   </div>
 
   <table mat-table [dataSource]="categoriesObs$ | async" *ngIf="categoriesObs$ | async" >
@@ -28,7 +28,7 @@
     <ng-container matColumnDef="CRUD">
       <th mat-header-cell *matHeaderCellDef>  </th>
       <td mat-cell *matCellDef="let element" class="CRUD">
-        <button mat-raised-button (click)="openDialog()">Edit</button>
+        <button mat-raised-button (click)="openDialog(element.id, element.name, element.description)">Edit</button>
         <button mat-raised-button color="warn">Delete</button>
       </td>
     </ng-container>
