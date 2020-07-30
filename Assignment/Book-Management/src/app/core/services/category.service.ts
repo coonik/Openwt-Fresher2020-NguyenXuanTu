@@ -8,7 +8,7 @@ export class CategoryService {
   getAllCategories() {
     return this.http.get<any>(environment.apiLink+`/categories`, {
       headers: new HttpHeaders({
-        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1MzIwODk0LCJleHAiOjE1OTU3NTI4OTQsImlhdCI6MTU5NTMyMDg5NH0.PxPBRbpn75Jd8XVivxStWYiqUK6lT4-YA0o6HjcLfPAM_y0okSZxy3s3GDqlwxY6VuqvnBLtl5o3EXZ1AMUNdQ'
+        Authorization: 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk2MDg1MjU4LCJleHAiOjE1OTY1MTcyNTgsImlhdCI6MTU5NjA4NTI1OH0.rgAb2-_dgby06JMz3hxkUuRr5r_oVMY8fQLQRQrCGul9GgQHVCu6Blq8rm4-q7Q226pQZdBn4vtKW-RDptT3AA'
       }),
     });
   }
