@@ -47,7 +47,8 @@ export class CategoryService {
 
     return this.http.put<any>(environment.apiLink+`/categories/${id}`, JSON.stringify(data), {
       headers: new HttpHeaders({
-        Authorization: this.token
+        Authorization: this.token,
+        'Content-Type': 'application/json'
       }),
     });
   }

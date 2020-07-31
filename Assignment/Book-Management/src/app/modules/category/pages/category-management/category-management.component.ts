@@ -64,7 +64,7 @@ export class CategoryManagementComponent implements OnInit {
                 <p>The Category Name Input!</p>
                 <mat-form-field>
                   <mat-label>Category Name</mat-label>
-                  <input matInput [autofocus] required [(ngModel)]="data.name" formControlName="name">
+                  <input matInput required [(ngModel)]="data.name" formControlName="name" autofocus>
                 </mat-form-field>
 
                 <p>The Category Description Input!</p>
@@ -75,7 +75,7 @@ export class CategoryManagementComponent implements OnInit {
               </div>
               <div mat-dialog-actions>
                 <button mat-button (click)="onNoClick()">Cancel</button>
-                <button mat-button [mat-dialog-close]="data" [disabled]="!categoryForm.valid" cdkFocusInitial>{{ data.id ? "Edit" : "Create" }}</button>
+                <button mat-button [mat-dialog-close]="data" [disabled]="!categoryForm.valid">{{ data.id ? "Edit" : "Create" }}</button>
               </div>
             `
 })
