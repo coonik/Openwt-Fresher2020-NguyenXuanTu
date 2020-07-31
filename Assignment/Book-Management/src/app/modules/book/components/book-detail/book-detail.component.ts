@@ -100,6 +100,8 @@ export class BookDetailComponent implements OnInit {
       this.bookDetailForm.disable();
       this.setFormValue(this.bookData);
     } else {
+      console.log(this.bookDetailForm.get("year").updateOn);
+       ;
       this.bookDetailForm.enable();
     }
 
@@ -196,6 +198,10 @@ export class BookDetailComponent implements OnInit {
     let temp = this.bookDetailForm.controls["year"];
     if (temp.value === null || (temp.invalid && temp.touched &&temp.dirty)) {
       temp.setErrors(Validators.required);
+      setTimeout(() => {
+        temp.setValue(this.bookData.year);
+      }, 2000);
+
       this._snackBar.open(`YEAR Valid in the range of 1000-${new Date().getFullYear()}!`, "Ok", {
         duration: 5000,
       });
@@ -210,6 +216,9 @@ export class BookDetailComponent implements OnInit {
     let temp = this.bookDetailForm.controls["price"];
     if (temp.value === null || (temp.invalid && temp.touched &&temp.dirty)) {
       temp.setErrors(Validators.required);
+      setTimeout(() => {
+        temp.setValue(this.bookData.price);
+      }, 2000);
       this._snackBar.open(`PRICE: Please enter a positive value and it is required!`, "Ok", {
         duration: 5000,
       });
