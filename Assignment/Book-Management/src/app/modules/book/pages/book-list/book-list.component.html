@@ -12,7 +12,7 @@
     No results
   </pre>
 
-  <table mat-table [dataSource]="dataSource ? dataSource : bookObs$ | async" *ngIf="dataSource?.length !== 0" [routerLink]="['./1/detail']" >
+  <table mat-table [dataSource]="dataSource ? dataSource : bookObs$ | async" *ngIf="dataSource?.length !== 0" >
 
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef> No. </th>
@@ -65,7 +65,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns; let element" [routerLink]="['./',element.id,'/detail']"></tr>
   </table>
 
   <mat-paginator [length]="totalItems" [pageSizeOptions]="[5, 10, 20]" (page)="pageChange($event)" *ngIf="dataSource?.length !== 0" showFirstLastButtons></mat-paginator>
