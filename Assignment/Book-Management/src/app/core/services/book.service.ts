@@ -21,13 +21,11 @@ export class BookService {
   author: object = {};
   categories: object[] = [];
 
-  token = "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk1ODEyMjY2LCJleHAiOjE1OTYyNDQyNjYsImlhdCI6MTU5NTgxMjI2Nn0.7CiOI-95Vxr6PsrK3-Qo0CaZONrHefist8u8Jf4Wk-rdl68wpabj-qJN7OgdLXRbdIGlU8D3Rg8Cx4hYZuXDGw"
-
   getAllBook(pageIndex: number, pageSize: number) {
 
     this.http.get<any>(environment.apiLink+'/books?pageNumber='+pageIndex+'&pageSize='+pageSize, {
       headers: new HttpHeaders({
-        Authorization: this.token
+        Authorization: 'Bearer ' + environment.token
       }),
       observe: 'response'
     }).pipe(
@@ -39,7 +37,7 @@ export class BookService {
 
     return this.http.get<any>(environment.apiLink+`/books?pageNumber=${pageIndex}&pageSize=${pageSize}`, {
       headers: new HttpHeaders({
-        Authorization: this.token
+        Authorization: 'Bearer ' + environment.token
       })
     })
   }
@@ -47,7 +45,7 @@ export class BookService {
   getBook(id: number) {
     return this.http.get<any>(environment.apiLink+`/books/${id}`, {
       headers: new HttpHeaders({
-        Authorization: this.token
+        Authorization: 'Bearer ' + environment.token
       })
     })
   }
@@ -91,7 +89,7 @@ export class BookService {
     }
     return this.http.post(environment.apiLink+`/books/`, JSON.stringify(data) , {
       headers: new HttpHeaders({
-          Authorization: this.token,
+          Authorization: 'Bearer ' + environment.token,
           'Content-Type': 'application/json'
       })
     })
@@ -112,7 +110,7 @@ export class BookService {
 
     return this.http.put(environment.apiLink+`/books/${id}`, JSON.stringify(data) , {
       headers: new HttpHeaders({
-          Authorization: this.token,
+          Authorization: 'Bearer ' + environment.token,
           'Content-Type': 'application/json'
       })
     })
@@ -121,7 +119,7 @@ export class BookService {
   deleteBook(id: number) {
     return this.http.delete(environment.apiLink+`/books/${id}`, {
       headers: new HttpHeaders({
-        Authorization: this.token
+        Authorization: 'Bearer ' + environment.token
       })
     })
   }
@@ -136,7 +134,7 @@ export class BookService {
     }
     return this.http.get<any>(environment.apiLink+`/books?bookName=${bookName}&authorId=${authorId}&categoryIds=${category}&pageSize=${pageSize}&pageNumber=${pageNumber}`, {
       headers: new HttpHeaders({
-        Authorization: this.token
+        Authorization: 'Bearer ' + environment.token
       })
   })
   }
