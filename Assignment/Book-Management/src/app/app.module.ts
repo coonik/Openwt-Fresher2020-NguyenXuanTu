@@ -27,6 +27,7 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
 import { BookDetailComponent } from './modules/book/components/book-detail/book-detail.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { DeleteConfirmDialog } from './shared/components/delete-confirm-dialog/delete-confim-dialog.component'
 
 @NgModule({
@@ -63,6 +64,7 @@ import { DeleteConfirmDialog } from './shared/components/delete-confirm-dialog/d
     MatSelectModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

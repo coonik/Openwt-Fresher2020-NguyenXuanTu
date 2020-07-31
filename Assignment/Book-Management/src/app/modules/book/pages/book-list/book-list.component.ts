@@ -28,7 +28,6 @@ export interface BookInterface {
   styleUrls: ['./book-list.component.css']
 })
 export class BookListComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource: Promise<[]> | null=null;
   bookObs$: Observable<any>;
   authorObs$: Observable<any>;
@@ -42,7 +41,7 @@ export class BookListComponent implements OnInit {
   searchFormControl = new FormControl('',[Validators.required]);
   constructor(private bookService: BookService, private authorService: AuthorService, private categoryService: CategoryService) {};
 
-  displayedColumns: string[] = ['position', 'name', 'author', 'categories', 'cover', 'price', 'publisher', 'year'];
+  displayedColumns: string[] = ['position', 'name', 'author', 'categories', 'price', 'publisher', 'year'];
 
   selectFormControl = new FormControl('');
 

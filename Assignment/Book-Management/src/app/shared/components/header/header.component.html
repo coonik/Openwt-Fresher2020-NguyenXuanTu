@@ -1,9 +1,13 @@
 <p>
   <mat-toolbar>
-   <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
+   <button [routerLink]="['./book']" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon>home</mat-icon>
   </button>
-  <span>My App</span>
+  <span [routerLink]="['./book']" class="pointer">Book Management</span>
+  <button [routerLink]="['./book']" class="space" aria-label="Example icon-button with menu icon">Book</button>
+  <button [routerLink]="['./category']" class="space" aria-label="Example icon-button with menu icon">Category</button>
+  <button [routerLink]="['./author']" class="space" aria-label="Example icon-button with menu icon">Author</button>
+  <button [routerLink]="['./user']" class="space" aria-label="Example icon-button with menu icon">User</button>
   <span class="example-spacer"></span>
   <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
