@@ -75,11 +75,16 @@ export class CategoryManagementComponent implements OnInit {
               </div>
               <div mat-dialog-actions>
                 <button mat-button (click)="onNoClick()">Cancel</button>
-                <button mat-button [mat-dialog-close]="data" [disabled]="!categoryForm.valid">{{ data.id ? "Edit" : "Create" }}</button>
+                <button mat-button [mat-dialog-close]="data" [disabled]="!categoryForm.valid || noChange">{{ data.id ? "Edit" : "Create" }}</button>
               </div>
             `
 })
 export class CategoryDialog implements OnInit{
+  dataDefault = {
+    name: "",
+    description: ""
+  };
+  noChange: boolean;
   categoryForm: FormGroup = new FormGroup({name: new FormControl(Validators.required), description: new FormControl()});
 
   constructor(
@@ -87,7 +92,13 @@ export class CategoryDialog implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   ngOnInit() {
-
+    this.dataDefault.name = this.data.name;
+    this.dataDefault.description = this.data.description;
+    this.data.id ? this.categoryForm.valueChanges.subscribe( val => {
+      this.noChange = false;
+      if (val.name === this.dataDefault.name && val.description === this.dataDefault.description)
+        this.noChange = true;
+    }) : null;
   }
 
   onNoClick(): void {
