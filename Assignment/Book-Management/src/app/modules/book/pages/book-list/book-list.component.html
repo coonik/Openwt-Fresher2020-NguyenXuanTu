@@ -8,7 +8,11 @@
            placeholder=" City of Bones ">
   </mat-form-field>
 
-  <table mat-table [dataSource]="dataSource ? dataSource : bookObs$ | async" *ngIf="bookObs$ | async" [routerLink]="['./1/detail']" >
+  <pre *ngIf="dataSource?.length === 0">
+    No results
+  </pre>
+
+  <table mat-table [dataSource]="dataSource ? dataSource : bookObs$ | async" *ngIf="dataSource?.length !== 0" [routerLink]="['./1/detail']" >
 
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef> No. </th>
@@ -64,5 +68,5 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [length]="totalItems" [pageSizeOptions]="[5, 10, 20]" (page)="pageChange($event)" showFirstLastButtons></mat-paginator>
+  <mat-paginator [length]="totalItems" [pageSizeOptions]="[5, 10, 20]" (page)="pageChange($event)" *ngIf="dataSource?.length !== 0" showFirstLastButtons></mat-paginator>
 </div>
