@@ -7,7 +7,6 @@ import { AuthorService } from '../../../../core/services/author.service';
 import { CategoryService } from '../../../../core/services/category.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { invalid } from '@angular/compiler/src/render3/view/util';
 import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-dialog/delete-confim-dialog.component';
 
 @Component({
@@ -23,13 +22,14 @@ export class BookDetailComponent implements OnInit {
   onCreateMode: boolean = false;
   bookId: number;
   bookData: any;
+  noChange: boolean;
   bookDetailForm: FormGroup = new FormGroup({
     name: new FormControl(),
     author: new FormControl(),
     publisher: new FormControl(),
-    year: new FormControl("", {updateOn: 'blur'}),
+    year: new FormControl(),
     categories: new FormControl(),
-    price: new FormControl("", {updateOn: 'blur'}),
+    price: new FormControl(),
     description: new FormControl(),
   });
 
@@ -70,6 +70,18 @@ export class BookDetailComponent implements OnInit {
     this.bookDetailForm.get("publisher").setValidators([Validators.required]);
     this.bookDetailForm.get("price").setValidators([Validators.min(0), Validators.required]);
     this.bookDetailForm.get("year").setValidators([Validators.min(1000), Validators.max(new Date().getFullYear())]);
+    this.bookDetailForm.valueChanges.subscribe( val => {
+      this.noChange = false;
+
+      let categoriesId: number[] = [];
+      this.bookData.categories.forEach(val => {
+        categoriesId.push(val.id)
+      })
+
+      //Chua kiem tra COVER
+      if (val.name === this.bookData.name && this.bookData.price === val.price && this.bookData.year === val.year && this.bookData.author.id === val.author && this.bookData.publisher === val.publisher && JSON.stringify(categoriesId) === JSON.stringify(val.categories) && this.bookData.description === val.description)
+        this.noChange = true;
+    })
   }
 
   setFormValue(val: any) {
@@ -98,8 +110,6 @@ export class BookDetailComponent implements OnInit {
       this.bookDetailForm.disable();
       this.setFormValue(this.bookData);
     } else {
-      console.log(this.bookDetailForm.get("year").updateOn);
-       ;
       this.bookDetailForm.enable();
     }
 
@@ -135,6 +145,8 @@ export class BookDetailComponent implements OnInit {
 
   onClickEdit() {
     this.setEditModeForm();
+    console.log(this.noChange);
+
   }
 
   onClickCreate() {
