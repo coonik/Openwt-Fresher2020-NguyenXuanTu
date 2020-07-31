@@ -67,6 +67,7 @@ export class BookListComponent implements OnInit {
     this.bookName = this.searchFormControl.value;
     this.bookService.searchBookByNameAndAuthorAndCategories(this.bookName ,this.authorId, this.categoriesId).subscribe(value => {
       this.dataSource = value;
+      console.log(this.dataSource);
     });
   }
 

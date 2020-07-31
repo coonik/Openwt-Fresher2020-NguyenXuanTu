@@ -1,9 +1,11 @@
-
-<form class="example-form" [formGroup]="bookDetailForm">
+<div *ngIf="!(bookObs$ | async)" class="loading-spinner">
+  <mat-spinner></mat-spinner>
+</div>
+<form class="example-form" [formGroup]="bookDetailForm" *ngIf="bookObs$ | async">
   <div class="cover">
     <picture>
-      <source media='(min-width:0px)' srcset="https://material.angular.io/assets/img/examples/shiba2.jpg">
-      <img mat-card-image src="" alt="Photo of a Shiba Inu">
+      <source media='(min-width:0px)' srcset="{{bookData?.cover}}">
+      <img mat-card-image src="" alt="Photo of {{bookData?.name}}">
     </picture>
   </div>
   <div class="detail">

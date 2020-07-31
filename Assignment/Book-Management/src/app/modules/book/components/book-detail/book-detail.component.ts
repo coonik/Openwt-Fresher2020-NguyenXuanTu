@@ -24,7 +24,6 @@ export class BookDetailComponent implements OnInit {
   onCreateMode: boolean = false;
   bookId: number;
   bookData: any;
-  // canSave: boolean = false;
   bookDetailForm: FormGroup = new FormGroup({
     name: new FormControl(),
     author: new FormControl(),
@@ -60,7 +59,6 @@ export class BookDetailComponent implements OnInit {
           this.bookData = val;
           this.setFormValue(val);
           this.bookDetailForm.disable();
-
         },
         err => {
           if (!this.onCreateMode)
@@ -84,10 +82,6 @@ export class BookDetailComponent implements OnInit {
 
     this.bookService.getAuthor(val.author.id);
     this.bookService.getCategories(categoriesId);
-
-    console.log(val);
-
-
     this.bookDetailForm.setValue({
       name: val.name,
       author: val.author.id,
