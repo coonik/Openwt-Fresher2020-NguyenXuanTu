@@ -1,3 +1,4 @@
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BookListComponent } from './modules/book/pages/book-list/book-list.component';
 import { BookEditComponent } from './modules/book/components/book-edit/book-edit.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -52,6 +53,7 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
     MatButtonModule,
     MatSelectModule,
     HttpClientModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule
   ],

@@ -1,0 +1,16 @@
+table {
+  width: 100%;
+}
+
+section {
+  display: table;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+}
+
+.CRUD {
+  text-align: right;
+}
