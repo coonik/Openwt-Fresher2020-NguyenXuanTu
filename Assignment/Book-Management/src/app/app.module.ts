@@ -1,3 +1,4 @@
+import { DeleteConfirmDialog } from './shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BookListComponent } from './modules/book/pages/book-list/book-list.component';
 import { BookEditComponent } from './modules/book/components/book-edit/book-edit.component';
@@ -13,7 +14,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/user/pages/login/login.component';
 import { ProfileComponent } from './modules/user/pages/profile/profile.component';
 import { CategoryManagementComponent } from './modules/category/pages/category-management/category-management.component';
-import { AuthorManagementComponent } from './modules/author/pages/author-management/author-management.component';
+import { AuthorManagementComponent, AuthorDialog } from './modules/author/pages/author-management/author-management.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule, MatHeaderRowDef } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -25,6 +26,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -37,8 +40,9 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
     FooterComponent,
     BookListComponent,
     BookEditComponent,
-    NotFoundComponent
-
+    NotFoundComponent,
+    DeleteConfirmDialog,
+    AuthorDialog
   ],
   imports: [
     BrowserModule,
@@ -54,6 +58,8 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
     MatSelectModule,
     HttpClientModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
+    MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule
   ],
