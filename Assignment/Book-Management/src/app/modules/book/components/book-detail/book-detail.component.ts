@@ -145,8 +145,6 @@ export class BookDetailComponent implements OnInit {
 
   onClickEdit() {
     this.setEditModeForm();
-    console.log(this.noChange);
-
   }
 
   onClickCreate() {
