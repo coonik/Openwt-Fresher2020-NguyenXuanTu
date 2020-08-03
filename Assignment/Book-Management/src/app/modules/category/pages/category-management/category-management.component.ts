@@ -19,6 +19,8 @@ export interface DialogData {
 })
 export class CategoryManagementComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'description', 'book', 'CRUD'];
+  dataSource: Promise<[]> | null=null;
+  searchFormControl = new FormControl();
   categoriesObs$: Observable<any>;
   constructor(private categoryService: CategoryService,
     private dialog: MatDialog,
@@ -55,6 +57,12 @@ export class CategoryManagementComponent implements OnInit {
           this.categoriesObs$ = this.categoryService.getAllCategories();
         }
       })
+  }
+
+  onChangeSearchValue() {
+    this.categoryService.searchCategoryByName(this.searchFormControl.value).subscribe(value => {
+      this.dataSource = value;
+    });
   }
 }
 @Component({

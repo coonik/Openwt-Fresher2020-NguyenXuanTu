@@ -43,4 +43,8 @@ export class CategoryService {
   deleteCategory(id: number) {
     return this.http.delete(environment.apiLink+`/categories/${id}`);
   }
+
+  searchCategoryByName(name: string) {
+    return this.http.get<any>(environment.apiLink+`/categories/search?categoryName=${name}`);
+  }
 }
