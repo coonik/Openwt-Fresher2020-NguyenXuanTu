@@ -6,6 +6,7 @@ import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-di
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 export interface DialogData {
   id?: number;
   name: string;
@@ -37,10 +38,14 @@ export class AuthorManagementComponent implements OnInit {
     }});
 
     dialogRef.afterClosed().subscribe(result => {
-      let kt = true;
-      result ? id ? this.authorService.updateAuthor(id, result.name, result.website, result.birthday, result.cover).subscribe() : this.authorService.createAuthor(result.name, result.website, result.birthday, result.cover).subscribe() : kt = false;
-      if (kt)
+      result ? this._snackBar.open(`This author has been ${id ? "Update" : "Create"}!`, "Ok", {
+        duration: 5000,
+      }) : null;
+      result ? id ? this.authorService.updateAuthor(id, result.name, result.website, result.birthday, result.cover === cover ? null : result.cover).subscribe(null, null, () => {
         this.authorsObs$ = this.authorService.getAllAuthor();
+      }) : this.authorService.createAuthor(result.name, result.website, result.birthday, result.cover).subscribe(null, null, () => {
+        this.authorsObs$ = this.authorService.getAllAuthor();
+      }) : null;
     });
   }
 
@@ -84,10 +89,10 @@ export class AuthorManagementComponent implements OnInit {
                   <p>The Author Birthday Input!</p>
                   <mat-form-field>
                     <mat-label>Author Birthday</mat-label>
-                    <input matInput type="datetime-local" [(ngModel)]="data.birthday" formControlName="birthday">
+                    <input matInput type="date" [(ngModel)]="data.birthday" formControlName="birthday">
                   </mat-form-field>
 
-                  <input type="file" id="file" name="file" class="inputfile" accept="image/x-png,image/gif,image/jpeg" (change)="imageChange($event)" />
+                  <input type="file" [(ngModel)]="image" id="file" name="file" class="inputfile" accept="image/x-png,image/gif,image/jpeg" (change)="imageChange($event)" formControlName="cover" />
                   <label for="file">Choose Cover</label>
 
                 </div>
@@ -136,44 +141,48 @@ export class AuthorDialog implements OnInit{
   };
   cover: string;
   noChange: boolean;
-  authorForm: FormGroup = new FormGroup({name: new FormControl(Validators.required), website: new FormControl(), birthday: new FormControl(), cover: new FormControl()});
+  changeImage: boolean;
+  image: any;
+  authorForm: FormGroup = new FormGroup({name: new FormControl(Validators.required), website: new FormControl(), birthday: new FormControl("1990-01-01",Validators.required), cover: new FormControl()});
 
   constructor(
     public dialogRef: MatDialogRef<AuthorDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
+    this.changeImage = false;
+
     if (!this.data.website)
       this.data.website = "None";
-    this.data.birthday = this.data.birthday?.slice(0,16);
+    this.data.birthday = this.data.birthday ? this.data.birthday.slice(0,10) : "1990-01-01";
     this.dataDefault.name = this.data.name;
     this.dataDefault.website = this.data.website;
     this.dataDefault.birthday = this.data.birthday;
     this.dataDefault.cover = this.data.cover;
-    this.cover = this.dataDefault.cover;
-
     this.dataDefault.birthday = this.dataDefault.birthday;
+    this.cover = this.dataDefault.cover;
 
     //unfix
     this.data.id ? this.authorForm.valueChanges.subscribe( val => {
       this.noChange = false;
-      if (val.name === this.dataDefault.name && val.website === this.dataDefault.website && val.cover === this.dataDefault.cover && val.birthday === this.dataDefault.birthday)
+      if (val.name === this.dataDefault.name && val.website === this.dataDefault.website && val.birthday === this.dataDefault.birthday && !this.changeImage)
         this.noChange = true;
     }) : null;
   }
 
   imageChange(event: any) {
     var reader = new FileReader();
-
+    let checkFile = event.target.files[0].size/1024/1000 < 10 && event.target.files[0].type.toString().slice(0,5) === "image";
     reader.onload = (event:any) => {
       this.cover = event.target.result;
-      this.data.cover = reader.result.slice(22).toString();
-      console.log(this.data.cover);
-
+      this.data.cover = reader.result.toString().split(";base64,")[1];
     }
-
-    reader.readAsDataURL(event.target.files[0]);
-    console.log(this.data.cover);
+    this.changeImage = true;
+    checkFile ? this.image = reader.readAsDataURL(event.target.files[0]) :
+    this._snackBar.open(`Image File Error: Please select an image file and size <10Mb`, "Ok", {
+      duration: 5000,
+    });;
   }
 
   onNoClick(): void {

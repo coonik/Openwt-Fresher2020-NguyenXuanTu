@@ -16,7 +16,7 @@ export class AuthorService {
 
   createAuthor(name: string, website: string, birthday: Date, cover: string) {
     let data = {
-      name, website, birthday: birthday + ":00", cover
+      name, website, birthday: birthday + "T00:00:00", cover
     }
     return this.http.post(environment.apiLink+`/authors/`,JSON.stringify(data) ,{
       headers: new HttpHeaders({
@@ -26,8 +26,10 @@ export class AuthorService {
   }
 
   updateAuthor(id: number, name: string, website: string, birthday: string, cover: string) {
-    let data = {
-      id, name, website, birthday: birthday + ":00", cover
+    let data = cover ? {
+      id, name, website, birthday: birthday + "T00:00:00", cover
+    } : {
+      id, name, website, birthday: birthday + "T00:00:00"
     }
 
     return this.http.put(environment.apiLink+`/authors/${id}`,JSON.stringify(data) ,{
