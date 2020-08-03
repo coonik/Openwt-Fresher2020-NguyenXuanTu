@@ -39,22 +39,18 @@ export class BookService {
   }
 
   getBook(id: number) {
-    return this.http.get<any>(environment.apiLink+`/books/${id}`, {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + environment.token
-      })
-    })
+    return this.http.get<any>(environment.apiLink+`/books/${id}`)
   }
 
   getAuthor(id: number) {
       this.author = {};
       this.authorService.getAuthorById(id).subscribe(val => {
         this.author = {
-          "id": val.id,
-          "name": val.name,
-          "website": val.website,
-          "birthday": `${val.birthday}`,
-          "cover": null
+          id: val.id,
+          name: val.name,
+          website: val.website,
+          birthday: `${val.birthday}`,
+          cover: null
         }
       });
   }
@@ -64,9 +60,9 @@ export class BookService {
     for (const id of ids) {
         this.categoryService.getCategoryById(id).subscribe(val => {
           this.categories.push({
-            "id": val.id,
-            "name": val.name,
-            "description": val.description
+            id: val.id,
+            name: val.name,
+            description: val.description
           })
         });
       }
@@ -74,18 +70,17 @@ export class BookService {
 
   createBook(book: bookDb) {
     let data = {
-      "name": book.bookName,
-      "description": book.description === "None" ? null : book.description,
-      "price": +book.price,
-      "year": +book.year,
-      "author": this.author,
-      "publisher": book.publisher,
-      "cover": null,
-      "categories": this.categories
+      name: book.bookName,
+      description: book.description === "None" ? null : book.description,
+      price: +book.price,
+      year: +book.year,
+      author: this.author,
+      publisher: book.publisher,
+      cover: null,
+      categories: this.categories
     }
     return this.http.post(environment.apiLink+`/books/`, JSON.stringify(data) , {
       headers: new HttpHeaders({
-          Authorization: 'Bearer ' + environment.token,
           'Content-Type': 'application/json'
       })
     })
@@ -94,30 +89,25 @@ export class BookService {
   updateBook(id: number, book: bookDb ) {
 
     let data = {
-      "name": book.bookName,
-      "description": book.description === "None" ? null : book.description,
-      "price": +book.price,
-      "year": +book.year,
-      "author": this.author,
-      "publisher": book.publisher,
-      "cover": null,
-      "categories": this.categories
+      name: book.bookName,
+      description: book.description === "None" ? null : book.description,
+      price: +book.price,
+      year: +book.year,
+      author: this.author,
+      publisher: book.publisher,
+      cover: null,
+      categories: this.categories
     }
 
     return this.http.put(environment.apiLink+`/books/${id}`, JSON.stringify(data) , {
       headers: new HttpHeaders({
-          Authorization: 'Bearer ' + environment.token,
           'Content-Type': 'application/json'
       })
     })
   }
 
   deleteBook(id: number) {
-    return this.http.delete(environment.apiLink+`/books/${id}`, {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + environment.token
-      })
-    })
+    return this.http.delete(environment.apiLink+`/books/${id}`)
   }
 
   searchBookByNameAndAuthorAndCategories(bookName: string = '',authorId: string = '', categoriesId: string[] = [], pageSize: number = 5, pageNumber: number = 1 ) {
