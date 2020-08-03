@@ -19,11 +19,9 @@ export class CategoryService {
       "name": name,
       "description": description
     }
-    console.log(JSON.stringify(data));
 
     return this.http.post(environment.apiLink+`/categories/`, JSON.stringify(data), {
       headers: new HttpHeaders({
-        Authorization: 'Bearer ' + environment.token,
         'Content-Type': 'application/json'
       }),
     });
