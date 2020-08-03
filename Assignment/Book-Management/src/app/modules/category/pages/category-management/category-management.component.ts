@@ -75,7 +75,7 @@ export class CategoryManagementComponent implements OnInit {
               </div>
               <div mat-dialog-actions>
                 <button mat-button (click)="onNoClick()">Cancel</button>
-                <button mat-button [mat-dialog-close]="data" [disabled]="!categoryForm.valid || noChange">{{ data.id ? "Edit" : "Create" }}</button>
+                <button mat-button color="warn" [mat-dialog-close]="data" [disabled]="!categoryForm.valid || noChange">{{ data.id ? "Edit" : "Create" }}</button>
               </div>
             `
 })
