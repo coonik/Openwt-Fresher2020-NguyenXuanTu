@@ -7,6 +7,7 @@ const routes: Routes = [
   {path: "book", loadChildren: () => import('./modules/book/book.module').then(m=>m.BookModule)},
   {path: "category", loadChildren: () => import('./modules/category/category.module').then(m=>m.CategoryModule)},
   {path: "user", loadChildren: () => import('./modules/user/user.module').then(m=>m.UserModule)},
+  {path: "author", loadChildren: () => import('./modules/author/author.module').then(m=>m.AuthorModule)},
   {path: '404', component: NotFoundComponent},
   {path: '**', redirectTo: '/404'}
 ];
