@@ -1,12 +1,15 @@
-<div *ngIf="!(bookObs$ | async)" class="loading-spinner">
+<div *ngIf="!(bookObs$ | async) && !onCreateMode" class="loading-spinner">
   <mat-spinner></mat-spinner>
 </div>
-<form class="example-form" [formGroup]="bookDetailForm" *ngIf="bookObs$ | async">
+<form class="example-form" [formGroup]="bookDetailForm" *ngIf="(bookObs$ | async) || onCreateMode">
   <div class="cover">
     <picture>
-      <source media='(min-width:0px)' srcset="{{bookData?.cover}}">
-      <img mat-card-image src="" alt="Photo of {{bookData?.name}}">
+      <source media='(min-width:0px)' srcset="{{cover}}">
+      <img mat-card-image src="" alt="Photo of {{bookData?.name ? bookData?.name : 'You'}}">
     </picture>
+  </div>
+  <div class="cover">
+    <input type="file" [(ngModel)]="image" id="file" name="file" class="submit" accept="image/x-png,image/gif,image/jpeg" (change)="imageChange($event)" formControlName="cover" />
   </div>
   <div class="detail">
     <div>

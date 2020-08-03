@@ -22,7 +22,10 @@ export class BookDetailComponent implements OnInit {
   onCreateMode: boolean = false;
   bookId: number;
   bookData: any;
+  changeImage: boolean;
   noChange: boolean;
+  cover: string;
+  image: any;
   bookDetailForm: FormGroup = new FormGroup({
     name: new FormControl(),
     author: new FormControl(),
@@ -31,6 +34,7 @@ export class BookDetailComponent implements OnInit {
     categories: new FormControl(),
     price: new FormControl(),
     description: new FormControl(),
+    cover: new FormControl()
   });
 
   constructor(private bookService: BookService,
@@ -55,6 +59,7 @@ export class BookDetailComponent implements OnInit {
       this.bookObs$.subscribe(
         val => {
           this.bookData = val;
+          this.cover = val.cover;
           this.setFormValue(val);
           this.bookDetailForm.disable();
         },
@@ -71,16 +76,17 @@ export class BookDetailComponent implements OnInit {
     this.bookDetailForm.get("price").setValidators([Validators.min(0), Validators.required]);
     this.bookDetailForm.get("year").setValidators([Validators.min(1000), Validators.max(new Date().getFullYear())]);
     this.bookDetailForm.valueChanges.subscribe( val => {
-      this.noChange = false;
+      if (this.bookData) {
+        this.noChange = false;
 
-      let categoriesId: number[] = [];
-      this.bookData.categories.forEach(val => {
-        categoriesId.push(val.id)
-      })
+        let categoriesId: number[] = [];
+        this.bookData.categories.forEach(val => {
+          categoriesId.push(val.id)
+        })
 
-      //Chua kiem tra COVER
-      if (val.name === this.bookData.name && this.bookData.price === val.price && this.bookData.year === val.year && this.bookData.author.id === val.author && this.bookData.publisher === val.publisher && JSON.stringify(categoriesId) === JSON.stringify(val.categories) && this.bookData.description === val.description)
-        this.noChange = true;
+        if (val.name === this.bookData.name && this.bookData.price === val.price && this.bookData.year === val.year && this.bookData.author.id === val.author && this.bookData.publisher === val.publisher && JSON.stringify(categoriesId) === JSON.stringify(val.categories) && this.bookData.description === val.description && !this.changeImage)
+          this.noChange = true;
+      }
     })
   }
 
@@ -96,10 +102,11 @@ export class BookDetailComponent implements OnInit {
       name: val.name,
       author: val.author.id,
       publisher: val.publisher,
-      year: val.year,
+      year: val.year === 0 ? null : val.year,
       categories: categoriesId,
       price: val.price,
       description: val.description ? val.description : "None",
+      cover: null
     });
   }
 
@@ -149,8 +156,11 @@ export class BookDetailComponent implements OnInit {
 
   onClickCreate() {
     let data = this.bookDetailForm.value;
+    console.log(data);
+
+
     let bookDb: bookDb = {
-      bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
+      bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: this.changeImage ? this.cover.split(";base64,")[1] : null, categoriesId: data.categories, description: data.description
     }
     this.bookService.createBook( bookDb ).subscribe( res => {
       this.router.navigate([`./book/${res["id"]}/detail`]);
@@ -163,7 +173,7 @@ export class BookDetailComponent implements OnInit {
   onClickSave() {
     let data = this.bookDetailForm.value;
     let bookDb: bookDb = {
-      bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: "", categoriesId: data.categories, description: data.description
+      bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: this.changeImage ? this.cover.split(";base64,")[1] : null, categoriesId: data.categories, description: data.description
     }
     this.bookService.updateBook(this.bookId, bookDb ).subscribe(val => {
       this.setFormValue(val);
@@ -229,6 +239,23 @@ export class BookDetailComponent implements OnInit {
       this._snackBar.open(`PRICE: Please enter a positive value and it is required!`, "Ok", {
         duration: 5000,
       });
+    }
+  }
+
+  imageChange(event: any) {
+    this.changeImage = false;
+    var reader = new FileReader();
+    let checkFile = event.target.files[0].size/1024/1000 < 10 && event.target.files[0].type.toString().slice(0,5) === "image";
+    reader.onload = (event:any) => {
+      this.cover = reader.result.toString();
+    }
+    if (checkFile) {
+      this.changeImage = true;
+      this.image = reader.readAsDataURL(event.target.files[0])
+    } else {
+      this._snackBar.open(`Image File Error: Please select an image file and size <10Mb`, "Ok", {
+        duration: 5000,
+      });;
     }
   }
 

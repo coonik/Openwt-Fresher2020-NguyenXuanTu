@@ -76,7 +76,7 @@ export class BookService {
       year: +book.year,
       author: this.author,
       publisher: book.publisher,
-      cover: null,
+      cover: book.cover,
       categories: this.categories
     }
     return this.http.post(environment.apiLink+`/books/`, JSON.stringify(data) , {
@@ -95,7 +95,7 @@ export class BookService {
       year: +book.year,
       author: this.author,
       publisher: book.publisher,
-      cover: null,
+      cover: book.cover,
       categories: this.categories
     }
 
