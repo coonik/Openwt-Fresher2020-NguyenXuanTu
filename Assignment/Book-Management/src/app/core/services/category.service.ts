@@ -7,18 +7,10 @@ export class CategoryService {
 
   constructor(private http: HttpClient) {}
   getAllCategories() {
-    return this.http.get<any>(environment.apiLink+`/categories`, {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + environment.token
-      }),
-    });
+    return this.http.get<any>(environment.apiLink+`/categories`);
   }
 
   getCategoryById(id: number) {
-    return this.http.get<any>(environment.apiLink+`/categories/${id}`, {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + environment.token
-      }),
-    });
+    return this.http.get<any>(environment.apiLink+`/categories/${id}`);
   }
 }
