@@ -27,11 +27,7 @@ export class BookService {
         this.totalItems = objTemp.totalItems;
       })).subscribe()
 
-    return this.http.get<any>(environment.apiLink+`/books?pageNumber=${pageIndex}&pageSize=${pageSize}`, {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + environment.token
-      })
-    })
+    return this.http.get<any>(environment.apiLink+`/books?pageNumber=${pageIndex}&pageSize=${pageSize}`)
   }
 
   searchBookByNameAndAuthorAndCategories(bookName: string = '',authorId: string = '', categoriesId: string[] = [], pageSize: number = 5, pageNumber: number = 1 ) {
@@ -42,10 +38,6 @@ export class BookService {
         category += category === '' ? item : ',' + item;
       }
     }
-    return this.http.get<any>(environment.apiLink+`/books?bookName=${bookName}&authorId=${authorId}&categoryIds=${category}&pageSize=${pageSize}&pageNumber=${pageNumber}`, {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + environment.token
-      })
-  })
+    return this.http.get<any>(environment.apiLink+`/books?bookName=${bookName}&authorId=${authorId}&categoryIds=${category}&pageSize=${pageSize}&pageNumber=${pageNumber}`)
   }
 }
