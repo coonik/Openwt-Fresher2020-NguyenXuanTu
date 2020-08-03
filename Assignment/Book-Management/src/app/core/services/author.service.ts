@@ -38,6 +38,7 @@ export class AuthorService {
     let data = {
       id, name, website, birthday: birthday + ":00", cover
     }
+
     return this.http.put(environment.apiLink+`/authors/${id}`,JSON.stringify(data) ,{
       headers: new HttpHeaders({
         Authorization: 'Bearer ' + environment.token,

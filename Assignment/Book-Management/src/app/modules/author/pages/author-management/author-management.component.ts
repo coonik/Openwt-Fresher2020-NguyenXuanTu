@@ -71,7 +71,7 @@ export class AuthorManagementComponent implements OnInit {
                     <input matInput required [(ngModel)]="data.name" formControlName="name" autofocus>
                   </mat-form-field>
                   <picture>
-                    <source media='(min-width:0px)' srcset="{{data.cover}}">
+                    <source media='(min-width:0px)' srcset="{{cover}}">
                     <img mat-card-image src="" alt="Photo of {{data.name}}">
                   </picture>
                 </div>
@@ -87,12 +87,7 @@ export class AuthorManagementComponent implements OnInit {
                     <input matInput type="datetime-local" [(ngModel)]="data.birthday" formControlName="birthday">
                   </mat-form-field>
 
-                  <p>The Author Cover Input!</p>
-                  <mat-form-field>
-                    <mat-label>Author Cover</mat-label>
-                    <input matInput [(ngModel)]="data.cover" formControlName="cover">
-                  </mat-form-field>
-                  <input type="file" id="file" name="file" class="inputfile" accept="image/x-png,image/gif,image/jpeg" (change)="imageChange($event.target.files)" />
+                  <input type="file" id="file" name="file" class="inputfile" accept="image/x-png,image/gif,image/jpeg" (change)="imageChange($event)" />
                   <label for="file">Choose Cover</label>
 
                 </div>
@@ -139,6 +134,7 @@ export class AuthorDialog implements OnInit{
     birthday: null,
     cover: ""
   };
+  cover: string;
   noChange: boolean;
   authorForm: FormGroup = new FormGroup({name: new FormControl(Validators.required), website: new FormControl(), birthday: new FormControl(), cover: new FormControl()});
 
@@ -154,8 +150,11 @@ export class AuthorDialog implements OnInit{
     this.dataDefault.website = this.data.website;
     this.dataDefault.birthday = this.data.birthday;
     this.dataDefault.cover = this.data.cover;
+    this.cover = this.dataDefault.cover;
 
     this.dataDefault.birthday = this.dataDefault.birthday;
+
+    //unfix
     this.data.id ? this.authorForm.valueChanges.subscribe( val => {
       this.noChange = false;
       if (val.name === this.dataDefault.name && val.website === this.dataDefault.website && val.cover === this.dataDefault.cover && val.birthday === this.dataDefault.birthday)
@@ -164,8 +163,17 @@ export class AuthorDialog implements OnInit{
   }
 
   imageChange(event: any) {
-    // console.log(event.path);
+    var reader = new FileReader();
 
+    reader.onload = (event:any) => {
+      this.cover = event.target.result;
+      this.data.cover = reader.result.slice(22).toString();
+      console.log(this.data.cover);
+
+    }
+
+    reader.readAsDataURL(event.target.files[0]);
+    console.log(this.data.cover);
   }
 
   onNoClick(): void {
