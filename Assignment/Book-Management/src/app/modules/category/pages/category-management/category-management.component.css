@@ -1,0 +1,21 @@
+table {
+  width: 100%;
+}
+
+section {
+  display: table;
+}
+
+.CRUD {
+  text-align: right;
+}
+
+.loading {
+  justify-content: center;
+  display: flex;
+}
+
+.mat-dialog-actions {
+  display: flex;
+  flex-direction: row-reverse;
+}

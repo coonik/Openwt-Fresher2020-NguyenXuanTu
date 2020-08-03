@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
+    <button mat-button color="warn" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
   </mat-dialog-actions>
   `,
 })
