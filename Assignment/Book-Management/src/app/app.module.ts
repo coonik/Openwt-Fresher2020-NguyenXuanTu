@@ -1,3 +1,4 @@
+import { AuthInterceptorService } from './core/services/auth-interceptor.service';
 import { BookListComponent } from './modules/book/pages/book-list/book-list.component';
 import { BookEditComponent } from './modules/book/components/book-edit/book-edit.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,13 +18,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule, MatHeaderRowDef } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DataSource } from '@angular/cdk/table';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { BookDetailComponent } from './modules/book/components/book-detail/book-detail.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { DeleteConfirmDialog } from './shared/components/delete-confirm-dialog/delete-confim-dialog.component'
 
 @NgModule({
   declarations: [
@@ -36,8 +42,12 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
     FooterComponent,
     BookListComponent,
     BookEditComponent,
-    NotFoundComponent
-
+    NotFoundComponent,
+    BookDetailComponent,
+    DeleteConfirmDialog
+  ],
+  entryComponents: [
+    DeleteConfirmDialog
   ],
   imports: [
     BrowserModule,
@@ -51,11 +61,14 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

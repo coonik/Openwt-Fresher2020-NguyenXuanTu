@@ -1,5 +1,5 @@
 import { BookService } from './../../../../core/services/book.service';
-import {Component, OnInit, ViewChild, Input} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl, Validators } from '@angular/forms';
@@ -27,10 +27,7 @@ export interface BookInterface {
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.css']
 })
-
-
 export class BookListComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource: Promise<[]> | null=null;
   bookObs$: Observable<any>;
   authorObs$: Observable<any>;
@@ -44,11 +41,12 @@ export class BookListComponent implements OnInit {
   searchFormControl = new FormControl('',[Validators.required]);
   constructor(private bookService: BookService, private authorService: AuthorService, private categoryService: CategoryService) {};
 
-  displayedColumns: string[] = ['position', 'name', 'author', 'categories', 'cover', 'price', 'publisher', 'year'];
+  displayedColumns: string[] = ['position', 'name', 'author', 'categories', 'price', 'publisher', 'year'];
 
   selectFormControl = new FormControl('');
 
   ngOnInit() {
+    localStorage.setItem('token','Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk2MTkyNjEzLCJleHAiOjE1OTY2MjQ2MTMsImlhdCI6MTU5NjE5MjYxM30.-WIypgAX1phzJvfGyP3c8NAABBqaYH41utXrHXuCO24VxTyv_j_-Czo5e5Fn2ofErsM0RhlzTwQm7WUxvbyYzQ');
     this.bookObs$ = this.bookService.getAllBook(1,5);
     this.authorObs$ = this.authorService.getAllAuthor();
     this.categoryObs$ = this.categoryService.getAllCategories();
@@ -70,6 +68,7 @@ export class BookListComponent implements OnInit {
     this.bookName = this.searchFormControl.value;
     this.bookService.searchBookByNameAndAuthorAndCategories(this.bookName ,this.authorId, this.categoriesId).subscribe(value => {
       this.dataSource = value;
+      console.log(this.dataSource);
     });
   }
 

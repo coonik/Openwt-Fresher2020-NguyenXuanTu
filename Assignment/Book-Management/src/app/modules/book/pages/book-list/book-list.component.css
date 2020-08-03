@@ -6,6 +6,11 @@ section {
   display: table;
 }
 
+a {
+  color: black;
+  text-decoration: none;
+}
+
 .example-label {
   display: table-cell;
   font-size: 14px;
