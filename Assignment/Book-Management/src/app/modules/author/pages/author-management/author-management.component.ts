@@ -20,6 +20,8 @@ export interface DialogData {
   styleUrls: ['./author-management.component.css']
 })
 export class AuthorManagementComponent implements OnInit {
+  dataSource: Promise<[]> | null=null;
+  searchFormControl = new FormControl();
   authorsObs$: Observable<any>;
   displayedColumns: string[] = ['position', 'name', 'website', 'birthday', 'books', 'CRUD'];
 
@@ -62,6 +64,12 @@ export class AuthorManagementComponent implements OnInit {
           this.authorsObs$ = this.authorService.getAllAuthor();
         }
       })
+  }
+
+  onChangeSearchValue() {
+    this.authorService.searchAuthorByName(this.searchFormControl.value).subscribe(value => {
+      this.dataSource = value;
+    });
   }
 }
 

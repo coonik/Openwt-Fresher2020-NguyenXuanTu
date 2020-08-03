@@ -42,4 +42,8 @@ export class AuthorService {
   deleteAuthor(id: number) {
     return this.http.delete(environment.apiLink+`/authors/${id}`);
   }
+
+  searchAuthorByName(name: string) {
+    return this.http.get<any>(environment.apiLink+`/authors/search?authorName=${name}`);
+  }
 }
