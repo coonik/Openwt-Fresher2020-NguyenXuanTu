@@ -43,15 +43,16 @@ export class LoginComponent implements OnInit {
       let user = this.loginForm.value;
       this.userService.login(user.username, user.password)
       .subscribe(val => {
-        console.log(val);
+        localStorage.setItem('loginData',JSON.stringify(val));
+        this.router.navigate(["../../book"]);
       }, err => {
+        console.log(err);
+
         this._snackBar.open(err.error.message, "Ok", {
           duration: 5000,
         });
         this.loginForm.get("password").setValue("");
         this.loginForm.get("password").markAsUntouched();
-      }, () => {
-        this.router.navigate(["../../book"]);
       });
     } else {
       this._snackBar.open("Form isn't Valid, Please enter the correct information before login!", "Ok", {

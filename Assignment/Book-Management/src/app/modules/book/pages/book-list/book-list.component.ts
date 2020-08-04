@@ -49,7 +49,6 @@ export class BookListComponent implements OnInit {
   selectFormControl = new FormControl('');
 
   ngOnInit() {
-    // localStorage.setItem('token','Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk2MTkyNjEzLCJleHAiOjE1OTY2MjQ2MTMsImlhdCI6MTU5NjE5MjYxM30.-WIypgAX1phzJvfGyP3c8NAABBqaYH41utXrHXuCO24VxTyv_j_-Czo5e5Fn2ofErsM0RhlzTwQm7WUxvbyYzQ');
     this.bookObs$ = this.bookService.getAllBook(1,5);
     this.authorObs$ = this.authorService.getAllAuthor();
     this.categoryObs$ = this.categoryService.getAllCategories();
