@@ -7,6 +7,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { debounceTime } from 'rxjs/operators';
 export interface DialogData {
   id?: number;
   name: string;
@@ -32,6 +33,13 @@ export class AuthorManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.authorsObs$ = this.authorService.getAllAuthor();
+    this.searchFormControl.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(val => {
+        this.authorService.searchAuthorByName(val).subscribe(value => {
+          this.dataSource = value;
+        });
+      })
   }
 
   openDialog(id: number = null, name: string = "", website: string = "", birthday: string = null, cover: string) {
@@ -64,12 +72,6 @@ export class AuthorManagementComponent implements OnInit {
           this.authorsObs$ = this.authorService.getAllAuthor();
         }
       })
-  }
-
-  onChangeSearchValue() {
-    this.authorService.searchAuthorByName(this.searchFormControl.value).subscribe(value => {
-      this.dataSource = value;
-    });
   }
 }
 
