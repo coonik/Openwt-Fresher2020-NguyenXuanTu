@@ -13,4 +13,29 @@ export class AuthorService {
   getAuthorById(id: number) {
     return this.http.get<any>(environment.apiLink+`/authors/${id}`);
   }
+
+  createAuthor(name: string, website: string, birthday: Date, cover: string) {
+    let data = {
+      name, website, birthday: birthday + "T00:00:00", cover
+    }
+    return this.http.post(environment.apiLink+`/authors/`,JSON.stringify(data));
+  }
+
+  updateAuthor(id: number, name: string, website: string, birthday: string, cover: string) {
+    let data = cover ? {
+      id, name, website, birthday: birthday + "T00:00:00", cover
+    } : {
+      id, name, website, birthday: birthday + "T00:00:00"
+    }
+
+    return this.http.put(environment.apiLink+`/authors/${id}`,JSON.stringify(data));
+  }
+
+  deleteAuthor(id: number) {
+    return this.http.delete(environment.apiLink+`/authors/${id}`);
+  }
+
+  searchAuthorByName(name: string) {
+    return this.http.get<any>(environment.apiLink+`/authors/search?authorName=${name}`);
+  }
 }
