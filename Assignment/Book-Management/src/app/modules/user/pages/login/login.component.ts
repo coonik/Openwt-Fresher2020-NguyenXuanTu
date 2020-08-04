@@ -1,9 +1,10 @@
+import { UserService } from './../../../../core/services/user.service';
 
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
 import { Router } from '@angular/router';
-
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { debounceTime } from 'rxjs/operators';
 /**
  * @title Table with sorting
  */
@@ -13,18 +14,49 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userService: UserService, private _snackBar: MatSnackBar) { }
   username: string;
   password: string;
 
   ngOnInit() {
+    this.loginForm = new FormGroup({
+      username: new FormControl("", [Validators.required]),
+      password: new FormControl("", [Validators.required,Validators.minLength(6)])
+    });
+    this.loginForm.valueChanges.pipe(debounceTime(2000)).subscribe( () => {
+        if (!this.loginForm.get("username").valid)
+          this._snackBar.open("Username is required!", "Ok", {
+            duration: 2000,
+          });
+        if (!this.loginForm.get("password").valid && this.loginForm.get("password").touched)
+          this._snackBar.open("Password is required and Include at least 6 characters!", "Ok", {
+            duration: 2000,
+          });
+      }
+    )
   }
+
   login() : void {
-    if(this.username == 'admin' && this.password == 'admin'){
-     this.router.navigate(["user"]);
-    }else {
-      alert("Invalid credentials");
+    if (this.loginForm.valid) {
+      let user = this.loginForm.value;
+      this.userService.login(user.username, user.password)
+      .subscribe(val => {
+        console.log(val);
+      }, err => {
+        this._snackBar.open(err.error.message, "Ok", {
+          duration: 5000,
+        });
+        this.loginForm.get("password").setValue("");
+        this.loginForm.get("password").markAsUntouched();
+      }, () => {
+        this.router.navigate(["../../book"]);
+      });
+    } else {
+      this._snackBar.open("Form isn't Valid, Please enter the correct information before login!", "Ok", {
+        duration: 5000,
+      });
     }
   }
 }
