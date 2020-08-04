@@ -6,6 +6,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MessageDialogService } from 'src/app/shared/services/message-dialog.service';
 import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-dialog/delete-confim-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { debounceTime } from 'rxjs/operators';
 export interface DialogData {
   id?: number;
   name: string;
@@ -29,6 +30,14 @@ export class CategoryManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoriesObs$ = this.categoryService.getAllCategories();
+
+    this.searchFormControl.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(val => {
+        this.categoryService.searchCategoryByName(val).subscribe(value => {
+          this.dataSource = value;
+        });
+      })
   }
 
   openDialog(id: number = null, name: string = "", description: string = "") {
@@ -57,12 +66,6 @@ export class CategoryManagementComponent implements OnInit {
           this.categoriesObs$ = this.categoryService.getAllCategories();
         }
       })
-  }
-
-  onChangeSearchValue() {
-    this.categoryService.searchCategoryByName(this.searchFormControl.value).subscribe(value => {
-      this.dataSource = value;
-    });
   }
 }
 @Component({
