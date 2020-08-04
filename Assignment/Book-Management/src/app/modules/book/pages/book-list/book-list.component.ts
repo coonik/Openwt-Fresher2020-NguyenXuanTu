@@ -6,6 +6,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { AuthorService } from '../../../../core/services/author.service';
 import { CategoryService } from '../../../../core/services/category.service';
 import { MatSelectChange } from '@angular/material/select';
+import { debounceTime } from 'rxjs/operators';
 export interface BookInterface {
 
   author: {id: number, name: string, website: string, birthday: Date, cover: string}
@@ -40,7 +41,7 @@ export class BookListComponent implements OnInit {
   bookName: string = '';
   authorId: string = '';
   categoriesId: string[] = [];
-  searchFormControl = new FormControl('',[Validators.required]);
+  searchFormControl = new FormControl();
   constructor(private bookService: BookService, private authorService: AuthorService, private categoryService: CategoryService) {};
 
   displayedColumns: string[] = ['position', 'name', 'author', 'categories', 'price', 'publisher', 'year'];
@@ -60,18 +61,17 @@ export class BookListComponent implements OnInit {
       }
     )
 
+    this.searchFormControl.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(val => {
+        this.bookService.searchBookByNameAndAuthorAndCategories(val ,this.authorId, this.categoriesId).subscribe(value => {
+            this.dataSource = value;
+          });
+      })
   }
 
   pageChange(event: PageEvent) {
     this.bookObs$ = this.bookService.getAllBook(event.pageIndex+1, event.pageSize);
-  }
-
-  onChangeSearchValue() {
-    this.bookName = this.searchFormControl.value;
-    this.bookService.searchBookByNameAndAuthorAndCategories(this.bookName ,this.authorId, this.categoriesId).subscribe(value => {
-      this.dataSource = value;
-      console.log(this.dataSource);
-    });
   }
 
   onSelected(event: MatSelectChange) {
