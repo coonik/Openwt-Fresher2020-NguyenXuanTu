@@ -27,6 +27,7 @@ export class BookDetailComponent implements OnInit {
   noChange: boolean;
   cover: string;
   image: any;
+  user: object;
   bookDetailForm: FormGroup = new FormGroup({
     name: new FormControl(),
     author: new FormControl(),
@@ -48,6 +49,7 @@ export class BookDetailComponent implements OnInit {
     private messageDialogService: MessageDialogService) {}
 
   ngOnInit() {
+    this.user = JSON.parse(localStorage.getItem("loginData")).user;
     this.bookId = Number.parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
     this.authorObs$ = this.authorService.getAllAuthor();
     this.categoryObs$ = this.categoryService.getAllCategories();

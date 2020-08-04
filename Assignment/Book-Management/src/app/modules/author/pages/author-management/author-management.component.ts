@@ -1,3 +1,4 @@
+import { User } from './../../../../shared/auth.guard';
 import { AuthorService } from './../../../../core/services/author.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -24,6 +25,7 @@ export class AuthorManagementComponent implements OnInit {
   dataSource: Promise<[]> | null=null;
   searchFormControl = new FormControl();
   authorsObs$: Observable<any>;
+  user: User;
   displayedColumns: string[] = ['position', 'name', 'website', 'birthday', 'books', 'CRUD'];
 
   constructor(private authorService: AuthorService,
@@ -32,6 +34,7 @@ export class AuthorManagementComponent implements OnInit {
     private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem("loginData")).user;
     this.authorsObs$ = this.authorService.getAllAuthor();
     this.searchFormControl.valueChanges
       .pipe(debounceTime(1000))

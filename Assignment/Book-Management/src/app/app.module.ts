@@ -29,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BookDetailComponent } from './modules/book/components/book-detail/book-detail.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     HeaderComponent,
     FooterComponent,
     BookListComponent,
-    BookEditComponent,
+    BookDetailComponent,
     NotFoundComponent,
     DeleteConfirmDialog,
     CategoryDialog,

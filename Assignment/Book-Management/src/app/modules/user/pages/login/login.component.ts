@@ -1,7 +1,7 @@
 import { UserService } from './../../../../core/services/user.service';
 
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime } from 'rxjs/operators';
@@ -16,11 +16,19 @@ import { debounceTime } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private router: Router, private userService: UserService, private _snackBar: MatSnackBar) { }
+  constructor(private router: Router,
+    private userService: UserService,
+    private _snackBar: MatSnackBar,
+    private activatedRoute: ActivatedRoute) { }
   username: string;
   password: string;
 
   ngOnInit() {
+    if (this.activatedRoute.snapshot.routeConfig.path === "logout") {
+      localStorage.setItem("loginData","");
+      this.router.navigate(["./user/auth"]);
+    }
+
     this.loginForm = new FormGroup({
       username: new FormControl("", [Validators.required]),
       password: new FormControl("", [Validators.required,Validators.minLength(6)])

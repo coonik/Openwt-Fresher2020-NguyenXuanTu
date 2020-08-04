@@ -1,3 +1,4 @@
+import { User } from './../../../../shared/auth.guard';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CategoryService } from 'src/app/core/services/category.service';
@@ -23,12 +24,14 @@ export class CategoryManagementComponent implements OnInit {
   dataSource: Promise<[]> | null=null;
   searchFormControl = new FormControl();
   categoriesObs$: Observable<any>;
+  user: User;
   constructor(private categoryService: CategoryService,
     private dialog: MatDialog,
     private messageDialogService: MessageDialogService,
     private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem("loginData")).user;
     this.categoriesObs$ = this.categoryService.getAllCategories();
 
     this.searchFormControl.valueChanges

@@ -9,10 +9,6 @@ export class UserService {
       username,
       password
     }
-    return this.http.post(environment.apiLink+`/auths/login`, JSON.stringify(data), {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-    })
+    return this.http.post(environment.apiLink+`/auths/login`, JSON.stringify(data))
   }
 }

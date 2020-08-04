@@ -56,8 +56,10 @@
       </mat-form-field>
   </div>
   </div>
-  <button mat-flat-button color="primary" *ngIf="!onCreateMode" (click)="onClickEdit()">{{ onEditMode ? "Cancel" : "Edit" }}</button>
-  <button mat-button color="accent" *ngIf="onEditMode && !onCreateMode" [disabled]="!bookDetailForm.valid || noChange" (click)="onClickSave()">Save</button>
-  <button mat-raised-button color="warn" *ngIf="!onCreateMode" (click)="onClickDelete()">Delete</button>
-  <button mat-raised-button color="warn" *ngIf="onCreateMode" [disabled]="!bookDetailForm.valid" (click)="onClickCreate()">Create</button>
+  <div *ngIf="user.role!=='USER'">
+    <button mat-flat-button color="primary" *ngIf="!onCreateMode" (click)="onClickEdit()">{{ onEditMode ? "Cancel" : "Edit" }}</button>
+    <button mat-button color="accent" *ngIf="onEditMode && !onCreateMode" [disabled]="!bookDetailForm.valid || noChange" (click)="onClickSave()">Save</button>
+    <button mat-raised-button color="warn" *ngIf="!onCreateMode" (click)="onClickDelete()">Delete</button>
+    <button mat-raised-button color="warn" *ngIf="onCreateMode" [disabled]="!bookDetailForm.valid" (click)="onClickCreate()">Create</button>
+  </div>
 </form>
