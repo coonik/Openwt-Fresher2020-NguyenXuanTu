@@ -8,6 +8,7 @@ import { CategoryService } from '../../../../core/services/category.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-dialog/delete-confim-dialog.component';
+import { MessageDialogService } from '../../../../shared/services/message-dialog.service'
 
 @Component({
   selector: 'app-book-detail',
@@ -43,7 +44,8 @@ export class BookDetailComponent implements OnInit {
     private authorService: AuthorService,
     private categoryService: CategoryService,
     public dialog: MatDialog,
-    private _snackBar: MatSnackBar) {}
+    private _snackBar: MatSnackBar,
+    private messageDialogService: MessageDialogService) {}
 
   ngOnInit() {
     this.bookId = Number.parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
@@ -186,6 +188,7 @@ export class BookDetailComponent implements OnInit {
 
   onClickDelete() {
     const dialogRef = this.dialog.open(DeleteConfirmDialog);
+    this.messageDialogService.changeMessage("book");
     dialogRef.afterClosed()
       .subscribe(result => {
         if (result) {

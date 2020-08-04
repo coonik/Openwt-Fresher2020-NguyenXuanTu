@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/user/pages/login/login.component';
 import { ProfileComponent } from './modules/user/pages/profile/profile.component';
-import { CategoryManagementComponent } from './modules/category/pages/category-management/category-management.component';
+import { CategoryManagementComponent, CategoryDialog } from './modules/category/pages/category-management/category-management.component';
 import { AuthorManagementComponent } from './modules/author/pages/author-management/author-management.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule, MatHeaderRowDef } from '@angular/material/table';
@@ -44,10 +44,12 @@ import { DeleteConfirmDialog } from './shared/components/delete-confirm-dialog/d
     BookEditComponent,
     NotFoundComponent,
     BookDetailComponent,
-    DeleteConfirmDialog
+    DeleteConfirmDialog,
+    CategoryDialog
   ],
   entryComponents: [
-    DeleteConfirmDialog
+    DeleteConfirmDialog,
+    CategoryDialog
   ],
   imports: [
     BrowserModule,

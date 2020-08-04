@@ -13,4 +13,30 @@ export class CategoryService {
   getCategoryById(id: number) {
     return this.http.get<any>(environment.apiLink+`/categories/${id}`);
   }
+
+  createCategory(name: string, description: string) {
+    let data = {
+      name: name,
+      description: description
+    }
+
+    return this.http.post(environment.apiLink+`/categories/`, JSON.stringify(data));
+  }
+
+  updateCategory(id: number, name: string, description: string) {
+    let data = {
+      name: name,
+      description: description
+    }
+
+    return this.http.put<any>(environment.apiLink+`/categories/${id}`, JSON.stringify(data));
+  }
+
+  deleteCategory(id: number) {
+    return this.http.delete(environment.apiLink+`/categories/${id}`);
+  }
+
+  searchCategoryByName(name: string) {
+    return this.http.get<any>(environment.apiLink+`/categories/search?categoryName=${name}`);
+  }
 }
