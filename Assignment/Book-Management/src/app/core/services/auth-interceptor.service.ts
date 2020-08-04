@@ -7,7 +7,7 @@ export class AuthInterceptorService implements HttpInterceptor {
       this.token = "Bearer " + JSON.parse(localStorage.getItem('loginData'))?.token;
     }
     const modifiedRequest = req.clone({
-      headers: req.headers.append('Authorization',this.token)
+      headers: req.headers.append('Authorization',this.token).append('Content-Type','application/json')
     })
     return next.handle(modifiedRequest);
   }

@@ -24,9 +24,6 @@ export class BookService {
   getAllBook(pageIndex: number, pageSize: number) {
 
     this.http.get<any>(environment.apiLink+'/books?pageNumber='+pageIndex+'&pageSize='+pageSize, {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + environment.token
-      }),
       observe: 'response'
     }).pipe(
       tap(resp => {
@@ -79,11 +76,7 @@ export class BookService {
       cover: book.cover,
       categories: this.categories
     }
-    return this.http.post(environment.apiLink+`/books/`, JSON.stringify(data) , {
-      headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-      })
-    })
+    return this.http.post(environment.apiLink+`/books/`, JSON.stringify(data))
   }
 
   updateBook(id: number, book: bookDb ) {
@@ -99,11 +92,7 @@ export class BookService {
       categories: this.categories
     }
 
-    return this.http.put(environment.apiLink+`/books/${id}`, JSON.stringify(data) , {
-      headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-      })
-    })
+    return this.http.put(environment.apiLink+`/books/${id}`, JSON.stringify(data))
   }
 
   deleteBook(id: number) {
