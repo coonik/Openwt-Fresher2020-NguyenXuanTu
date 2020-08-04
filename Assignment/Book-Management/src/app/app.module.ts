@@ -25,7 +25,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { BookDetailComponent } from './modules/book/components/book-detail/book-detail.component';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { DeleteConfirmDialog } from './shared/components/delete-confirm-dialog/delete-confim-dialog.component'
 
 @NgModule({
   declarations: [
@@ -38,8 +42,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FooterComponent,
     BookListComponent,
     BookEditComponent,
-    NotFoundComponent
-
+    NotFoundComponent,
+    BookDetailComponent,
+    DeleteConfirmDialog
+  ],
+  entryComponents: [
+    DeleteConfirmDialog
   ],
   imports: [
     BrowserModule,
@@ -53,10 +61,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
+    MatDialogModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]

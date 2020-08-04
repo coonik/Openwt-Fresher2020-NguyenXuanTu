@@ -1,5 +1,5 @@
 import { BookService } from './../../../../core/services/book.service';
-import {Component, OnInit, ViewChild, Input} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl, Validators } from '@angular/forms';
@@ -28,8 +28,6 @@ export interface BookInterface {
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.css']
 })
-
-
 export class BookListComponent implements OnInit {
   dataSource: Promise<[]> | null=null;
   bookObs$: Observable<any>;
