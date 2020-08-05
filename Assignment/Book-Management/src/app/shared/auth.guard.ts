@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface User {
-  id: string, role: string, name: string, username: string
+  id?: string, role: string, name: string, username: string, password?: string
 };
 
 @Injectable({providedIn: 'root'})

@@ -7,8 +7,6 @@ import { CategoryRoutingModule } from "./category-routing.module"
   imports: [
     CommonModule,
     CategoryRoutingModule
-  ],
-  declarations: [
   ]
 })
 

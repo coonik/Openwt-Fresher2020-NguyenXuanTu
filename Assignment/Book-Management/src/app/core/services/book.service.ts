@@ -76,7 +76,7 @@ export class BookService {
       cover: book.cover,
       categories: this.categories
     }
-    return this.http.post(environment.apiLink+`/books/`, JSON.stringify(data))
+    return this.http.post(environment.apiLink+`/books/`, data)
   }
 
   updateBook(id: number, book: bookDb ) {
@@ -92,7 +92,7 @@ export class BookService {
       categories: this.categories
     }
 
-    return this.http.put(environment.apiLink+`/books/${id}`, JSON.stringify(data))
+    return this.http.put(environment.apiLink+`/books/${id}`, data)
   }
 
   deleteBook(id: number) {

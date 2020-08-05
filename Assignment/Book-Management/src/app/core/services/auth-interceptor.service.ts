@@ -10,8 +10,8 @@ export class AuthInterceptorService implements HttpInterceptor {
       this.token = null;
     }
     const modifiedRequest = req.clone({
-      headers: this.token ? req.headers.append('Authorization',this.token).append('Content-Type','application/json')
-        : req.headers.append('Content-Type','application/json')
+      headers: this.token ? req.headers.append('Authorization',this.token)
+        : null
     })
     return next.handle(modifiedRequest);
   }

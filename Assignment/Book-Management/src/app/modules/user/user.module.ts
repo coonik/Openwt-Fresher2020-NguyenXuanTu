@@ -7,8 +7,7 @@ import { UserManagementComponent } from './pages/user-management/user-management
   imports: [
     CommonModule,
     UserRoutingModule
-  ],
-  declarations: [UserManagementComponent]
+  ]
 })
 
 export class UserModule {}

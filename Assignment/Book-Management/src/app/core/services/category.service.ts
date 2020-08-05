@@ -20,7 +20,7 @@ export class CategoryService {
       description: description
     }
 
-    return this.http.post(environment.apiLink+`/categories/`, JSON.stringify(data));
+    return this.http.post(environment.apiLink+`/categories/`, data);
   }
 
   updateCategory(id: number, name: string, description: string) {
@@ -29,7 +29,7 @@ export class CategoryService {
       description: description
     }
 
-    return this.http.put<any>(environment.apiLink+`/categories/${id}`, JSON.stringify(data));
+    return this.http.put<any>(environment.apiLink+`/categories/${id}`, data);
   }
 
   deleteCategory(id: number) {

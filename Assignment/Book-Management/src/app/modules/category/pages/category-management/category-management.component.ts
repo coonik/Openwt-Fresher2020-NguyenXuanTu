@@ -5,7 +5,7 @@ import { CategoryService } from 'src/app/core/services/category.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MessageDialogService } from 'src/app/shared/services/message-dialog.service';
-import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-dialog/delete-confim-dialog.component';
+import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime } from 'rxjs/operators';
 export interface DialogData {

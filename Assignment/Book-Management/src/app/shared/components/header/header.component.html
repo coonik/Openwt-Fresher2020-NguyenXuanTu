@@ -10,7 +10,7 @@
   <button *ngIf="user?.role==='MANAGER'" [routerLink]="['./user']" class="space" aria-label="Example icon-button with menu icon">User</button>
   <span class="example-spacer"></span>
 
-  <button [routerLink]="['./book']" class="space" aria-label="Example icon-button with menu icon">Profile</button>
+  <button [routerLink]="['./user/profile']" class="space" aria-label="Example icon-button with menu icon">Profile</button>
   <button [routerLink]="['./user/logout']" class="space" aria-label="Example icon-button with menu icon">Logout</button>
 </mat-toolbar>
 </p>

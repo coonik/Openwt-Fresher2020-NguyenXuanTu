@@ -7,7 +7,7 @@ import { AuthorService } from '../../../../core/services/author.service';
 import { CategoryService } from '../../../../core/services/category.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-dialog/delete-confim-dialog.component';
+import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { MessageDialogService } from '../../../../shared/services/message-dialog.service'
 
 @Component({

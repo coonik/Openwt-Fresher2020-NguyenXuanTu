@@ -30,6 +30,7 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BookDetailComponent } from './modules/book/components/book-detail/book-detail.component';
+import { UserManagementComponent, UserDialog } from './modules/user/pages/user-management/user-management.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,9 @@ import { BookDetailComponent } from './modules/book/components/book-detail/book-
     NotFoundComponent,
     DeleteConfirmDialog,
     CategoryDialog,
-    AuthorDialog
+    AuthorDialog,
+    UserDialog,
+    UserManagementComponent
   ],
   imports: [
     BrowserModule,

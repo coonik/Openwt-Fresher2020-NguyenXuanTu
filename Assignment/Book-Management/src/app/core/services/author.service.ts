@@ -18,7 +18,7 @@ export class AuthorService {
     let data = {
       name, website, birthday: birthday + "T00:00:00", cover
     }
-    return this.http.post(environment.apiLink+`/authors/`,JSON.stringify(data));
+    return this.http.post(environment.apiLink+`/authors/`,data);
   }
 
   updateAuthor(id: number, name: string, website: string, birthday: string, cover: string) {
@@ -28,7 +28,7 @@ export class AuthorService {
       id, name, website, birthday: birthday + "T00:00:00"
     }
 
-    return this.http.put(environment.apiLink+`/authors/${id}`,JSON.stringify(data));
+    return this.http.put(environment.apiLink+`/authors/${id}`,data);
   }
 
   deleteAuthor(id: number) {
