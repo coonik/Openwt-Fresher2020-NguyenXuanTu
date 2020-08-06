@@ -41,14 +41,14 @@ export class UserService {
     let data = user.password ?
       {
         username: user.username,
+        name: user.name,
         password: user.password
       } :
       {
-        name: user.name,
         username: user.username,
+        name: user.name,
         role: user.role
       };
-
     return this.http.put<any>(environment.apiLink+`/users/${id}`, data);
   }
 

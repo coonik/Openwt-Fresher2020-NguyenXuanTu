@@ -1,3 +1,4 @@
+import { DropdownDirective } from './shared/dropdown.directive';
 import { DeleteConfirmDialog } from 'src/app/shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthInterceptorService } from './core/services/auth-interceptor.service';
@@ -48,7 +49,9 @@ import { UserManagementComponent, UserDialog } from './modules/user/pages/user-m
     CategoryDialog,
     AuthorDialog,
     UserDialog,
-    UserManagementComponent
+    UserManagementComponent,
+    ProfileComponent,
+    DropdownDirective
   ],
   imports: [
     BrowserModule,

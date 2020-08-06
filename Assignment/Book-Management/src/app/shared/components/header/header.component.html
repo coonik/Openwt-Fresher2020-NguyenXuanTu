@@ -10,7 +10,12 @@
   <button *ngIf="user?.role==='MANAGER'" [routerLink]="['./user']" class="space" aria-label="Example icon-button with menu icon">User</button>
   <span class="example-spacer"></span>
 
-  <button [routerLink]="['./user/profile']" class="space" aria-label="Example icon-button with menu icon">Profile</button>
-  <button [routerLink]="['./user/logout']" class="space" aria-label="Example icon-button with menu icon">Logout</button>
-</mat-toolbar>
+  <span style="font-size: 13px;">Hi, {{user.name}}</span>
+  <div class="btn-group" appDropdown>
+    <button mat-stroked-button type="button" class="dropdown-toggle">
+      Account <span class="caret"></span>
+    </button>
+    <app-profile class="dropdown-menu dropdown-menu-right"></app-profile>
+  </div>
+  </mat-toolbar>
 </p>

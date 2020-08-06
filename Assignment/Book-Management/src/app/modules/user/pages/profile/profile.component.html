@@ -1,1 +1,31 @@
-<p>profile works!</p>
+<div class="profile">
+  <h2> Profile </h2>
+  <div mat-dialog-content [formGroup]="userForm">
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+    <div *ngIf="isChangePassword">
+      <mat-form-field>
+        <mat-label>Old Password</mat-label>
+        <input matInput required formControlName="oldPw">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>New Password</mat-label>
+        <input matInput required formControlName="newPw">
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button class="btnChangePassword" (click)="onChangePassword($event)">{{ isChangePassword ? "Cancel" : "Change Password"}}</button>
+    <button mat-button color="warn" (click)="sendRequest($event)" [disabled]="!userForm.valid">Edit</button>
+    <br>
+    <button mat-flat-button color="warn" [routerLink]="['./user/logout']"><span class="glyphicon glyphicon-off"></span> Logout</button>
+  </div>
+</div>
