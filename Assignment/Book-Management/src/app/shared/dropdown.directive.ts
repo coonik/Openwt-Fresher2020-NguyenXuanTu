@@ -1,3 +1,4 @@
+import { ProfileSetChangePasswordService } from './services/profile-set-changepassword.service';
 import {
   Directive,
   HostListener,
@@ -12,7 +13,10 @@ export class DropdownDirective {
   @HostBinding('class.open') isOpen = false;
   @HostListener('document:click', ['$event']) toggleOpen(event: Event) {
     this.isOpen = this.elRef.nativeElement.contains(event.target) ? event.srcElement.toString() === "[object HTMLSpanElement]" ? !this.isOpen : true : false;
+    if (!this.isOpen) {
+      this.profileSetChangePasswordService.setIsChangePassword(false);
+    }
   }
 
-  constructor(private elRef: ElementRef) {}
+  constructor(private elRef: ElementRef, private profileSetChangePasswordService: ProfileSetChangePasswordService) {}
 }

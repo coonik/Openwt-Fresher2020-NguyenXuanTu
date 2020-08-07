@@ -1,3 +1,4 @@
+import { ProfileSetChangePasswordService } from './../../../../shared/services/profile-set-changepassword.service';
 import { debounceTime } from 'rxjs/operators';
 import { UserService } from './../../../../core/services/user.service';
 import { User } from './../../../../shared/auth.guard';
@@ -19,7 +20,8 @@ export class ProfileComponent implements OnInit {
   isChangePassword: boolean = false;
   noChange: boolean = true;
   constructor(private userService: UserService,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar,
+    private profileSetChangePasswordService: ProfileSetChangePasswordService) { }
 
   ngOnInit(): void {
     this.loginData = JSON.parse(localStorage.getItem("loginData"));
@@ -28,6 +30,9 @@ export class ProfileComponent implements OnInit {
       username: new FormControl({value: this.user.username, disabled: true}),
       name: new FormControl(this.user.name)
     })
+    this.profileSetChangePasswordService.currentIsChangePassword.subscribe(val => {
+      this.isChangePassword = val;
+    });
   }
 
   onChangePassword($event?) {
