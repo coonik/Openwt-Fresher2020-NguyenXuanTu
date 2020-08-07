@@ -1,19 +1,19 @@
 <p>
-  <mat-toolbar *ngIf="!hidden">
+  <mat-toolbar>
    <button [routerLink]="['./book']" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
     <mat-icon>home</mat-icon>
   </button>
   <span [routerLink]="['./book']" class="pointer">Book Management</span>
-  <button [routerLink]="['./book']" class="space" aria-label="Example icon-button with menu icon">Book</button>
-  <button [routerLink]="['./category']" class="space" aria-label="Example icon-button with menu icon">Category</button>
-  <button [routerLink]="['./author']" class="space" aria-label="Example icon-button with menu icon">Author</button>
-  <button *ngIf="user?.role==='MANAGER'" [routerLink]="['./user']" class="space" aria-label="Example icon-button with menu icon">User</button>
+  <button *ngIf="isLogined" [routerLink]="['./book']" class="space" aria-label="Example icon-button with menu icon">Book</button>
+  <button *ngIf="isLogined" [routerLink]="['./category']" class="space" aria-label="Example icon-button with menu icon">Category</button>
+  <button *ngIf="isLogined" [routerLink]="['./author']" class="space" aria-label="Example icon-button with menu icon">Author</button>
+  <button *ngIf="user?.role==='MANAGER' && isLogined" [routerLink]="['./user']" class="space" aria-label="Example icon-button with menu icon">User</button>
   <span class="example-spacer"></span>
 
-  <span style="font-size: 13px;">Hi, {{user.name}}</span>
-  <div class="btn-group" appDropdown>
+  <span *ngIf="isLogined" style="font-size: 14px;">Hi, </span>
+  <div *ngIf="isLogined" class="btn-group" appDropdown>
     <button mat-stroked-button type="button" class="dropdown-toggle">
-      Account <span class="caret"></span>
+      {{user.name}} <span class="caret"></span>
     </button>
     <app-profile class="dropdown-menu dropdown-menu-right"></app-profile>
   </div>
