@@ -1,4 +1,11 @@
 <div class="profile">
+  <div class="overlay" *ngIf="isProcess">
+    <div class="center">
+      <mat-progress-spinner style="margin:0 auto;" diameter="40" mode="indeterminate" color="accent">
+      </mat-progress-spinner>
+    </div>
+  </div>
+
   <h2> Profile </h2>
   <div mat-dialog-content [formGroup]="userForm">
     <mat-form-field>

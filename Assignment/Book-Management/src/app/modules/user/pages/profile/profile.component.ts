@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   userForm: FormGroup;
   user: User;
   loginData: any;
+  isProcess: boolean = false;
   passwordSub: Subscription;
   isChangePassword: boolean = false;
   noChange: boolean = true;
@@ -79,6 +80,7 @@ export class ProfileComponent implements OnInit {
           duration: 2000,
         });
       } else {
+        this.isProcess = true;
         this.userService.login(this.user.username, this.userForm.get("oldPw").value).subscribe(() => {
           this.userService.updateUser(Number.parseInt(this.user.id), {
             username: this.user.username,
@@ -93,15 +95,18 @@ export class ProfileComponent implements OnInit {
               duration: 2000,
             });
             this.onChangePassword();
+            this.isProcess = false;
           }, err => {
             this._snackBar.open(err.error.message, "Ok", {
               duration: 2000,
             });
+            this.isProcess = false;
           });
         },() => {
           this._snackBar.open("Old Password isn't valid!", "Ok", {
             duration: 2000,
           });
+          this.isProcess = false;
           this.userForm.get("oldPw").setErrors(Validators.required);
         });
       }
@@ -111,6 +116,7 @@ export class ProfileComponent implements OnInit {
           duration: 2000,
         });
       } else {
+        this.isProcess = true;
         this.userService.updateUser(Number.parseInt(this.user.id), {
           username: this.user.username,
           name: this.userForm.get("name").value,
@@ -122,10 +128,12 @@ export class ProfileComponent implements OnInit {
             duration: 2000,
           });
           this.onChangePassword();
+          this.isProcess = false;
         }, err => {
           this._snackBar.open(err.error.message, "Ok", {
             duration: 2000,
           });
+          this.isProcess = false;
         });
       }
     }
