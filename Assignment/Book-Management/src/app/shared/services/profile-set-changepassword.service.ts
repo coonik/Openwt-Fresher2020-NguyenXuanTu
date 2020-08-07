@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ProfileSetChangePasswordService {
   private isChangePassword = new BehaviorSubject<boolean>(false);
   currentIsChangePassword = this.isChangePassword.asObservable();
-  private isLogined = new BehaviorSubject<boolean>(false);
+  private isLogined = new BehaviorSubject<boolean>(!!localStorage.getItem("loginData") || localStorage.getItem("loginData")!="");
   currentIsLogined = this.isLogined.asObservable();
 
   constructor() { }
