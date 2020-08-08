@@ -1,6 +1,7 @@
-import { ProfileSetChangePasswordService } from './../../services/profile-set-changepassword.service';
+import { DataService } from './../../services/data.service';
 import { ProfileComponent } from './../../../modules/user/pages/profile/profile.component';
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,12 +11,17 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
   user: object;
   isLogined: boolean = false;
-  constructor(private profileSetChangePasswordService: ProfileSetChangePasswordService) { }
+  userSub: Subscription;
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.profileSetChangePasswordService.currentIsLogined.subscribe(val => {
-      this.isLogined = val;
-      this.isLogined ? this.user = JSON.parse(localStorage.getItem('loginData')).user : null;
-    });
+    this.dataService.currentLoginData.subscribe(val => {
+      if (val === null) {
+        this.isLogined = false;
+      } else {
+        this.isLogined = true;
+        this.user = val.user;
+      }
+    })
   }
 }

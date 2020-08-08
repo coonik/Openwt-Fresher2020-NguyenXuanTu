@@ -1,4 +1,4 @@
-import { ProfileSetChangePasswordService } from './../../../../shared/services/profile-set-changepassword.service';
+import { DataService } from './../../../../shared/services/data.service';
 import { UserService } from './../../../../core/services/user.service';
 
 import {Component, OnInit, ViewChild} from '@angular/core';
@@ -21,14 +21,14 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private _snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute,
-    private profileSetChangePasswordService: ProfileSetChangePasswordService) { }
+    private dataService: DataService) { }
   username: string;
   password: string;
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.routeConfig.path === "logout") {
       localStorage.setItem("loginData","");
-      this.profileSetChangePasswordService.setIsLogined(false);
+      this.dataService.setLoginData(null);
       this.router.navigate(["./user/auth"]);
     }
 
@@ -55,11 +55,9 @@ export class LoginComponent implements OnInit {
       this.userService.login(user.username, user.password)
       .subscribe(val => {
         localStorage.setItem('loginData',JSON.stringify(val));
-        this.profileSetChangePasswordService.setIsLogined(true);
+        this.dataService.setLoginData(val);
         this.router.navigate(["../../book"]);
       }, err => {
-        console.log(err);
-
         this._snackBar.open(err.error.message, "Ok", {
           duration: 5000,
         });

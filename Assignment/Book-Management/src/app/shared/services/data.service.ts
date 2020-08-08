@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
-export class ProfileSetChangePasswordService {
+export class DataService {
   private isChangePassword = new BehaviorSubject<boolean>(false);
   currentIsChangePassword = this.isChangePassword.asObservable();
-  private isLogined = new BehaviorSubject<boolean>(!!localStorage.getItem("loginData") || localStorage.getItem("loginData")!="");
-  currentIsLogined = this.isLogined.asObservable();
+  private loginData = new BehaviorSubject<any>(localStorage.getItem('loginData') ? JSON.parse(localStorage.getItem('loginData')) : null);
+  currentLoginData = this.loginData.asObservable();
 
   constructor() { }
 
@@ -14,7 +14,7 @@ export class ProfileSetChangePasswordService {
     this.isChangePassword.next(isChangePassword);
   }
 
-  setIsLogined(isLogined: boolean) {
-    this.isLogined.next(isLogined);
+  setLoginData(loginData: object) {
+    this.loginData.next(loginData);
   }
 }

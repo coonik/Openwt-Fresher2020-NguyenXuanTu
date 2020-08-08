@@ -1,4 +1,4 @@
-import { ProfileSetChangePasswordService } from './../../../../shared/services/profile-set-changepassword.service';
+import { DataService } from './../../../../shared/services/data.service';
 import { debounceTime } from 'rxjs/operators';
 import { UserService } from './../../../../core/services/user.service';
 import { User } from './../../../../shared/auth.guard';
@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit {
   noChange: boolean = true;
   constructor(private userService: UserService,
     private _snackBar: MatSnackBar,
-    private profileSetChangePasswordService: ProfileSetChangePasswordService) { }
+    private dataService: DataService) { }
 
   ngOnInit(): void {
     this.loginData = JSON.parse(localStorage.getItem("loginData"));
@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit {
       username: new FormControl({value: this.user.username, disabled: true}),
       name: new FormControl(this.user.name)
     })
-    this.profileSetChangePasswordService.currentIsChangePassword.subscribe(val => {
+    this.dataService.currentIsChangePassword.subscribe(val => {
       this.isChangePassword = val;
     });
   }
@@ -74,6 +74,8 @@ export class ProfileComponent implements OnInit {
 
   sendRequest($event?) {
     $event?.stopPropagation();
+
+    //Change Name and Password
     if (this.isChangePassword) {
       if (this.userForm.get("newPw").value === this.userForm.get("oldPw").value) {
         this._snackBar.open("The new password must be different from the old password!", "Ok", {
@@ -91,6 +93,7 @@ export class ProfileComponent implements OnInit {
             this.loginData.user.name = this.userForm.get("name").value;
             this.loginData.user.password = this.userForm.get("newPw").value;
             localStorage.setItem("loginData", JSON.stringify(this.loginData));
+            this.dataService.setLoginData(this.loginData);
             this._snackBar.open("Your account has been Update!", "Ok", {
               duration: 2000,
             });
@@ -110,7 +113,9 @@ export class ProfileComponent implements OnInit {
           this.userForm.get("oldPw").setErrors(Validators.required);
         });
       }
-    } else {
+    }
+    //Only change Name
+    else {
       if (this.userForm.get("name").value === this.user.name) {
         this._snackBar.open("No change", "Ok", {
           duration: 2000,
@@ -124,9 +129,11 @@ export class ProfileComponent implements OnInit {
         }).subscribe(val => {
           this.loginData.user.name = this.userForm.get("name").value;
           localStorage.setItem("loginData", JSON.stringify(this.loginData));
+          this.dataService.setLoginData(this.loginData);
           this._snackBar.open("Your account has been Update!", "Ok", {
             duration: 2000,
           });
+          this.isChangePassword = true;
           this.onChangePassword();
           this.isProcess = false;
         }, err => {
