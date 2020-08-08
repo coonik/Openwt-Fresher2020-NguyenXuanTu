@@ -22,6 +22,7 @@ export interface DialogData {
 export class CategoryManagementComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'description', 'book', 'CRUD'];
   dataSource: Promise<[]> | null=null;
+  categoryData: any;
   searchFormControl = new FormControl();
   categoriesObs$: Observable<any>;
   user: User;
@@ -33,7 +34,7 @@ export class CategoryManagementComponent implements OnInit {
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem("loginData")).user;
     this.categoriesObs$ = this.categoryService.getAllCategories();
-
+    this.categoriesObs$.subscribe(val => this.categoryData = val);
     this.searchFormControl.valueChanges
       .pipe(debounceTime(1000))
       .subscribe(val => {
@@ -49,10 +50,18 @@ export class CategoryManagementComponent implements OnInit {
     }});
 
     dialogRef.afterClosed().subscribe(result => {
-      let kt = true;
-      result ? id ? this.categoryService.updateCategory(id, result.name, result.description).subscribe() : this.categoryService.createCategory(result.name, result.description).subscribe() : kt = false;
-      if (kt)
-        this.categoriesObs$ = this.categoryService.getAllCategories();
+      result ? id ? this.categoryService.updateCategory(id, result.name, result.description).subscribe(() => {
+        this.dataSource = this.categoryData.map(x => {
+          if (x.id === id) {
+            x.name = result.name;
+            x.description = result.description
+          }
+          return x;
+        });
+      }) : this.categoryService.createCategory(result.name, result.description).subscribe((val) => {
+        this.categoryData = [...this.categoryData, val];
+        this.dataSource = this.categoryData;
+      }) : null;
     });
   }
 
@@ -66,7 +75,8 @@ export class CategoryManagementComponent implements OnInit {
           this._snackBar.open("This category has been Deleted", "Ok", {
             duration: 5000,
           });
-          this.categoriesObs$ = this.categoryService.getAllCategories();
+          this.dataSource = this.categoryData.filter(x => x.id !== id);
+          this.categoryData = this.categoryData.filter(x => x.id !== id);
         }
       })
   }

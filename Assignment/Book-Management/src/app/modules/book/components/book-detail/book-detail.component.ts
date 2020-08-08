@@ -160,9 +160,6 @@ export class BookDetailComponent implements OnInit {
 
   onClickCreate() {
     let data = this.bookDetailForm.value;
-    console.log(data);
-
-
     let bookDb: bookDb = {
       bookName: data.name, price: data.price, year: data.year, authorId: data.author, publisher: data.publisher, cover: this.changeImage ? this.cover.split(";base64,")[1] : null, categoriesId: data.categories, description: data.description
     }
