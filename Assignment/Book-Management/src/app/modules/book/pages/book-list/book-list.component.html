@@ -27,7 +27,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Author</mat-label>
           <mat-select disableRipple (selectionChange)="onSelected($event)">
-            <mat-option [value]="''">No Select</mat-option>
+            <mat-option [value]="">No Select</mat-option>
             <mat-option *ngFor="let item of authorObs$ | async" value="{{item.id}}"> {{ item.name }} </mat-option>
           </mat-select>
         </mat-form-field>

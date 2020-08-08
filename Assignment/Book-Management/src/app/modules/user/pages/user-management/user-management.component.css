@@ -18,3 +18,12 @@ section {
 .pointer {
   cursor: pointer;
 }
+
+.sort {
+  position: relative;
+}
+
+.mat-icon {
+  position: absolute;
+  top: -4px;
+}

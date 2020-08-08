@@ -72,8 +72,8 @@ export class BookListComponent implements OnInit {
   }
 
   onSelected(event: MatSelectChange) {
-    if (typeof(event.value)==='string') {
-      this.authorId = event.value;
+    if (typeof(event.value)==='string' || event.value === undefined) {
+      this.authorId = event.value ? event.value : "";
     } else {
       this.categoriesId = event.value;
     }

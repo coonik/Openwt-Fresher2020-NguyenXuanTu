@@ -25,17 +25,17 @@
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef class="pointer" (click)="sort('name')"> Name <mat-icon aria-hidden="false" aria-label="Example home icon">sort_by_alpha</mat-icon> </th>
+      <th mat-header-cell *matHeaderCellDef class="pointer" (click)="sort('name')"> <div class="sort">Name <mat-icon aria-hidden="false" aria-label="Example home icon">sort</mat-icon></div> </th>
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="username">
-      <th mat-header-cell *matHeaderCellDef class="pointer" (click)="sort('username')"> Username <mat-icon aria-hidden="false" aria-label="Example home icon">sort_by_alpha</mat-icon> </th>
+      <th mat-header-cell *matHeaderCellDef class="pointer" (click)="sort('username')"> <div class="sort">Username <mat-icon aria-hidden="false" aria-label="Example home icon">sort</mat-icon></div> </th>
       <td mat-cell *matCellDef="let element"> {{element.username}} </td>
     </ng-container>
 
     <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef class="pointer" (click)="sort('role')"> Role <mat-icon aria-hidden="false" aria-label="Example home icon">sort_by_alpha</mat-icon> </th>
+      <th mat-header-cell *matHeaderCellDef class="pointer" (click)="sort('role')"> <div class="sort">Role <mat-icon aria-hidden="false" aria-label="Example home icon">sort</mat-icon></div> </th>
       <td mat-cell *matCellDef="let element"> {{element.role.charAt(0)+element.role.slice(1).toLowerCase()}} </td>
     </ng-container>
 
