@@ -16,6 +16,7 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  loading: boolean = false;
 
   constructor(private router: Router,
     private userService: UserService,
@@ -51,13 +52,16 @@ export class LoginComponent implements OnInit {
 
   login() : void {
     if (this.loginForm.valid) {
+      this.loading = true;
       let user = this.loginForm.value;
       this.userService.login(user.username, user.password)
       .subscribe(val => {
         localStorage.setItem('loginData',JSON.stringify(val));
         this.dataService.setLoginData(val);
+        this.loading = false;
         this.router.navigate(["../../book"]);
       }, err => {
+        this.loading = false;
         this._snackBar.open(err.error.message, "Ok", {
           duration: 5000,
         });
