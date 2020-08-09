@@ -58,9 +58,17 @@ export class CategoryManagementComponent implements OnInit {
           }
           return x;
         });
+
+        this._snackBar.open(`This category has been Updated!`, "Ok", {
+          duration: 5000,
+        });
       }) : this.categoryService.createCategory(result.name, result.description).subscribe((val) => {
-        this.categoryData = [...this.categoryData, val];
+        this.categoryData = [val,...this.categoryData];
         this.dataSource = this.categoryData;
+
+        this._snackBar.open(`This category has been Created!`, "Ok", {
+          duration: 5000,
+        });
       }) : null;
     });
   }

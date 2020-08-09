@@ -20,6 +20,7 @@ export class UserManagementComponent implements OnInit {
   searchFormControl = new FormControl();
   userObs$: Observable<any>;
   user: User;
+  userData: any;
   totalItems: number;
   pageSize: number;
   pageNumber: number;
@@ -35,6 +36,9 @@ export class UserManagementComponent implements OnInit {
     this.descending = false;
     this.sortBy = "name";
     this.userObs$ = this.userService.getUserPagination();
+    this.userObs$.subscribe(val => {
+      localStorage.setItem("userData",JSON.stringify(val));
+    });
     this.userObs$.subscribe(
       val => {
         this.totalItems = this.userService.totalItems;
@@ -55,8 +59,10 @@ export class UserManagementComponent implements OnInit {
     }});
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result)
-        this.userObs$ = this.userService.getUserPagination();
+      if (result) {
+        this.userData = JSON.parse(localStorage.getItem("userData"));
+        this.dataSource = this.userData;
+      }
     });
   }
 
@@ -70,6 +76,7 @@ export class UserManagementComponent implements OnInit {
           this._snackBar.open("This user has been Deleted", "Ok", {
             duration: 5000,
           });
+          this.dataSource = undefined;
           this.userObs$ = this.userService.getUserPagination();
         }
       })
@@ -135,7 +142,7 @@ export class UserManagementComponent implements OnInit {
 export class UserDialog implements OnInit{
   dataDefault: any;
   noChange: boolean;
-
+  userData: any;
   userForm: FormGroup = this.data.id ? new FormGroup({
     name: new FormControl(),
     role: new FormControl("USER")
@@ -153,6 +160,7 @@ export class UserDialog implements OnInit{
     private userService: UserService) {}
 
   ngOnInit() {
+    this.userData = JSON.parse(localStorage.getItem("userData"));
     if (this.data.id) {
       this.dataDefault = {
         name: this.data.name,
@@ -186,6 +194,14 @@ export class UserDialog implements OnInit{
   sendRequest() {
     this.data.id ? this.userService.updateUser(Number.parseInt(this.data.id), this.data).subscribe(val => {
       this.dialogRef.close(true);
+      this.userData = this.userData.map(x => {
+        if (x.id === this.data.id) {
+          x = val
+        }
+        return x;
+      });
+      localStorage.setItem("userData", JSON.stringify(this.userData));
+      console.log(localStorage.getItem("userData"));
       this._snackBar.open("User has been Update!", "Ok", {
         duration: 2000,
       });
@@ -195,11 +211,16 @@ export class UserDialog implements OnInit{
       });
     }) : this.userService.createUser(this.data).subscribe(val => {
       this.dialogRef.close(true);
+      this.userData.pop();
+      this.userData = [val,...this.userData];
+      localStorage.setItem("userData", JSON.stringify(this.userData));
       this._snackBar.open("User has been Created!", "Ok", {
         duration: 2000,
       });
     }, err => {
-
+      this._snackBar.open(err.error.message, "Ok", {
+        duration: 2000,
+      });
     });
   }
 

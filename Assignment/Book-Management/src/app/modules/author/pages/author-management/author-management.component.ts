@@ -25,6 +25,7 @@ export class AuthorManagementComponent implements OnInit {
   dataSource: Promise<[]> | null=null;
   searchFormControl = new FormControl();
   authorsObs$: Observable<any>;
+  authorData: any;
   user: User;
   displayedColumns: string[] = ['position', 'name', 'website', 'birthday', 'books', 'CRUD'];
 
@@ -36,6 +37,7 @@ export class AuthorManagementComponent implements OnInit {
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem("loginData")).user;
     this.authorsObs$ = this.authorService.getAllAuthor();
+    this.authorsObs$.subscribe(val => this.authorData = val);
     this.searchFormControl.valueChanges
       .pipe(debounceTime(1000))
       .subscribe(val => {
@@ -51,13 +53,24 @@ export class AuthorManagementComponent implements OnInit {
     }});
 
     dialogRef.afterClosed().subscribe(result => {
-      result ? this._snackBar.open(`This author has been ${id ? "Update" : "Create"}!`, "Ok", {
-        duration: 5000,
-      }) : null;
-      result ? id ? this.authorService.updateAuthor(id, result.name, result.website, result.birthday, result.cover === cover ? null : result.cover).subscribe(null, null, () => {
-        this.authorsObs$ = this.authorService.getAllAuthor();
-      }) : this.authorService.createAuthor(result.name, result.website, result.birthday, result.cover).subscribe(null, null, () => {
-        this.authorsObs$ = this.authorService.getAllAuthor();
+      result ? id ? this.authorService.updateAuthor(id, result.name, result.website, result.birthday, result.cover === cover ? null : result.cover).subscribe(val => {
+        this.dataSource = this.authorData.map(x => {
+          if (x.id === id) {
+            x = val;
+          }
+          return x;
+        });
+
+        this._snackBar.open(`This author has been Update!`, "Ok", {
+          duration: 2000,
+        });
+      }) : this.authorService.createAuthor(result.name, result.website, result.birthday, result.cover).subscribe(val => {
+        this.authorData = [val,...this.authorData];
+        this.dataSource = this.authorData;
+
+        this._snackBar.open(`This author has been Create!`, "Ok", {
+          duration: 5000,
+        });
       }) : null;
     });
   }
@@ -72,7 +85,8 @@ export class AuthorManagementComponent implements OnInit {
           this._snackBar.open("This author has been Deleted", "Ok", {
             duration: 5000,
           });
-          this.authorsObs$ = this.authorService.getAllAuthor();
+          this.dataSource = this.authorData.filter(x => x.id !== id);
+          this.authorData = this.authorData.filter(x => x.id !== id);
         }
       })
   }
