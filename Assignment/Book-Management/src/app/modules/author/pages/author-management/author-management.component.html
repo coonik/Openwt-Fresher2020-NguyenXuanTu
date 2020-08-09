@@ -17,6 +17,13 @@
     <mat-spinner></mat-spinner>
   </div>
 
+  <div class="overlay" *ngIf="loading">
+    <div class="center">
+      <mat-progress-spinner style="margin:0 auto;" diameter="80" mode="indeterminate" color="accent">
+      </mat-progress-spinner>
+    </div>
+  </div>
+
   <table mat-table [dataSource]="dataSource ? dataSource : authorsObs$ | async" *ngIf="(authorsObs$ | async) && dataSource?.length !== 0" >
 
     <ng-container matColumnDef="position">

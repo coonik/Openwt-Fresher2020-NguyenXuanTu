@@ -101,48 +101,78 @@ export class UserManagementComponent implements OnInit {
 
 @Component({
   selector: 'dialog-content-example-dialog',
-  template: `<h2> {{ data.id ? "Edit " : "Create " }} User </h2>
-              <div mat-dialog-content [formGroup]="userForm">
-              <div *ngIf="!data.id">
-                <p>The Username Input!</p>
-                <mat-form-field>
-                  <mat-label>Username</mat-label>
-                  <input matInput required [(ngModel)]="data.username" formControlName="username">
-                </mat-form-field>
-              </div>
-
-                <p>The Name Input!</p>
-                <mat-form-field>
-                  <mat-label>Name</mat-label>
-                  <input matInput [(ngModel)]="data.name" formControlName="name">
-                </mat-form-field>
-
+  template: `
+              <div>
+                <div class="overlay" *ngIf="loading">
+                  <div class="center">
+                    <mat-progress-spinner style="margin:0 auto;" diameter="80" mode="indeterminate" color="accent">
+                    </mat-progress-spinner>
+                  </div>
+                </div>
+                <h2> {{ data.id ? "Edit " : "Create " }} User </h2>
+                <div mat-dialog-content [formGroup]="userForm">
                 <div *ngIf="!data.id">
-                  <p>The Password Input!</p>
+                  <p>The Username Input!</p>
                   <mat-form-field>
-                    <mat-label>Password</mat-label>
-                    <input matInput required [(ngModel)]="data.password" formControlName="password">
+                    <mat-label>Username</mat-label>
+                    <input matInput required [(ngModel)]="data.username" formControlName="username">
                   </mat-form-field>
                 </div>
 
-                <mat-form-field appearance="fill">
-                  <mat-label>Role</mat-label>
-                  <mat-select disableRipple [(ngModel)]="data.role" (selectionChange)="onSelected($event)" formControlName="role">
-                    <mat-option value="USER">User</mat-option>
-                    <mat-option value="EDITOR">Editor</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                  <p>The Name Input!</p>
+                  <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput [(ngModel)]="data.name" formControlName="name">
+                  </mat-form-field>
+
+                  <div *ngIf="!data.id">
+                    <p>The Password Input!</p>
+                    <mat-form-field>
+                      <mat-label>Password</mat-label>
+                      <input matInput required [(ngModel)]="data.password" formControlName="password">
+                    </mat-form-field>
+                  </div>
+
+                  <mat-form-field appearance="fill">
+                    <mat-label>Role</mat-label>
+                    <mat-select disableRipple [(ngModel)]="data.role" (selectionChange)="onSelected($event)" formControlName="role">
+                      <mat-option value="USER">User</mat-option>
+                      <mat-option value="EDITOR">Editor</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div mat-dialog-actions>
+                  <button mat-button (click)="onNoClick()">Cancel</button>
+                  <button mat-button color="warn" (click)="sendRequest()" [disabled]="!userForm.valid || noChange">{{ data.id ? "Edit" : "Create" }}</button>
+                </div>
               </div>
-              <div mat-dialog-actions>
-                <button mat-button (click)="onNoClick()">Cancel</button>
-                <button mat-button color="warn" (click)="sendRequest()" [disabled]="!userForm.valid || noChange">{{ data.id ? "Edit" : "Create" }}</button>
-              </div>
-            `
+            `,
+  styles: [`
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  .overlay{
+    height: 100%;
+    width:100%;
+    background-color:rgba(0, 0, 0, 0.286);
+    z-index:    10;
+    top:        0;
+    left:       0;
+    position:   absolute;
+  }
+  `]
 })
 export class UserDialog implements OnInit{
   dataDefault: any;
   noChange: boolean;
   userData: any;
+  loading: boolean = false;
   userForm: FormGroup = this.data.id ? new FormGroup({
     name: new FormControl(),
     role: new FormControl("USER")
@@ -192,6 +222,7 @@ export class UserDialog implements OnInit{
   }
 
   sendRequest() {
+    this.loading = true;
     this.data.id ? this.userService.updateUser(Number.parseInt(this.data.id), this.data).subscribe(val => {
       this.dialogRef.close(true);
       this.userData = this.userData.map(x => {
@@ -201,11 +232,13 @@ export class UserDialog implements OnInit{
         return x;
       });
       localStorage.setItem("userData", JSON.stringify(this.userData));
-      console.log(localStorage.getItem("userData"));
+      this.loading = false;
+
       this._snackBar.open("User has been Update!", "Ok", {
         duration: 2000,
       });
     }, err => {
+      this.loading = false;
       this._snackBar.open(err.error.message, "Ok", {
         duration: 2000,
       });
@@ -214,10 +247,13 @@ export class UserDialog implements OnInit{
       this.userData.pop();
       this.userData = [val,...this.userData];
       localStorage.setItem("userData", JSON.stringify(this.userData));
+      this.loading = false;
+
       this._snackBar.open("User has been Created!", "Ok", {
         duration: 2000,
       });
     }, err => {
+      this.loading = false;
       this._snackBar.open(err.error.message, "Ok", {
         duration: 2000,
       });

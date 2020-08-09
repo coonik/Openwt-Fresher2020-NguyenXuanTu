@@ -27,6 +27,7 @@ export class AuthorManagementComponent implements OnInit {
   authorsObs$: Observable<any>;
   authorData: any;
   user: User;
+  loading: boolean = false;
   displayedColumns: string[] = ['position', 'name', 'website', 'birthday', 'books', 'CRUD'];
 
   constructor(private authorService: AuthorService,
@@ -53,25 +54,30 @@ export class AuthorManagementComponent implements OnInit {
     }});
 
     dialogRef.afterClosed().subscribe(result => {
-      result ? id ? this.authorService.updateAuthor(id, result.name, result.website, result.birthday, result.cover === cover ? null : result.cover).subscribe(val => {
-        this.dataSource = this.authorData.map(x => {
-          if (x.id === id) {
-            x = val;
-          }
-          return x;
-        });
+      if (result) {
+        this.loading = true;
+        id ? this.authorService.updateAuthor(id, result.name, result.website, result.birthday, result.cover === cover ? null : result.cover).subscribe(val => {
+          this.dataSource = this.authorData.map(x => {
+            if (x.id === id) {
+              x = val;
+            }
+            return x;
+          });
+          this.loading = false;
 
-        this._snackBar.open(`This author has been Update!`, "Ok", {
-          duration: 2000,
-        });
-      }) : this.authorService.createAuthor(result.name, result.website, result.birthday, result.cover).subscribe(val => {
-        this.authorData = [val,...this.authorData];
-        this.dataSource = this.authorData;
+          this._snackBar.open(`This author has been Update!`, "Ok", {
+            duration: 2000,
+          });
+        }) : this.authorService.createAuthor(result.name, result.website, result.birthday, result.cover).subscribe(val => {
+          this.authorData = [val,...this.authorData];
+          this.dataSource = this.authorData;
+          this.loading = false;
 
-        this._snackBar.open(`This author has been Create!`, "Ok", {
-          duration: 5000,
-        });
-      }) : null;
+          this._snackBar.open(`This author has been Create!`, "Ok", {
+            duration: 5000,
+          });
+        })
+      };
     });
   }
 
