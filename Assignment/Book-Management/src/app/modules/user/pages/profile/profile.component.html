@@ -31,7 +31,7 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button class="btnChangePassword" (click)="onChangePassword($event)">{{ isChangePassword ? "Cancel" : "Change Password"}}</button>
-    <button mat-button color="warn" (click)="sendRequest($event)" [disabled]="!userForm.valid">Edit</button>
+    <button mat-button color="warn" (click)="sendRequest($event)" [disabled]="!userForm.valid || userForm.get('name').value === user.name">Edit</button>
     <br>
     <button mat-flat-button color="warn" [routerLink]="['./user/logout']"><span class="glyphicon glyphicon-off"></span> Logout</button>
   </div>

@@ -19,7 +19,6 @@ export class ProfileComponent implements OnInit {
   isProcess: boolean = false;
   passwordSub: Subscription;
   isChangePassword: boolean = false;
-  noChange: boolean = true;
   constructor(private userService: UserService,
     private _snackBar: MatSnackBar,
     private dataService: DataService) { }
@@ -30,7 +29,7 @@ export class ProfileComponent implements OnInit {
     this.userForm = new FormGroup({
       username: new FormControl({value: this.user.username, disabled: true}),
       name: new FormControl(this.user.name)
-    })
+    });
     this.dataService.currentIsChangePassword.subscribe(val => {
       this.isChangePassword = val;
     });
@@ -145,5 +144,4 @@ export class ProfileComponent implements OnInit {
       }
     }
   }
-
 }
