@@ -16,8 +16,13 @@ export class ProfileComponent implements OnInit {
   userForm: FormGroup;
   user: User;
   loginData: any;
+  nameErrorString: string = "";
+  oldPwErrorString: string = "";
+  newPwErrorString: string = "";
+  nameSub: Subscription;
+  oldPwSub: Subscription;
+  newPwSub: Subscription;
   isProcess: boolean = false;
-  passwordSub: Subscription;
   isChangePassword: boolean = false;
   constructor(private userService: UserService,
     private _snackBar: MatSnackBar,
@@ -28,47 +33,75 @@ export class ProfileComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem("loginData")).user;
     this.userForm = new FormGroup({
       username: new FormControl({value: this.user.username, disabled: true}),
-      name: new FormControl(this.user.name)
+      name: new FormControl(this.user.name, [Validators.required, Validators.minLength(6), Validators.maxLength(30)])
     });
     this.dataService.currentIsChangePassword.subscribe(val => {
       this.isChangePassword = val;
     });
+    this.nameSub = this.userForm.get("name").valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(() => {
+        this.checkValid();
+      })
   }
 
   onChangePassword($event?) {
     $event?.stopPropagation();
-    this.passwordSub?.unsubscribe();
+    this._snackBar.dismiss();
+    this.nameSub.unsubscribe();
+    this.oldPwSub?.unsubscribe();
+    this.newPwSub?.unsubscribe();
     this.isChangePassword = !this.isChangePassword;
     if (this.isChangePassword) {
       this.userForm = new FormGroup({
         username: new FormControl({value: this.user.username, disabled: true}),
-        name: new FormControl(this.user.name),
-        oldPw: new FormControl("",[Validators.required, Validators.minLength(6)]),
-        newPw: new FormControl("",[Validators.required, Validators.minLength(6)]),
+        name: new FormControl(this.user.name, [Validators.required, Validators.minLength(6), Validators.maxLength(30)]),
+        oldPw: new FormControl("",[Validators.required, Validators.minLength(6), Validators.maxLength(30)]),
+        newPw: new FormControl("",[Validators.required, Validators.minLength(6), Validators.maxLength(30)]),
       })
 
-      this.userForm.get("oldPw").valueChanges
+      this.nameSub = this.userForm.get("name").valueChanges
         .pipe(debounceTime(1000))
         .subscribe(() => {
-          if (!this.userForm.get("oldPw")?.valid)
-            this._snackBar.open("Old password is required and Include at least 6 characters!", "Ok", {
-              duration: 2000,
-            });
+          this.checkValid();
+        })
+
+      this.oldPwSub = this.userForm.get("oldPw").valueChanges
+        .pipe(debounceTime(1000))
+        .subscribe(() => {
+          this.checkValid();
       })
-      this.userForm.get("newPw").valueChanges
+      this.newPwSub = this.userForm.get("newPw").valueChanges
         .pipe(debounceTime(1000))
         .subscribe(() => {
-          if (!this.userForm.get("newPw")?.valid)
-            this._snackBar.open("New password is required and Include at least 6 characters!", "Ok", {
-              duration: 2000,
-            });
+          this.checkValid();
       })
     } else {
       this.userForm = new FormGroup({
         username: new FormControl({value: this.user.username, disabled: true}),
-        name: new FormControl(this.loginData.user.name)
+        name: new FormControl(this.loginData.user.name, [Validators.required, Validators.minLength(6), Validators.maxLength(30)])
       })
+      this.nameSub = this.userForm.get("name").valueChanges
+        .pipe(debounceTime(1000))
+        .subscribe(() => {
+          this.checkValid();
+        })
     }
+  }
+
+  checkValid() {
+    let nameError = this.userForm.get("name").errors;
+    this.nameErrorString = nameError?.required ? "Name is required" : nameError?.minlength ? "Name is include at least 6 characters" : nameError?.maxlength ? "Name have at most 30 characters" : "";
+
+    let oldPwError = this.userForm.get("oldPw")?.errors;
+    this.oldPwErrorString = oldPwError?.required ? "Old Password is required" : oldPwError?.minlength ? "Old Password is include at least 6 characters" : oldPwError?.maxlength ? "Old Password have at most 30 characters" : "";
+
+    let newPwError = this.userForm.get("newPw")?.errors;
+    this.newPwErrorString = newPwError?.required ? "New Password is required" : newPwError?.minlength ? "New Password is include at least 6 characters" : newPwError?.maxlength ? "New Password have at most 30 characters" : "";
+    if (!this.userForm.valid)
+      this._snackBar.open(`${this.nameErrorString} ${this.nameErrorString!=="" && this.oldPwErrorString!=="" ? `; ${this.oldPwErrorString}` : this.oldPwErrorString} ${(this.nameErrorString!=="" || this.oldPwErrorString!=="") && this.newPwErrorString!=="" ? `; ${this.newPwErrorString}` : this.newPwErrorString}`, "Ok", {
+        duration: 5000,
+      })
   }
 
   sendRequest($event?) {
