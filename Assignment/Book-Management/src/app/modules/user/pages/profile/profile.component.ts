@@ -50,7 +50,7 @@ export class ProfileComponent implements OnInit {
       this.userForm.get("oldPw").valueChanges
         .pipe(debounceTime(1000))
         .subscribe(() => {
-          if (!this.userForm.get("oldPw").valid)
+          if (!this.userForm.get("oldPw")?.valid)
             this._snackBar.open("Old password is required and Include at least 6 characters!", "Ok", {
               duration: 2000,
             });
@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit {
       this.userForm.get("newPw").valueChanges
         .pipe(debounceTime(1000))
         .subscribe(() => {
-          if (!this.userForm.get("newPw").valid)
+          if (!this.userForm.get("newPw")?.valid)
             this._snackBar.open("New password is required and Include at least 6 characters!", "Ok", {
               duration: 2000,
             });
