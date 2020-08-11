@@ -1,3 +1,4 @@
+import { debounceTime } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { BookService, bookDb } from '../../../../core/services/book.service';
 import { Observable } from 'rxjs';
@@ -74,12 +75,12 @@ export class BookDetailComponent implements OnInit {
       );
     }
 
-    this.bookDetailForm.get("name").setValidators([Validators.required]);
+    this.bookDetailForm.get("name").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(100)]);
     this.bookDetailForm.get("author").setValidators([Validators.required]);
-    this.bookDetailForm.get("publisher").setValidators([Validators.required]);
+    this.bookDetailForm.get("publisher").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(100)]);
     this.bookDetailForm.get("price").setValidators([Validators.min(0), Validators.required]);
     this.bookDetailForm.get("year").setValidators([Validators.min(1000), Validators.max(new Date().getFullYear())]);
-    this.bookDetailForm.valueChanges.subscribe( val => {
+    this.bookDetailForm.valueChanges.pipe(debounceTime(1500)).subscribe( val => {
       if (this.bookData) {
         this.noChange = false;
 
@@ -90,6 +91,12 @@ export class BookDetailComponent implements OnInit {
 
         if (val.name === this.bookData.name && this.bookData.price === val.price && this.bookData.year === val.year && this.bookData.author.id === val.author && this.bookData.publisher === val.publisher && JSON.stringify(categoriesId) === JSON.stringify(val.categories) && this.bookData.description === val.description && !this.changeImage)
           this.noChange = true;
+      } else {
+        if (!this.bookDetailForm.get("author").valid && this.bookDetailForm.get("author").touched) {
+          this._snackBar.open("AUTHOR is required!", "Ok", {
+            duration: 5000,
+          });
+        }
       }
     })
   }
@@ -128,27 +135,27 @@ export class BookDetailComponent implements OnInit {
   }
 
   checkValidForm() {
-    this.bookDetailForm.get('price').statusChanges.subscribe(val => {
+    this.bookDetailForm.get('price').statusChanges.pipe(debounceTime(1000)).subscribe(val => {
       if (val === 'INVALID')
         this._snackBar.open("PRICE: Please enter a positive value and it is required!", "Ok", {
           duration: 5000,
         });
     });
-    this.bookDetailForm.get('name').statusChanges.subscribe(val => {
+    this.bookDetailForm.get('name').statusChanges.pipe(debounceTime(1000)).subscribe(val => {
       if (val === 'INVALID')
-        this._snackBar.open("TITLE is required!", "Ok", {
+        this._snackBar.open("TITLE are allowed between 6 and 100 characters only and it's required!", "Ok", {
           duration: 5000,
         });
     });
-    this.bookDetailForm.get('author').statusChanges.subscribe(val => {
+    this.bookDetailForm.get('author').statusChanges.pipe(debounceTime(1000)).subscribe(val => {
       if (val === 'INVALID')
         this._snackBar.open("AUTHOR is required!", "Ok", {
           duration: 5000,
         });
     });
-    this.bookDetailForm.get('publisher').statusChanges.subscribe(val => {
+    this.bookDetailForm.get('publisher').statusChanges.pipe(debounceTime(1000)).subscribe(val => {
       if (val === 'INVALID')
-        this._snackBar.open("PUBLISHER is required!", "Ok", {
+        this._snackBar.open("PUBLISHER are allowed between 6 and 100 characters only and it's required!", "Ok", {
           duration: 5000,
         });
     });
@@ -255,6 +262,7 @@ export class BookDetailComponent implements OnInit {
       this.changeImage = true;
       this.image = reader.readAsDataURL(event.target.files[0])
     } else {
+      this.bookDetailForm.get("cover").setValue("");
       this._snackBar.open(`Image File Error: Please select an image file and size <10Mb`, "Ok", {
         duration: 5000,
       });;
