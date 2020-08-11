@@ -122,21 +122,38 @@ export class CategoryDialog implements OnInit{
     name: "",
     description: ""
   };
-  noChange: boolean;
-  categoryForm: FormGroup = new FormGroup({name: new FormControl(Validators.required), description: new FormControl()});
+  noChange: boolean = true;
+  categoryForm: FormGroup = new FormGroup({name: new FormControl(null,[Validators.required, Validators.minLength(6), Validators.maxLength(30)]), description: new FormControl("",[Validators.minLength(6), Validators.maxLength(100)])});
 
   constructor(
     public dialogRef: MatDialogRef<CategoryDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.dataDefault.name = this.data.name;
     this.dataDefault.description = this.data.description;
-    this.data.id ? this.categoryForm.valueChanges.subscribe( val => {
-      this.noChange = false;
-      if (val.name === this.dataDefault.name && val.description === this.dataDefault.description)
+    this.categoryForm.valueChanges.pipe(debounceTime(200)).subscribe( val => {
+      if (this.data.id) {
         this.noChange = true;
-    }) : null;
+        if (val.name !== this.dataDefault.name || val.description !== this.dataDefault.description)
+          this.noChange = false;
+      } else {
+        this.noChange = false;
+      }
+
+      if (!this.categoryForm.valid && this.categoryForm.get("name").touched) {
+        let errorString = "";
+        let nameError = this.categoryForm.get("name").errors;
+        let descriptionError = this.categoryForm.get("description").errors;
+        errorString = nameError?.required ? "Name is required" : nameError?.maxlength ? "Name is only allowed up to 30 characters" : nameError?.minlength ? "Name must be at least 6 characters" : "";
+        errorString += errorString !== "" && descriptionError ? "; " : "";
+        errorString += descriptionError?.maxlength ? "Description is only allowed up to 100 characters" : descriptionError?.minlength ? "Description must be at least 6 characters" : "";
+        this._snackBar.open(`${errorString}!`, "Ok", {
+          duration: 5000,
+        });
+      }
+    });
   }
 
   onNoClick(): void {
