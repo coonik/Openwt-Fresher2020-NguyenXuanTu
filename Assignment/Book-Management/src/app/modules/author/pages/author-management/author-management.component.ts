@@ -102,7 +102,7 @@ export class AuthorManagementComponent implements OnInit {
   selector: 'dialog-content-example-dialog',
   template: `<h2> {{ data.id ? "Edit " : "Create " }} Author </h2>
               <div mat-dialog-content [formGroup]="authorForm">
-                <div>
+                <div class="content">
                   <p>The Author Name Input!</p>
                   <mat-form-field>
                     <mat-label>Author Name</mat-label>
@@ -113,7 +113,7 @@ export class AuthorManagementComponent implements OnInit {
                     <img mat-card-image src="" alt="Photo of {{data.name}}">
                   </picture>
                 </div>
-                <div>
+                <div class="content">
                   <p>The Author Website Input!</p>
                   <mat-form-field>
                     <mat-label>Author Website</mat-label>
@@ -163,6 +163,10 @@ export class AuthorManagementComponent implements OnInit {
             display: flex;
             flex-direction: row-reverse;
           }
+
+          .content {
+            width: 250px
+          }
           `]
 })
 export class AuthorDialog implements OnInit{
@@ -176,7 +180,7 @@ export class AuthorDialog implements OnInit{
   noChange: boolean;
   changeImage: boolean;
   image: any;
-  authorForm: FormGroup = new FormGroup({name: new FormControl(Validators.required), website: new FormControl(), birthday: new FormControl("1990-01-01",Validators.required), cover: new FormControl()});
+  authorForm: FormGroup = new FormGroup({name: new FormControl("",[Validators.required, Validators.minLength(6), Validators.maxLength(30)]), website: new FormControl("",[Validators.minLength(6), Validators.maxLength(30)]), birthday: new FormControl("1990-01-01",Validators.required), cover: new FormControl()});
 
   constructor(
     public dialogRef: MatDialogRef<AuthorDialog>,
@@ -186,8 +190,8 @@ export class AuthorDialog implements OnInit{
   ngOnInit() {
     this.changeImage = false;
 
-    if (!this.data.website)
-      this.data.website = "None";
+    // if (!this.data.website)
+    //   this.data.website = "None";
     this.data.birthday = this.data.birthday ? this.data.birthday.slice(0,10) : "1990-01-01";
     this.dataDefault.name = this.data.name;
     this.dataDefault.website = this.data.website;
@@ -196,12 +200,26 @@ export class AuthorDialog implements OnInit{
     this.dataDefault.birthday = this.dataDefault.birthday;
     this.cover = this.dataDefault.cover;
 
-    //unfix
-    this.data.id ? this.authorForm.valueChanges.subscribe( val => {
-      this.noChange = false;
-      if (val.name === this.dataDefault.name && val.website === this.dataDefault.website && val.birthday === this.dataDefault.birthday && !this.changeImage)
-        this.noChange = true;
-    }) : null;
+    this.authorForm.valueChanges.pipe(debounceTime(500)).subscribe( val => {
+      if (this.data.id) {
+        this.noChange = false;
+        if (val.name === this.dataDefault.name && val.website === this.dataDefault.website && val.birthday === this.dataDefault.birthday && !this.changeImage)
+          this.noChange = true;
+      }
+      if (!this.authorForm.valid && this.authorForm.get("name").touched) {
+        let errorString = "";
+        let nameError = this.authorForm.get("name").errors;
+        let websiteError = this.authorForm.get("website").errors;
+        let birthdayError = this.authorForm.get("birthday").errors;
+        errorString = nameError?.required ? "Name is required" : nameError?.maxlength ? "Name is only allowed up to 30 characters" : nameError?.minlength ? "Name must be at least 6 characters" : "";
+        errorString += errorString !== "" && websiteError ? "; " : "";
+        errorString += websiteError?.maxlength ? "Website is only allowed up to 30 characters" : websiteError?.minlength ? "Website must be at least 6 characters" : "";
+        errorString += birthdayError ? errorString !== "" ? "; Please enter the correct date of birth" : "Please enter the correct date of birth" : "";
+        this._snackBar.open(`${errorString}!`, "Ok", {
+          duration: 5000,
+        });
+      }
+    });
   }
 
   imageChange(event: any) {
