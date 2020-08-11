@@ -20,3 +20,8 @@
   left:       0;
   position:   absolute;
 }
+
+.mat-dialog-action {
+  display: block !important;
+  margin-bottom: 0 !important;
+}

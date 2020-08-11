@@ -124,6 +124,7 @@ export class ProfileComponent implements OnInit {
           }).subscribe(() => {
             this.loginData.user.name = this.userForm.get("name").value;
             this.loginData.user.password = this.userForm.get("newPw").value;
+            this.user = this.loginData.user;
             localStorage.setItem("loginData", JSON.stringify(this.loginData));
             this.dataService.setLoginData(this.loginData);
             this._snackBar.open("Your account has been Update!", "Ok", {
@@ -160,6 +161,7 @@ export class ProfileComponent implements OnInit {
           role: this.user.role
         }).subscribe(val => {
           this.loginData.user.name = this.userForm.get("name").value;
+          this.user = this.loginData.user;
           localStorage.setItem("loginData", JSON.stringify(this.loginData));
           this.dataService.setLoginData(this.loginData);
           this._snackBar.open("Your account has been Update!", "Ok", {
