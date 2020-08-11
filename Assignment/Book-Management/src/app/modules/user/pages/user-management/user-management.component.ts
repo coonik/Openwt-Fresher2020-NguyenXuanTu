@@ -122,7 +122,7 @@ export class UserManagementComponent implements OnInit {
                   <p>The Name Input!</p>
                   <mat-form-field>
                     <mat-label>Name</mat-label>
-                    <input matInput [(ngModel)]="data.name" formControlName="name">
+                    <input matInput required [(ngModel)]="data.name" formControlName="name">
                   </mat-form-field>
 
                   <div *ngIf="!data.id">
@@ -174,12 +174,12 @@ export class UserDialog implements OnInit{
   userData: any;
   loading: boolean = false;
   userForm: FormGroup = this.data.id ? new FormGroup({
-    name: new FormControl(),
+    name: new FormControl("",[Validators.required, Validators.minLength(6), Validators.maxLength(30)]),
     role: new FormControl("USER")
   }) : new FormGroup({
-    username: new FormControl("",Validators.required),
-    password: new FormControl("",[Validators.required, Validators.minLength(6)]),
-    name: new FormControl(),
+    username: new FormControl("",[Validators.required, Validators.minLength(6), Validators.maxLength(30)]),
+    password: new FormControl("",[Validators.required, Validators.minLength(6), Validators.maxLength(30)]),
+    name: new FormControl("",[Validators.required, Validators.minLength(6), Validators.maxLength(30)]),
     role: new FormControl()
   });
 
@@ -203,19 +203,33 @@ export class UserDialog implements OnInit{
           this.noChange = false;
           if (val.name === this.dataDefault.name && val.role === this.dataDefault.role)
             this.noChange = true;
+          if (!this.userForm.valid) {
+            let errorString = "";
+            let nameError = this.userForm.get("name").errors;
+            errorString = nameError?.required ? "Name is required" : nameError?.maxlength ? "Name is only allowed up to 30 characters" : nameError?.minlength ? "Name must be at least 6 characters" : "";
+            this._snackBar.open(`${errorString}!`, "Ok", {
+                duration: 5000,
+              });
+          }
         });
     } else {
       this.userForm.valueChanges
-        .pipe(debounceTime(300))
+        .pipe(debounceTime(1000))
         .subscribe(val => {
-          if (!this.userForm.get("username").valid && this.userForm.get("username").touched)
-            this._snackBar.open("This username is required", "Ok", {
-              duration: 2000,
+          if (!this.userForm.valid && this.userForm.get("username").touched) {
+            let errorString = "";
+            let usernameError = this.userForm.get("username").errors;
+            let nameError = this.userForm.get("name").errors;
+            let passwordError = this.userForm.get("password").errors;
+            errorString = usernameError?.required ? "Username is required" : usernameError?.maxlength ? "Username is only allowed up to 30 characters" : usernameError?.minlength ? "Username must be at least 6 characters" : "";
+            errorString += errorString !== "" && nameError ? "; " : "";
+            errorString += nameError?.required ? "Name is required" : nameError?.maxlength ? "Name is only allowed up to 30 characters" : nameError?.minlength ? "Name must be at least 6 characters" : "";
+            errorString += errorString !== "" && passwordError ? "; " : "";
+            errorString += passwordError?.required ? "Password is required" : passwordError?.maxlength ? "Password is only allowed up to 30 characters" : passwordError?.minlength ? "Password must be at least 6 characters" : "";
+            this._snackBar.open(`${errorString}!`, "Ok", {
+              duration: 5000,
             });
-          if (!this.userForm.get("password").valid && this.userForm.get("password").touched)
-            this._snackBar.open("This password is required and Include at least 6 characters!", "Ok", {
-              duration: 2000,
-            });
+          }
         })
       this.data.role = "USER";
     };
