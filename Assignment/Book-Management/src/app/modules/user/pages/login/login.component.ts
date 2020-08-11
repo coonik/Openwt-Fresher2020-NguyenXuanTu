@@ -5,7 +5,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, flatMap } from 'rxjs/operators';
 /**
  * @title Table with sorting
  */
@@ -17,6 +17,7 @@ import { debounceTime } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading: boolean = false;
+  afterRequest: boolean = false;
   error: string = "";
 
   constructor(private router: Router,
@@ -39,7 +40,7 @@ export class LoginComponent implements OnInit {
       password: new FormControl("", [Validators.required,Validators.minLength(6),Validators.maxLength(30)])
     });
     this.loginForm.valueChanges.pipe(debounceTime(2000)).subscribe( () => {
-        if (!this.loginForm.valid) {
+        if (!this.loginForm.valid && !this.afterRequest) {
           let usernameError = this.loginForm.get("username").errors;
           let passwordError = this.loginForm.get("password").errors;
           this.error = "";
@@ -62,6 +63,7 @@ export class LoginComponent implements OnInit {
             duration: 5000,
           });
         }
+        this.afterRequest = false;
       }
     )
   }
@@ -81,8 +83,8 @@ export class LoginComponent implements OnInit {
         this._snackBar.open(err.error.message, "Ok", {
           duration: 5000,
         });
+        this.afterRequest = true;
         this.loginForm.get("password").setValue("");
-        this.loginForm.get("password").markAsUntouched();
       });
     } else {
       this._snackBar.open(`${this.error}!`, "Ok", {
