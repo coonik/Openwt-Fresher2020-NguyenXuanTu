@@ -3,7 +3,13 @@ img {
 }
 
 textarea {
-  height: 83px;
+  height: 174px;
+  max-height: 174px;
+}
+
+.button {
+  text-align: right;
+  padding-right: 21px;
 }
 
 .example-form {
@@ -21,6 +27,24 @@ width: 100%;
 
 .detail {
   display: flex;
+  padding: 16px;
+}
+
+.detail>div {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 5px;
+  text-align: center;
+}
+
+.width-60 {
+  width: 60%;
+  margin: 0 5px !important;
+}
+
+.width-30 {
+  width: 30%;
+  margin: 0 5px !important;
 }
 
 .filter{
@@ -68,4 +92,3 @@ cursor:pointer;
 position:relative;
 top:1px;
 }
-

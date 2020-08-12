@@ -1,4 +1,5 @@
 main{
   box-sizing: border-box;
   overflow: auto;
+  padding: 10px;
 }

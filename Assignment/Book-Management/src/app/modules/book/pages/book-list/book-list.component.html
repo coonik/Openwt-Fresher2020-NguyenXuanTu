@@ -1,12 +1,14 @@
 <div class="mat-elevation-z8">
-  <div class="example-button-row">
-    <button mat-button [routerLink]="['./create']" color="accent">Book Creation</button>
+  <div class="search-create">
+    <mat-form-field class="example-full-width">
+      <mat-label>Name Search</mat-label>
+      <input matInput maxlength="100" [formControl]="searchFormControl"
+             placeholder=" City of Bones ">
+    </mat-form-field>
+    <div class="example-button-row">
+      <button mat-raised-button color="primary" [routerLink]="['./create']" color="accent">Create Book</button>
+    </div>
   </div>
-  <mat-form-field class="example-full-width">
-    <mat-label>Name Search</mat-label>
-    <input matInput maxlength="100" [formControl]="searchFormControl"
-           placeholder=" City of Bones ">
-  </mat-form-field>
 
   <table mat-table [dataSource]="dataSource ? dataSource : bookObs$ | async">
 
@@ -24,7 +26,7 @@
 
     <ng-container matColumnDef="author">
       <th mat-header-cell *matHeaderCellDef>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-label>Author</mat-label>
           <mat-select disableRipple (selectionChange)="onSelected($event)">
             <mat-option [value]="">No Select</mat-option>
@@ -37,7 +39,7 @@
 
     <ng-container matColumnDef="categories">
       <th mat-header-cell *matHeaderCellDef>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-label>Categories</mat-label>
           <mat-select multiple (selectionChange)="onSelected($event)">
             <mat-option *ngFor="let item of categoryObs$ | async" value="{{item.id}}">{{ item.name }}</mat-option>

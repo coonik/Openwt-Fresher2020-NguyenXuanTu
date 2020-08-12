@@ -11,6 +11,10 @@ a {
   text-decoration: none;
 }
 
+.mat-elevation-z8 {
+  padding: 16px;
+}
+
 .example-label {
   display: table-cell;
   font-size: 14px;
@@ -21,6 +25,7 @@ a {
 .example-button-row {
   display: table-cell;
   width: 490px;
+  text-align: right;
 }
 
 .example-button-row .mat-button-base {
@@ -52,4 +57,9 @@ a {
 
 .ng-tns-c115-3{
   margin: 0 10px;
+}
+
+.search-create {
+  display: flex;
+  justify-content: space-between;
 }
