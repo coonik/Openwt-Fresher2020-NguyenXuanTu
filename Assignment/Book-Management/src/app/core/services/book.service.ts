@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http
 import { Injectable, ElementRef } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { tap } from'rxjs/operators';
-import { environment } from './../../../environments/environment';
 import { CategoryService } from './category.service';
 import { AuthorService } from './author.service';
 
@@ -20,10 +19,11 @@ export class BookService {
   searchResult: [];
   author: object = {};
   categories: object[] = [];
+  apiLink: 'https://nga-book-api.herokuapp.com/api'
 
   getAllBook(pageIndex: number, pageSize: number) {
 
-    this.http.get<any>(environment.apiLink+'/books?pageNumber='+pageIndex+'&pageSize='+pageSize, {
+    this.http.get<any>(this.apiLink+'/books?pageNumber='+pageIndex+'&pageSize='+pageSize, {
       observe: 'response'
     }).pipe(
       tap(resp => {
@@ -32,11 +32,11 @@ export class BookService {
         this.totalItems = objTemp.totalItems;
       })).subscribe()
 
-    return this.http.get<any>(environment.apiLink+`/books?pageNumber=${pageIndex}&pageSize=${pageSize}`)
+    return this.http.get<any>(this.apiLink+`/books?pageNumber=${pageIndex}&pageSize=${pageSize}`)
   }
 
   getBook(id: number) {
-    return this.http.get<any>(environment.apiLink+`/books/${id}`)
+    return this.http.get<any>(this.apiLink+`/books/${id}`)
   }
 
   getAuthor(id: number) {
@@ -76,7 +76,7 @@ export class BookService {
       cover: book.cover,
       categories: this.categories
     }
-    return this.http.post(environment.apiLink+`/books/`, data)
+    return this.http.post(this.apiLink+`/books/`, data)
   }
 
   updateBook(id: number, book: bookDb ) {
@@ -92,11 +92,11 @@ export class BookService {
       categories: this.categories
     }
 
-    return this.http.put(environment.apiLink+`/books/${id}`, data)
+    return this.http.put(this.apiLink+`/books/${id}`, data)
   }
 
   deleteBook(id: number) {
-    return this.http.delete(environment.apiLink+`/books/${id}`)
+    return this.http.delete(this.apiLink+`/books/${id}`)
   }
 
   searchBookByNameAndAuthorAndCategories(bookName: string = '',authorId: string = '', categoriesId: string[] = [], pageSize: number = 5, pageNumber: number = 1 ) {
@@ -107,6 +107,6 @@ export class BookService {
         category += category === '' ? item : ',' + item;
       }
     }
-    return this.http.get<any>(environment.apiLink+`/books?bookName=${bookName}&authorId=${authorId}&categoryIds=${category}&pageSize=${pageSize}&pageNumber=${pageNumber}`)
+    return this.http.get<any>(this.apiLink+`/books?bookName=${bookName}&authorId=${authorId}&categoryIds=${category}&pageSize=${pageSize}&pageNumber=${pageNumber}`)
   }
 }

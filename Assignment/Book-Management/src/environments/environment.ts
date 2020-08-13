@@ -3,9 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  apiLink: 'https://nga-book-api.herokuapp.com/api',
-  token: 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJtYW5hZ2VyMSIsInJvbGUiOiJNQU5BR0VSIiwibmJmIjoxNTk2MTkyNjEzLCJleHAiOjE1OTY2MjQ2MTMsImlhdCI6MTU5NjE5MjYxM30.-WIypgAX1phzJvfGyP3c8NAABBqaYH41utXrHXuCO24VxTyv_j_-Czo5e5Fn2ofErsM0RhlzTwQm7WUxvbyYzQ'
+  production: false
 };
 /*
  * For easier debugging in development mode, you can import the following file

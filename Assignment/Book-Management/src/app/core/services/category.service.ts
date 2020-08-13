@@ -1,17 +1,17 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from './../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class CategoryService {
+  apiLink: 'https://nga-book-api.herokuapp.com/api'
 
   constructor(private http: HttpClient) {}
   getAllCategories() {
-    return this.http.get<any>(environment.apiLink+`/categories`);
+    return this.http.get<any>(this.apiLink+`/categories`);
   }
 
   getCategoryById(id: number) {
-    return this.http.get<any>(environment.apiLink+`/categories/${id}`);
+    return this.http.get<any>(this.apiLink+`/categories/${id}`);
   }
 
   createCategory(name: string, description: string) {
@@ -20,7 +20,7 @@ export class CategoryService {
       description: description
     }
 
-    return this.http.post(environment.apiLink+`/categories/`, data);
+    return this.http.post(this.apiLink+`/categories/`, data);
   }
 
   updateCategory(id: number, name: string, description: string) {
@@ -29,14 +29,14 @@ export class CategoryService {
       description: description
     }
 
-    return this.http.put<any>(environment.apiLink+`/categories/${id}`, data);
+    return this.http.put<any>(this.apiLink+`/categories/${id}`, data);
   }
 
   deleteCategory(id: number) {
-    return this.http.delete(environment.apiLink+`/categories/${id}`);
+    return this.http.delete(this.apiLink+`/categories/${id}`);
   }
 
   searchCategoryByName(name: string) {
-    return this.http.get<any>(environment.apiLink+`/categories/search?categoryName=${name}`);
+    return this.http.get<any>(this.apiLink+`/categories/search?categoryName=${name}`);
   }
 }
