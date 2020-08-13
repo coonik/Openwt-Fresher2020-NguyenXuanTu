@@ -38,3 +38,16 @@ section {
   left:       0;
   position:   absolute;
 }
+
+.mat-elevation-z8 {
+  padding: 16px;
+}
+
+.search-create {
+  display: flex;
+  justify-content: space-between;
+}
+
+.width-30 {
+  width: 30%;
+}

@@ -54,7 +54,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   openDialog(id: number = null, username: string = "", name: string = "", password: string = "", role: string = "") {
-    const dialogRef = this.dialog.open(UserDialog, {width: '250px', data: {
+    const dialogRef = this.dialog.open(UserDialog, {data: {
       id, name, username, role, password
     }});
 
@@ -102,7 +102,7 @@ export class UserManagementComponent implements OnInit {
 @Component({
   selector: 'dialog-content-example-dialog',
   template: `
-              <div>
+              <div class="container">
                 <div class="overlay" *ngIf="loading">
                   <div class="center">
                     <mat-progress-spinner style="margin:0 auto;" diameter="80" mode="indeterminate" color="accent">
@@ -113,27 +113,27 @@ export class UserManagementComponent implements OnInit {
                 <div mat-dialog-content [formGroup]="userForm">
                 <div *ngIf="!data.id">
                   <p>The Username Input!</p>
-                  <mat-form-field>
+                  <mat-form-field class="width-100">
                     <mat-label>Username</mat-label>
                     <input matInput required [(ngModel)]="data.username" formControlName="username">
                   </mat-form-field>
                 </div>
 
                   <p>The Name Input!</p>
-                  <mat-form-field>
+                  <mat-form-field class="width-100">
                     <mat-label>Name</mat-label>
                     <input matInput required [(ngModel)]="data.name" formControlName="name">
                   </mat-form-field>
 
                   <div *ngIf="!data.id">
                     <p>The Password Input!</p>
-                    <mat-form-field>
+                    <mat-form-field class="width-100">
                       <mat-label>Password</mat-label>
-                      <input matInput required [(ngModel)]="data.password" formControlName="password">
+                      <input type="password" matInput required [(ngModel)]="data.password" formControlName="password">
                     </mat-form-field>
                   </div>
 
-                  <mat-form-field appearance="fill">
+                  <mat-form-field class="width-100" appearance="fill">
                     <mat-label>Role</mat-label>
                     <mat-select disableRipple [(ngModel)]="data.role" (selectionChange)="onSelected($event)" formControlName="role">
                       <mat-option value="USER">User</mat-option>
@@ -156,7 +156,6 @@ export class UserManagementComponent implements OnInit {
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
   }
-
   .overlay{
     height: 100%;
     width:100%;
@@ -165,6 +164,20 @@ export class UserManagementComponent implements OnInit {
     top:        0;
     left:       0;
     position:   absolute;
+  }
+  .container {
+    padding: 20px;
+    width: 20vw;
+    height: 60vh;
+  }
+  .width-100 {
+    width: 100%;
+  }
+  .mat-dialog-content {
+    height: 330px;
+  }
+  .mat-dialog-actions {
+    justify-content: flex-end;
   }
   `]
 })

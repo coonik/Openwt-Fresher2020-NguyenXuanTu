@@ -49,7 +49,7 @@ export class AuthorManagementComponent implements OnInit {
   }
 
   openDialog(id: number = null, name: string = "", website: string = "", birthday: string = null, cover: string) {
-    const dialogRef = this.dialog.open(AuthorDialog, {width: '550px', data: {
+    const dialogRef = this.dialog.open(AuthorDialog, {data: {
       id, name, website: website === "None" ? null : website, birthday, cover
     }});
 
@@ -100,39 +100,43 @@ export class AuthorManagementComponent implements OnInit {
 
 @Component({
   selector: 'dialog-content-example-dialog',
-  template: `<h2> {{ data.id ? "Edit " : "Create " }} Author </h2>
-              <div mat-dialog-content [formGroup]="authorForm">
-                <div class="content">
-                  <p>The Author Name Input!</p>
-                  <mat-form-field>
-                    <mat-label>Author Name</mat-label>
-                    <input matInput required [(ngModel)]="data.name" formControlName="name" autofocus>
-                  </mat-form-field>
-                  <picture>
-                    <source media='(min-width:0px)' srcset="{{cover}}">
-                    <img mat-card-image src="" alt="Photo of {{data.name}}">
-                  </picture>
-                </div>
-                <div class="content">
-                  <p>The Author Website Input!</p>
-                  <mat-form-field>
-                    <mat-label>Author Website</mat-label>
-                    <input matInput [(ngModel)]="data.website" formControlName="website">
-                  </mat-form-field>
-                  <p>The Author Birthday Input!</p>
-                  <mat-form-field>
-                    <mat-label>Author Birthday</mat-label>
-                    <input matInput type="date" [(ngModel)]="data.birthday" formControlName="birthday">
-                  </mat-form-field>
+  template: `
+              <div class="container">
+                <h2> {{ data.id ? "Edit " : "Create " }} Author </h2>
+                <div mat-dialog-content [formGroup]="authorForm">
+                  <div class="width-60">
+                    <p>The Author Name Input!</p>
+                    <mat-form-field class="width-100">
+                      <mat-label>Author Name</mat-label>
+                      <input matInput required [(ngModel)]="data.name" formControlName="name" autofocus>
+                    </mat-form-field>
+                    <br>
+                    <picture>
+                      <source media='(min-width:0px)' srcset="{{cover ? cover : 'https://www.eguardtech.com/wp-content/uploads/2018/08/Network-Profile.png'}}">
+                      <img mat-card-image src="" alt="Photo of {{data.name}}">
+                    </picture>
+                  </div>
+                  <div class="width-30">
+                    <p>The Author Website Input!</p>
+                    <mat-form-field class="width-100">
+                      <mat-label>Author Website</mat-label>
+                      <input matInput [(ngModel)]="data.website" formControlName="website">
+                    </mat-form-field>
+                    <p>The Author Birthday Input!</p>
+                    <mat-form-field class="width-100">
+                      <mat-label>Author Birthday</mat-label>
+                      <input matInput type="date" [(ngModel)]="data.birthday" formControlName="birthday">
+                    </mat-form-field>
 
-                  <input type="file" [(ngModel)]="image" id="file" name="file" class="inputfile" accept="image/x-png,image/gif,image/jpeg" (change)="imageChange($event)" formControlName="cover" />
-                  <label for="file">Choose Cover</label>
+                    <input type="file" [(ngModel)]="image" id="file" name="file" class="inputfile" accept="image/x-png,image/gif,image/jpeg" (change)="imageChange($event)" formControlName="cover" />
+                    <label for="file">Choose Cover</label>
 
+                  </div>
                 </div>
-              </div>
-              <div mat-dialog-actions>
-                <button mat-button (click)="onNoClick()">Cancel</button>
-                <button mat-button [mat-dialog-close]="data" [disabled]="!authorForm.valid || noChange">{{ data.id ? "Edit" : "Create" }}</button>
+                <div mat-dialog-actions>
+                  <button mat-button [mat-dialog-close]="data" [disabled]="!authorForm.valid || noChange">{{ data.id ? "Edit" : "Create" }}</button>
+                  <button mat-button (click)="onNoClick()">Cancel</button>
+                </div>
               </div>
             `,
   styles: ['.mat-form-field {width: 230px;}','.mat-dialog-content {display:flex}', 'img {width: 200px}',
@@ -144,7 +148,6 @@ export class AuthorManagementComponent implements OnInit {
             position: absolute;
             z-index: -1;
           }
-
           .inputfile + label {
             font-size: 1.25em;
             font-weight: 700;
@@ -153,19 +156,59 @@ export class AuthorManagementComponent implements OnInit {
             padding: 5px;
             border-radius: 2px;
           }
-
           .inputfile:focus + label,
           .inputfile + label:hover {
               background-color: grey;
           }
-
           .mat-dialog-actions {
             display: flex;
             flex-direction: row-reverse;
           }
-
           .content {
             width: 250px
+          }
+          textarea {
+            height: 190px;
+            max-height: 190px;
+          }
+          p {
+            text-align: left;
+          }
+          img {
+            max-width: 200px;
+            max-height: 250px;
+          }
+          .textarea {
+            height: 249px;
+          }
+          .container {
+            padding: 20px;
+            width: 40vw;
+            height: 60vh;
+            position: relative;
+          }
+          .height-30 {
+            height: 70%;
+          }
+          .ng-star-inserted {
+            width: 80%;
+            height: 100%;
+          }
+          .width-100 {
+            width: 100%;
+          }
+          .width-60 {
+            width: 60%;
+            padding: 0 10px;
+            text-align: center;
+          }
+          .width-30 {
+            width: 30%;
+          }
+          .mat-dialog-actions {
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
           }
           `]
 })

@@ -27,3 +27,12 @@ section {
   position: absolute;
   top: -4px;
 }
+
+.mat-elevation-z8 {
+  padding: 16px;
+}
+
+.search-create {
+  display: flex;
+  justify-content: space-between;
+}

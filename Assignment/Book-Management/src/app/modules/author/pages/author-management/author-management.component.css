@@ -33,3 +33,12 @@ section {
   left:       0;
   position:   absolute;
 }
+
+.search-create {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mat-elevation-z8 {
+  padding: 16px;
+}

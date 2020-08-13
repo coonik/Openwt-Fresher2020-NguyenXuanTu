@@ -46,7 +46,7 @@ export class CategoryManagementComponent implements OnInit {
   }
 
   openDialog(id: number = null, name: string = "", description: string = "") {
-    const dialogRef = this.dialog.open(CategoryDialog, {width: '250px', data: {
+    const dialogRef = this.dialog.open(CategoryDialog, {data: {
       id, name, description
     }});
 
@@ -97,25 +97,54 @@ export class CategoryManagementComponent implements OnInit {
 }
 @Component({
   selector: 'dialog-content-example-dialog',
-  template: `<h2> {{ data.id ? "Edit " : "Create " }} Category </h2>
+  template: `
+            <div class="container">
+              <h2> {{ data.id ? "Edit " : "Create " }} Category </h2>
               <div mat-dialog-content [formGroup]="categoryForm">
                 <p>The Category Name Input!</p>
-                <mat-form-field>
+                <mat-form-field class="width-100">
                   <mat-label>Category Name</mat-label>
                   <input matInput required [(ngModel)]="data.name" formControlName="name" autofocus>
                 </mat-form-field>
 
                 <p>The Category Description Input!</p>
-                <mat-form-field>
+                <mat-form-field class="width-100 textarea" appearance="outline">
                   <mat-label>Category Description</mat-label>
-                  <input matInput [(ngModel)]="data.description" formControlName="description">
+                  <textarea matInput [(ngModel)]="data.description" formControlName="description"></textarea>
                 </mat-form-field>
               </div>
               <div mat-dialog-actions>
-                <button mat-button (click)="onNoClick()">Cancel</button>
                 <button mat-button color="warn" [mat-dialog-close]="data" [disabled]="!categoryForm.valid || noChange">{{ data.id ? "Edit" : "Create" }}</button>
+                <button mat-button (click)="onNoClick()">Cancel</button>
               </div>
-            `
+            </div>
+            `,
+  styles: [`
+    textarea {
+      height: 190px;
+      max-height: 190px;
+    }
+    .textarea {
+      height: 249px;
+    }
+    .container {
+      width: 30vw;
+      height: 60vh;
+    }
+    .height-30 {
+      height: 70%;
+    }
+    .ng-star-inserted {
+      width: 80%;
+      height: 100%;
+    }
+    .width-100 {
+      width: 100%;
+    }
+    .mat-dialog-actions {
+      flex-direction: row-reverse;
+    }
+  `]
 })
 export class CategoryDialog implements OnInit{
   dataDefault = {

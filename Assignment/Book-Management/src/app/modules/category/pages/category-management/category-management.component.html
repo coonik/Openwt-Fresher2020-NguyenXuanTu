@@ -1,13 +1,14 @@
 <div class="mat-elevation-z8">
-  <div class="example-button-row">
-    <button mat-button (click)="openDialog(_, '', '')" color="accent">Category Creation</button>
+  <div class="search-create">
+    <mat-form-field class="example-full-width">
+      <mat-label>Category Name Search</mat-label>
+      <input matInput maxlength="100" [formControl]="searchFormControl"
+             placeholder=" City of Bones ">
+    </mat-form-field>
+    <div>
+      <button mat-raised-button color="primary" (click)="openDialog(_, '', '')">Create Category</button>
+    </div>
   </div>
-
-  <mat-form-field class="example-full-width">
-    <mat-label>Category Name Search</mat-label>
-    <input matInput maxlength="100" [formControl]="searchFormControl"
-           placeholder=" City of Bones ">
-  </mat-form-field>
 
   <pre *ngIf="dataSource?.length === 0">
     No results

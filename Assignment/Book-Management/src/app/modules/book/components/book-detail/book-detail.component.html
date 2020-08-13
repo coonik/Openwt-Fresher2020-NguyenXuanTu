@@ -4,7 +4,7 @@
 <form class="example-form" [formGroup]="bookDetailForm" *ngIf="(bookObs$ | async) || onCreateMode">
   <div class="cover">
     <picture>
-      <source media='(min-width:0px)' srcset="{{cover}}">
+      <source media='(min-width:0px)' srcset="{{cover ? cover : 'https://hoaphathanoi.vn/media/product/2444010_ke_sach_dep_nghe_thuat_ksg02.jpg'}}">
       <img mat-card-image src="" alt="Photo of {{bookData?.name ? bookData?.name : 'You'}}">
     </picture>
   </div>
