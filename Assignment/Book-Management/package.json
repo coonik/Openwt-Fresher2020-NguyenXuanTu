@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "node.server.js",
+    "build": "ng build — aot — prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,7 +23,9 @@
     "@angular/router": "^10.0.5",
     "alife-file-to-base64": "0.0.4",
     "bootstrap": "^3.4.1",
+    "express": "^4.17.1",
     "rxjs": "~6.5.5",
+    "serve-favicon": "^2.5.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },
