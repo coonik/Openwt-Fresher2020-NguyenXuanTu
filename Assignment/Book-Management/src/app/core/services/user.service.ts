@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 @Injectable({providedIn: 'root'})
 export class UserService {
   totalItems: number;
-  apiLink: 'https://nga-book-api.herokuapp.com/api'
+  apiLink = 'https://nga-book-api.herokuapp.com/api';
   constructor(private http: HttpClient) {}
   login(username: string, password: string) {
     let data = {

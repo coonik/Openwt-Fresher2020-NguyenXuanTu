@@ -19,7 +19,7 @@ export class BookService {
   searchResult: [];
   author: object = {};
   categories: object[] = [];
-  apiLink: 'https://nga-book-api.herokuapp.com/api'
+  apiLink = 'https://nga-book-api.herokuapp.com/api';
 
   getAllBook(pageIndex: number, pageSize: number) {
 

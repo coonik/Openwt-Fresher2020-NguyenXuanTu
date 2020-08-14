@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Injectable({providedIn: 'root'})
 export class CategoryService {
-  apiLink: 'https://nga-book-api.herokuapp.com/api'
+  apiLink = 'https://nga-book-api.herokuapp.com/api';
 
   constructor(private http: HttpClient) {}
   getAllCategories() {
